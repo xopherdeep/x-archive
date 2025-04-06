@@ -221,7 +221,7 @@ export default function GameView(props: GameViewProps) {
                 <>
                   <div className="mb-4 flex flex-col items-center">
                     <span className="text-5xl font-extrabold text-white">
-                      💀
+                      🧱
                     </span>
                     <span className="mt-2 text-4xl font-bold text-white">
                       GAME OVER
