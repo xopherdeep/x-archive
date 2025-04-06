@@ -109,9 +109,8 @@ export default function GameView(props: GameViewProps) {
       <Stats
         dropStats={dropStats}
         holdStats={holdStats}
-        onReset={() =>
-          setDropStats(
-            Object.keys({
+        onReset={() => {
+            const resetStats = Object.keys({
               I: null,
               O: null,
               T: null,
@@ -119,9 +118,10 @@ export default function GameView(props: GameViewProps) {
               Z: null,
               J: null,
               L: null,
-            }).reduce((acc, key) => ({ ...acc, [key]: 0 }), {})
-          )
-        }
+            }).reduce((acc, key) => ({ ...acc, [key]: 0 }), {});
+            setDropStats(resetStats);
+            setHoldStats(resetStats);
+          }}
         TETROMINOES={{
           I: { shape: [
                     [0, 0, 0, 0],
