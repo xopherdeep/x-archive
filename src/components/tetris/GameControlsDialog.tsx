@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 
 function GameControlsDialog({ bindings, setBindings }: { bindings: { holdKey: string }, setBindings: React.Dispatch<React.SetStateAction<{ holdKey: string }>> }) {
@@ -39,7 +39,9 @@ function GameControlsDialog({ bindings, setBindings }: { bindings: { holdKey: st
           </ul>
         </DialogDescription>
         <DialogFooter>
-          <Button variant="outline">Close</Button>
+          <DialogClose asChild>
+            <Button variant="outline">Close</Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>
