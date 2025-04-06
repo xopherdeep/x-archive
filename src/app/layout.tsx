@@ -1,8 +1,8 @@
-"use client";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import ClientBodyFixer from "@/components/ClientBodyFixer";
 import {
   NavigationMenu,
   NavigationMenuList,
@@ -10,7 +10,6 @@ import {
   NavigationMenuLink,
 } from "@/components/ui/navigation-menu";
 import { Sidebar } from "@/components/ui/sidebar";
-import { useEffect } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,15 +31,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  useEffect(() => {
-    document.body.removeAttribute("data-new-gr-c-s-check-loaded");
-    document.body.removeAttribute("data-gr-ext-installed");
-  }, []);
   return (
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <ClientBodyFixer />
         <div className="min-h-screen flex flex-col">
           <header className="bg-gray-800 text-white px-4 py-2">
             <NavigationMenu>
