@@ -142,11 +142,6 @@ export default function Stats({
                   </span>
                 </li>
               </ul>
-            <DialogFooter>
-              <Button variant="outline">Close</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
         {hold !== undefined && (
           <>
             <hr className="my-2" />
