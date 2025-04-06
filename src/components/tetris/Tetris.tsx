@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import Controls from "./Controls";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 
 const LIGHT_THEME = {
@@ -166,6 +167,7 @@ export default function Tetris() {
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
   const [level, setLevel] = useState(1);
+  const [activeTab, setActiveTab] = useState("game");
   const dropInterval = useRef<number>(1000);
 
   React.useEffect(() => {
@@ -304,6 +306,11 @@ export default function Tetris() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4" tabIndex={0} onKeyDown={handleKeyDown}>
       <h2 className="text-4xl font-bold mb-4 text-gray-800">Tetris</h2>
+      <div className="flex space-x-4 mb-4">
+        <Button variant={activeTab === "game" ? "default" : "outline"} onClick={() => setActiveTab("game")}>Game</Button>
+        <Button variant={activeTab === "controls" ? "default" : "outline"} onClick={() => setActiveTab("controls")}>Controls</Button>
+      </div>
+      {activeTab === "game" ? (
       <div className="flex flex-col md:flex-row gap-8 items-center">
         <div className="relative grid grid-cols-10" style={{ width: COLS * 30, height: ROWS * 30, backgroundImage: "linear-gradient(90deg, #333 1px, transparent 1px), linear-gradient(180deg, #333 1px, transparent 1px)", backgroundSize: "30px 30px" }}>
           {mergedBoard.map((cell, index) => (
@@ -385,6 +392,9 @@ export default function Tetris() {
           </div>
         </div>
       </div>
+      ) : (
+        <Controls />
+      )}
     </div>
   );
 }
