@@ -83,8 +83,8 @@ export default function GameView(props: GameViewProps) {
 
   return (
     <div className="flex flex-col md:flex-row gap-8 items-start">
-      <Stats 
-        dropStats={dropStats} 
+      <Stats
+        dropStats={dropStats}
         onReset={() =>
           setDropStats(
             Object.keys({
@@ -100,17 +100,97 @@ export default function GameView(props: GameViewProps) {
         }
         TETROMINOES={{
           I: { shape: [[0, 0, 0, 0]], color: "cyan" },
-          O: { shape: [[1, 1], [1, 1]], color: "yellow" },
-          T: { shape: [[0,1,0],[1,1,1],[0,0,0]], color: "purple" },
-          S: { shape: [[0,1,1],[1,1,0],[0,0,0]], color: "green" },
-          Z: { shape: [[1,1,0],[0,1,1],[0,0,0]], color: "red" },
-          J: { shape: [[1,0,0],[1,1,1],[0,0,0]], color: "blue" },
-          L: { shape: [[0,0,1],[1,1,1],[0,0,0]], color: "orange" },
+          O: {
+            shape: [
+              [1, 1],
+              [1, 1],
+            ],
+            color: "yellow",
+          },
+          T: {
+            shape: [
+              [0, 1, 0],
+              [1, 1, 1],
+              [0, 0, 0],
+            ],
+            color: "purple",
+          },
+          S: {
+            shape: [
+              [0, 1, 1],
+              [1, 1, 0],
+              [0, 0, 0],
+            ],
+            color: "green",
+          },
+          Z: {
+            shape: [
+              [1, 1, 0],
+              [0, 1, 1],
+              [0, 0, 0],
+            ],
+            color: "red",
+          },
+          J: {
+            shape: [
+              [1, 0, 0],
+              [1, 1, 1],
+              [0, 0, 0],
+            ],
+            color: "blue",
+          },
+          L: {
+            shape: [
+              [0, 0, 1],
+              [1, 1, 1],
+              [0, 0, 0],
+            ],
+            color: "orange",
+          },
         }}
         cropShape={cropShape}
         hold={hold}
       />
       <div>
+        <div className="flex gap-4 mb-4 justify-between w-full">
+          <Button
+            onClick={() => {
+              setBoard(
+                Array.from({ length: ROWS }, () => new Array(COLS).fill(0))
+              );
+              setCurrent(/* You may call your random tetromino generator here */);
+              setNext(/* Likewise here */);
+              setPosition({ x: Math.floor(COLS / 2) - 1, y: -1 });
+              setScore(0);
+              setGameOver(false);
+            }}
+          >
+            Restart
+          </Button>
+          <Button
+            onClick={() => {
+              if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+              } else {
+                document.exitFullscreen();
+              }
+            }}
+          >
+            Fullscreen
+          </Button>
+          <Select
+            value={theme}
+            onValueChange={(val) => setTheme(val as "light" | "dark")}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Theme" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="light">Light</SelectItem>
+              <SelectItem value="dark">Dark</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
         <Board
           mergedBoard={mergedBoard}
           current={current}
@@ -165,7 +245,9 @@ export default function GameView(props: GameViewProps) {
                     style={{
                       width: "30px",
                       height: "30px",
-                      backgroundColor: cell ? next.tetromino.color : "transparent",
+                      backgroundColor: cell
+                        ? next.tetromino.color
+                        : "transparent",
                       boxSizing: "border-box",
                       border: "1px solid #999",
                     }}
@@ -175,45 +257,6 @@ export default function GameView(props: GameViewProps) {
             </div>
           </CardContent>
         </Card>
-        <div className="flex gap-4">
-          <Button
-            onClick={() => {
-              setBoard(
-                Array.from({ length: ROWS }, () => new Array(COLS).fill(0))
-              );
-              setCurrent(/* You may call your random tetromino generator here */);
-              setNext(/* Likewise here */);
-              setPosition({ x: Math.floor(COLS / 2) - 1, y: -1 });
-              setScore(0);
-              setGameOver(false);
-            }}
-          >
-            Restart
-          </Button>
-          <Button
-            onClick={() => {
-              if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen();
-              } else {
-                document.exitFullscreen();
-              }
-            }}
-          >
-            Fullscreen
-          </Button>
-          <Select
-            value={theme}
-            onValueChange={(val) => setTheme(val as "light" | "dark")}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Theme" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="light">Light</SelectItem>
-              <SelectItem value="dark">Dark</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
       </div>
     </div>
   );
