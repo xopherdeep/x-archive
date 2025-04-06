@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Board from "./Board";
+import GameView from "./GameView";
 
 const LIGHT_THEME = {
   I: "cyan",
