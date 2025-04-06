@@ -304,6 +304,7 @@ export default function Tetris() {
           setScore={setScore}
           setGameOver={setGameOver}
           setDropStats={setDropStats}
+          setHold={setHold}
           setTheme={setTheme}
         />
       ) : activeTab === "controls" ? (
