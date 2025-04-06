@@ -217,6 +217,7 @@ function clearLines(board: Cell[][]): { board: Cell[][]; cleared: number } {
 }
 
 export default function Tetris() {
+  const [bindings, setBindings] = React.useState({ holdKey: "x" });
   const {
     mergedBoard,
     ghostPosition,
@@ -247,7 +248,7 @@ export default function Tetris() {
     holdPiece,
     COLS,
     ROWS,
-  } = useTetris("light");
+  } = useTetris("light", bindings);
 
   const [mounted, setMounted] = React.useState(false);
   const [activeTab, setActiveTab] = React.useState("game");

@@ -3,12 +3,11 @@ import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-export default function Controls() {
-  const [holdKey, setHoldKey] = React.useState('x');
+export default function Controls({ bindings, setBindings }: { bindings: { holdKey: string }, setBindings: React.Dispatch<React.SetStateAction<{ holdKey: string }>> }) {
   const [listening, setListening] = React.useState(false);
 
   const handleKeyBinding = (event: React.KeyboardEvent<HTMLSpanElement>) => {
-    setHoldKey(event.key);
+    setBindings({ ...bindings, holdKey: event.key });
     setListening(false);
   };
 
