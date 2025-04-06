@@ -225,42 +225,10 @@ function clearLines(board: Cell[][]): { board: Cell[][]; cleared: number } {
   return { board: newBoard, cleared };
 }
 
+import useTetris from "./useTetris";
+
 export default function Tetris() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-  const [board, setBoard] = useState<Cell[][]>(
-    Array.from({ length: ROWS }, () => new Array(COLS).fill(0))
-  );
-  const [theme, setTheme] = useState<Theme>("light");
-  const [current, setCurrent] = useState<{ key: string; tetromino: Tetromino }>(
-    () => randomTetromino("light", 1)
-  );
-  const [next, setNext] = useState<{ key: string; tetromino: Tetromino }>(() =>
-    randomTetromino("light", 1)
-  );
-  const [position, setPosition] = useState<Position>({
-    x: Math.floor(COLS / 2) - 1,
-    y: -1,
-  });
-  const [gameOver, setGameOver] = useState(false);
-  const [score, setScore] = useState(0);
-  const [level, setLevel] = useState(1);
-  const initialStats = Object.keys(TETROMINOES).reduce(
-    (acc, key) => ({ ...acc, [key]: 0 }),
-    {}
-  );
-  const [dropStats, setDropStats] =
-    useState<Record<string, number>>(initialStats);
-  const [activeTab, setActiveTab] = useState("game");
-  const [hold, setHold] = useState<{
-    key: string;
-    tetromino: Tetromino;
-  } | null>(null);
-  const [hasHeld, setHasHeld] = useState(false);
-  const dropInterval = useRef<number>(1000);
-  const [quickDropping, setQuickDropping] = useState(false);
+  const { mergedBoard, ghostPosition, handleKeyDown, score, level, gameOver, dropStats, setBoard, setTheme, theme, COLS, ROWS } = useTetris("light");
 
   // Helper functions to normalize tetromino shape for preview display
   const cropShape = (shape: number[][]) => {
