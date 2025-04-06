@@ -11,7 +11,7 @@ interface StatsProps {
   hold?: { key: string; tetromino: { shape: number[][]; color: string } };
 }
 
-export default function Stats({ dropStats, onReset, TETROMINOES, cropShape }: StatsProps) {
+export default function Stats({ dropStats, onReset, TETROMINOES, cropShape, hold }: StatsProps) {
   return (
     <Card className="w-40">
       <CardHeader>
