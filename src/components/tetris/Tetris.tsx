@@ -479,7 +479,7 @@ export default function Tetris() {
       case " ":
         quickDrop();
         break;
-      case "c":
+      case "x":
         holdPiece();
         break;
       default:
