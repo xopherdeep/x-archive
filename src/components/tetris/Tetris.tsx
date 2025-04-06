@@ -517,7 +517,7 @@ export default function Tetris() {
       tabIndex={0}
       onKeyDown={handleKeyDown}
     >
-      <h2 className="text-4xl font-bold mb-4 text-gray-800">Tetris</h2>
+      <h1 className="text-5xl font-extrabold mb-4 text-red-500 drop-shadow-[0_2px_3px_rgba(0,0,0,0.5)] tracking-[0.25em]">TETRIS</h1>
       <div className="flex space-x-4 mb-4">
         {Object.entries(TETROMINOES).map(([key, tetromino]) => {
           const previewShape = getPreviewShape(key, tetromino.shape);
@@ -695,8 +695,8 @@ export default function Tetris() {
                 </div>
               </CardContent>
             </Card>
-            <div className="text-2xl tracking-widest text-green-400 drop-shadow-lg">
-              Score: {score} | Level: {level}
+            <div className="text-2xl font-mono tracking-wide text-yellow-300 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)] px-4 py-2 border-2 border-yellow-300 rounded-xl bg-black bg-opacity-50">
+              SCORE: {score} | LEVEL: {level}
             </div>
             <div className="flex gap-4">
               <Button
