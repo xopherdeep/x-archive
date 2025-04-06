@@ -265,19 +265,33 @@ export default function Tetris() {
             </div>
           </div>
           <div className="text-xl">Score: {score}</div>
-          <button
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg"
-            onClick={() => {
-              setBoard(Array.from({ length: ROWS }, () => new Array(COLS).fill(0)));
-              setCurrent(randomTetromino());
-              setNext(randomTetromino());
-              setPosition({ x: Math.floor(COLS / 2) - 1, y: -1 });
-              setScore(0);
-              setGameOver(false);
-            }}
-          >
-            Restart
-          </button>
+          <div className="flex gap-4">
+            <button
+              className="px-6 py-3 bg-blue-600 text-white rounded-lg"
+              onClick={() => {
+                setBoard(Array.from({ length: ROWS }, () => new Array(COLS).fill(0)));
+                setCurrent(randomTetromino());
+                setNext(randomTetromino());
+                setPosition({ x: Math.floor(COLS / 2) - 1, y: -1 });
+                setScore(0);
+                setGameOver(false);
+              }}
+            >
+              Restart
+            </button>
+            <button
+              className="px-6 py-3 bg-green-600 text-white rounded-lg"
+              onClick={() => {
+                if (!document.fullscreenElement) {
+                  document.documentElement.requestFullscreen();
+                } else {
+                  document.exitFullscreen();
+                }
+              }}
+            >
+              Fullscreen
+            </button>
+          </div>
         </div>
       </div>
     </div>
