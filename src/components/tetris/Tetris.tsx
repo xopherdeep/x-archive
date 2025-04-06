@@ -1,20 +1,8 @@
 "use client";
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import { toast } from "sonner";
-import confetti from "canvas-confetti";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import Controls from "./Controls";
-import Stats from "./Stats";
-import {
-  Select,
-  SelectTrigger,
-  SelectContent,
-  SelectItem,
-  SelectValue,
-} from "@/components/ui/select";
-import Board from "./Board";
+import React from "react";
+import useTetris from "./useTetris";
 import GameView from "./GameView";
+import Controls from "./Controls";
 
 const LIGHT_THEME = {
   I: "cyan",
@@ -261,40 +249,7 @@ export default function Tetris() {
     ROWS,
   } = useTetris("light");
 
-  // Helper functions to normalize tetromino shape for preview display
-  const cropShape = (shape: number[][]) => {
-    const croppedRows = shape.filter((row) => row.some((cell) => cell));
-    if (croppedRows.length === 0) return croppedRows;
-    const colCount = croppedRows[0].length;
-    let firstNonZeroCol = colCount;
-    let lastNonZeroCol = -1;
-    for (let col = 0; col < colCount; col++) {
-      for (let row of croppedRows) {
-        if (row[col]) {
-          firstNonZeroCol = Math.min(firstNonZeroCol, col);
-          lastNonZeroCol = Math.max(lastNonZeroCol, col);
-        }
-      }
-    }
-    return croppedRows.map((row) =>
-      row.slice(firstNonZeroCol, lastNonZeroCol + 1)
-    );
-  };
-
-  const getPreviewShape = (letter: string, shape: number[][]) => {
-    const cropped = cropShape(shape);
-    if (letter === "I" && cropped.length === 1) {
-      // Rotate a 1xN shape into an N×1 vertical column.
-      return cropped[0].map((val) => [val]);
-    }
-    if (letter === "L") {
-      return rotate(cropped);
-    }
-    if (letter === "J") {
-      return rotate(rotate(rotate(cropped)));
-    }
-    return cropped;
-  };
+  
 
 
 
