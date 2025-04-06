@@ -123,87 +123,89 @@ export default function GameView(props: GameViewProps) {
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-8 items-start">
-      <Stats
-        dropStats={dropStats}
-        holdStats={holdStats}
-        onReset={() => {
-          const resetStats = Object.keys({
-            I: null,
-            O: null,
-            T: null,
-            S: null,
-            Z: null,
-            J: null,
-            L: null,
-          }).reduce((acc, key) => ({ ...acc, [key]: 0 }), {});
-          setDropStats(resetStats);
-        }}
-        TETROMINOES={{
-          I: {
-            shape: [
-              [0, 0, 0, 0],
-              [1, 1, 1, 1],
-              [0, 0, 0, 0],
-              [0, 0, 0, 0],
-            ],
-            color: "cyan",
-          },
-          O: {
-            shape: [
-              [1, 1],
-              [1, 1],
-            ],
-            color: "yellow",
-          },
-          T: {
-            shape: [
-              [0, 1, 0],
-              [1, 1, 1],
-              [0, 0, 0],
-            ],
-            color: "purple",
-          },
-          S: {
-            shape: [
-              [0, 1, 1],
-              [1, 1, 0],
-              [0, 0, 0],
-            ],
-            color: "green",
-          },
-          Z: {
-            shape: [
-              [1, 1, 0],
-              [0, 1, 1],
-              [0, 0, 0],
-            ],
-            color: "red",
-          },
-          J: {
-            shape: [
-              [1, 0, 0],
-              [1, 1, 1],
-              [0, 0, 0],
-            ],
-            color: "blue",
-          },
-          L: {
-            shape: [
-              [0, 0, 1],
-              [1, 1, 1],
-              [0, 0, 0],
-            ],
-            color: "orange",
-          },
-        }}
-        cropShape={cropShape}
-        hold={hold}
-        theme={theme}
-        setTheme={setTheme}
-        bindings={bindings}
-        setBindings={setBindings}
-      />
+    <div className="flex flex-col md:flex-row gap-8 items-center">
+      <div className="w-40">
+        <Stats
+          dropStats={dropStats}
+          holdStats={holdStats}
+          onReset={() => {
+            const resetStats = Object.keys({
+              I: null,
+              O: null,
+              T: null,
+              S: null,
+              Z: null,
+              J: null,
+              L: null,
+            }).reduce((acc, key) => ({ ...acc, [key]: 0 }), {});
+            setDropStats(resetStats);
+          }}
+          TETROMINOES={{
+            I: {
+              shape: [
+                [0, 0, 0, 0],
+                [1, 1, 1, 1],
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+              ],
+              color: "cyan",
+            },
+            O: {
+              shape: [
+                [1, 1],
+                [1, 1],
+              ],
+              color: "yellow",
+            },
+            T: {
+              shape: [
+                [0, 1, 0],
+                [1, 1, 1],
+                [0, 0, 0],
+              ],
+              color: "purple",
+            },
+            S: {
+              shape: [
+                [0, 1, 1],
+                [1, 1, 0],
+                [0, 0, 0],
+              ],
+              color: "green",
+            },
+            Z: {
+              shape: [
+                [1, 1, 0],
+                [0, 1, 1],
+                [0, 0, 0],
+              ],
+              color: "red",
+            },
+            J: {
+              shape: [
+                [1, 0, 0],
+                [1, 1, 1],
+                [0, 0, 0],
+              ],
+              color: "blue",
+            },
+            L: {
+              shape: [
+                [0, 0, 1],
+                [1, 1, 1],
+                [0, 0, 0],
+              ],
+              color: "orange",
+            },
+          }}
+          cropShape={cropShape}
+          hold={hold}
+          theme={theme}
+          setTheme={setTheme}
+          bindings={bindings}
+          setBindings={setBindings}
+        />
+      </div>
       <div>
         <GameCard>
           <div className="relative">
