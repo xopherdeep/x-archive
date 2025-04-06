@@ -24,7 +24,7 @@ export default function Stats({ dropStats, onReset, TETROMINOES, cropShape, hold
             .map(([key, tetromino]) => {
             const cropped = cropShape(tetromino.shape);
             return (
-              <div key={key} className="flex items-center gap-2">
+              <div key={key} className="flex items-center gap-2 transition-all duration-500">
                 <div className="w-8 text-center font-bold">{key}</div>
                 <div
                   className="grid gap-0.5"
