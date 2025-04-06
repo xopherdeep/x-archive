@@ -296,7 +296,7 @@ export default function Tetris() {
         <Background theme={theme} />
         <h1
           style={{ fontFamily: "'Press Start 2P', cursive" }}
-          className="w-full text-5xl font-extrabold mb-4 text-red-500 drop-shadow-[0_2px_3px_rgba(0,0,0,0.5)] tracking-[0.25em] text-center"
+          className="text-5xl font-extrabold mb-4 text-red-500 drop-shadow-[0_2px_3px_rgba(0,0,0,0.5)] tracking-[0.25em] text-center"
         >
           TETRIS
         </h1>
