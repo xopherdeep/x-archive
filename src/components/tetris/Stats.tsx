@@ -1,5 +1,11 @@
 import React from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -131,9 +137,6 @@ export default function Stats({
               );
             })}
         </div>
-        <Button variant="outline" size="sm" onClick={onReset}>
-          Reset
-        </Button>
 
         {hold !== undefined && (
           <>
@@ -172,6 +175,16 @@ export default function Stats({
           </>
         )}
       </CardContent>
+      <CardFooter>
+        <Button
+          // variant="ghost"
+          size="sm"
+          onClick={onReset}
+          className="w-full"
+        >
+          Reset
+        </Button>
+      </CardFooter>
     </Card>
   );
 }

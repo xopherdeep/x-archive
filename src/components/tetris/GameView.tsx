@@ -322,29 +322,25 @@ export default function GameView(props: GameViewProps) {
           </CardContent>
         </Card>
         <Card className="w-full gap-0">
-          <CardHeader>
-            <CardTitle className="text-lg m-0 p-0">Score</CardTitle>
-          </CardHeader>
-          <CardContent className="p-2 text-left bg-gray-900">
+          <CardContent className="p-2 text-left bg-gray-900 rounded-sm mx-2 space-y-2">
             <div
-              className="flex flex-col text-xl tracking-[0.15em] text-white font-bold"
+              className="flex flex-col text-sm tracking-[0.15em] text-white font-bold"
               style={{ fontFamily: '"Press Start 2P", cursive' }}
             >
               <p>Top</p>
-              <p>{topScore.toString().padStart(8, '0')}</p>
+              <p>{topScore.toString().padStart(8, "0")}</p>
             </div>
             <div
-              className="text-xl font-bold tracking-[0.15em] text-white"
+              className="text-sm font-bold tracking-[0.15em] text-white"
               style={{ fontFamily: '"Press Start 2P", cursive' }}
             >
               <p>Score</p>
-              <p>{score.toString().padStart(8, '0')}</p>
+              <p>{score.toString().padStart(8, "0")}</p>
             </div>
           </CardContent>
           <CardFooter>
             <Button
-              variant="outline"
-              size="small"
+              // variant="outline"
               className="mt-2 w-full"
               onClick={resetGame}
             >
