@@ -187,19 +187,6 @@ export default function GameView(props: GameViewProps) {
         setTheme={setTheme}
       />
       <div>
-        <div className="flex gap-4 mb-4 justify-between w-full">
-          <Button
-            onClick={() => {
-              if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen();
-              } else {
-                document.exitFullscreen();
-              }
-            }}
-          >
-            Fullscreen
-          </Button>
-        </div>
         <div className="relative">
           <Board
             mergedBoard={mergedBoard}
