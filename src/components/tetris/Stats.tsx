@@ -35,6 +35,7 @@ export default function Stats({ dropStats, holdStats = {}, onReset, TETROMINOES,
           </SelectContent>
         </Select>
         <CardTitle className="text-lg m-0 p-0">Tetrominos</CardTitle>
+        <small className="text-xs text-muted">drop piece hold</small>
       </CardHeader>
       <CardContent className="p-2">
         <div className="flex flex-col gap-2">
@@ -44,6 +45,7 @@ export default function Stats({ dropStats, holdStats = {}, onReset, TETROMINOES,
             const cropped = cropShape(tetromino.shape);
             return (
               <div key={key} className="flex items-center gap-2 transition-all duration-500">
+                <div className="w-8 text-center font-bold">{key}</div>
                 <div
                   className="grid gap-0.5"
                   style={{ gridTemplateColumns: `repeat(${cropped[0]?.length || 0}, 20px)` }}
@@ -60,7 +62,6 @@ export default function Stats({ dropStats, holdStats = {}, onReset, TETROMINOES,
                     />
                   ))}
                 </div>
-                <div className="w-8 text-center font-bold">{key}</div>
                 <div className="ml-auto text-sm">{dropStats[key] || 0}</div>
                 <div className="ml-auto text-sm">{holdStats[key] || 0}</div>
               </div>
