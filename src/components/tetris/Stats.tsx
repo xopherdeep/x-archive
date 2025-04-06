@@ -142,7 +142,6 @@ export default function Stats({
                   </span>
                 </li>
               </ul>
-            </DialogDescription>
             <DialogFooter>
               <Button variant="outline">Close</Button>
             </DialogFooter>
