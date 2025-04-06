@@ -185,6 +185,8 @@ export default function GameView(props: GameViewProps) {
         hold={hold}
         theme={theme}
         setTheme={setTheme}
+        bindings={bindings}
+        setBindings={setBindings}
       />
       <div>
         <div className="relative">

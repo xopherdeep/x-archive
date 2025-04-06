@@ -25,6 +25,8 @@ interface StatsProps {
   hold?: { key: string; tetromino: { shape: number[][]; color: string } };
   theme: "light" | "dark";
   setTheme: (value: "light" | "dark") => void;
+  bindings: { holdKey: string };
+  setBindings: React.Dispatch<React.SetStateAction<{ holdKey: string }>>;
 }
 
 export default function Stats({
@@ -36,6 +38,8 @@ export default function Stats({
   hold,
   theme,
   setTheme,
+  bindings,
+  setBindings,
 }: StatsProps) {
   const holdRanking = Object.keys(TETROMINOES).sort((a, b) => (holdStats[b] || 0) - (holdStats[a] || 0));
   return (
