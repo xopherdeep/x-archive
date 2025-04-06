@@ -2,6 +2,7 @@
 import React from "react";
 import useTetris from "./useTetris";
 import GameView from "./GameView";
+import Background from "./Background";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
 
@@ -286,10 +287,11 @@ export default function Tetris() {
 
   return mounted ? (
     <div
-      className="h-screen w-full bg-gray-50 flex flex-col items-center justify-center overflow-hidden"
+      className="relative h-screen w-full bg-gray-50 flex flex-col items-center justify-center overflow-hidden"
       tabIndex={0}
       onKeyDown={handleKeyDown}
     >
+      <Background theme={theme} />
       <h1 style={{ fontFamily: "'Press Start 2P', cursive" }} className="text-5xl font-extrabold mb-4 text-red-500 drop-shadow-[0_2px_3px_rgba(0,0,0,0.5)] tracking-[0.25em]">
         TETRIS
       </h1>
