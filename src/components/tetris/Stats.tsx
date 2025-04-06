@@ -124,7 +124,7 @@ export default function Stats({
         </Button>
         <Dialog>
           <Button variant="outline" size="sm">
-            <DialogTrigger>
+            <DialogTrigger asChild>
               Controls
             </DialogTrigger>
           </Button>
