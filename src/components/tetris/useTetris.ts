@@ -92,9 +92,7 @@ export default function useTetris(initialTheme: "light" | "dark") {
         setLinesCleared((prev) => prev + cleared);
         if (cleared > 0) {
           toast(`Cleared ${cleared} lines!`);
-          if (cleared === 4) {
-            confetti({ particleCount: 150, spread: 60, origin: { y: 0.8 } });
-          }
+          confetti({ particleCount: 30, spread: 50, origin: { y: 0.8 } });
         }
         if (prev.y < 0) {
           setGameOver(true);
@@ -162,9 +160,7 @@ export default function useTetris(initialTheme: "light" | "dark") {
     setLinesCleared((prev) => prev + cleared);
     if (cleared > 0) {
       toast(`Cleared ${cleared} lines!`);
-      if (cleared === 4) {
-        confetti({ particleCount: 150, spread: 60, origin: { y: 0.8 } });
-      }
+      confetti({ particleCount: 30, spread: 50, origin: { y: 0.8 } });
     }
     if (posCopy.y < 0) {
       setGameOver(true);
@@ -209,6 +205,11 @@ export default function useTetris(initialTheme: "light" | "dark") {
     if (newLevel !== level) {
       setLevel(newLevel);
       dropInterval.current = Math.max(100, 1000 - 100 * (newLevel - 1));
+      if (newLevel % 10 === 0) {
+        confetti({ particleCount: 300, spread: 120, origin: { y: 0.5 } });
+      } else {
+        confetti({ particleCount: 100, spread: 100, origin: { y: 0.5 } });
+      }
     }
   }, [linesCleared, level]);
 
