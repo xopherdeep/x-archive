@@ -73,6 +73,14 @@ export default function GameView(props: GameViewProps) {
     setGameOver(false);
   };
 
+  const restartLevel = () => {
+    setBoard(Array.from({ length: ROWS }, () => new Array(COLS).fill(0)));
+    setCurrent(randomTetromino(theme, level));
+    setNext(randomTetromino(theme, level));
+    setPosition({ x: Math.floor(COLS / 2) - 1, y: -1 });
+    setGameOver(false);
+  };
+
   const cropShape = (shape: number[][]) => {
     const croppedRows = shape.filter((row) => row.some((cell) => cell));
     if (croppedRows.length === 0) return croppedRows;
@@ -198,24 +206,23 @@ export default function GameView(props: GameViewProps) {
             <div className="absolute inset-0 flex flex-col items-center justify-center z-10 bg-black bg-opacity-75 p-4">
               {gameOver ? (
                 <>
-                  <div className="mb-4 text-5xl font-extrabold text-white">
-                    💀 GAME OVER
+                  <div className="mb-4 flex flex-col items-center">
+                    <span className="text-5xl font-extrabold text-white">💀</span>
+                    <span className="mt-2 text-4xl font-bold text-white">GAME OVER</span>
                   </div>
-                  <div className="mb-2 text-2xl text-white">
-                    Score: {score}
-                  </div>
-                  <div className="mb-4 text-2xl text-white">
-                    Lines Cleared: {linesCleared}
+                  <div className="mb-2 text-2xl text-white">Score: {score}</div>
+                  <div className="mb-4 text-2xl text-white">Lines Cleared: {linesCleared}</div>
+                  <div className="flex flex-col gap-2">
+                    <Button className="px-6" onClick={() => { resetGame(); setStarted(true); }}>Start Over</Button>
+                    <Button className="px-6" onClick={() => { restartLevel(); }}>Restart Level</Button>
                   </div>
                 </>
               ) : (
-                <div className="mb-4 text-4xl font-bold text-white">
-                  Welcome to Tetris!
-                </div>
+                <>
+                  <div className="mb-4 text-4xl font-bold text-white">Welcome to Tetris!</div>
+                  <Button className="px-6" onClick={() => { resetGame(); setStarted(true); }}>Start Game</Button>
+                </>
               )}
-              <Button className="px-6" onClick={() => { resetGame(); setStarted(true); }}>
-                {gameOver ? "Restart" : "Start Game"}
-              </Button>
             </div>
           )}
         </div>
