@@ -24,7 +24,7 @@ export default function Controls({ bindings, setBindings }: { bindings: { holdKe
           <li><strong>Arrow Up:</strong> Rotate piece</li>
           <li><strong>Space:</strong> Quick drop</li>
           <li>
-            <strong>{listening ? "Press key..." : holdKey + ":"}</strong>{" "}
+            <strong>{listening ? "Press key..." : bindings.holdKey + ":"}</strong>{" "}
             <span onClick={() => setListening(true)} onKeyDown={handleKeyBinding} tabIndex={0}>
               Hold piece
             </span>

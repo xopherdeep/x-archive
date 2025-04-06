@@ -306,7 +306,7 @@ export default function Tetris() {
           setTheme={setTheme}
         />
       ) : activeTab === "controls" ? (
-        <Controls />
+        <Controls bindings={bindings} setBindings={setBindings} />
       ) : null}
     </div>
   ) : (
