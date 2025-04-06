@@ -1,6 +1,6 @@
 "use client"
 import React from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
 export default function Controls({ bindings, setBindings }: { bindings: { holdKey: string }, setBindings: React.Dispatch<React.SetStateAction<{ holdKey: string }>> }) {
@@ -12,29 +12,36 @@ export default function Controls({ bindings, setBindings }: { bindings: { holdKe
   };
 
   return (
-    <Card className="w-fit max-w-md mx-auto mt-8">
-      <CardHeader>
-        <CardTitle className="text-lg">Game Controls</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <ul className="list-disc list-inside">
-          <li><strong>Arrow Left:</strong> Move left</li>
-          <li><strong>Arrow Right:</strong> Move right</li>
-          <li><strong>Arrow Down:</strong> Soft drop</li>
-          <li><strong>Arrow Up:</strong> Rotate piece</li>
-          <li><strong>Shift + Arrow Up:</strong> Rotate piece opposite</li>
-          <li><strong>Space:</strong> Quick drop</li>
-          <li>
-            <strong>{listening ? "Press key..." : bindings.holdKey + ":"}</strong>{" "}
-            <span onClick={() => setListening(true)} onKeyDown={handleKeyBinding} tabIndex={0}>
-              Hold piece
-            </span>
-          </li>
-        </ul>
-        <div className="mt-4">
-          <Button variant="outline">Edit Controls</Button>
-        </div>
-      </CardContent>
-    </Card>
+    <Dialog>
+      <Button variant="outline" size="sm">
+        <DialogTrigger asChild>
+          <span>Controls</span>
+        </DialogTrigger>
+      </Button>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Game Controls</DialogTitle>
+        </DialogHeader>
+        <DialogDescription>
+          <ul className="list-disc list-inside">
+            <li><strong>Arrow Left:</strong> Move left</li>
+            <li><strong>Arrow Right:</strong> Move right</li>
+            <li><strong>Arrow Down:</strong> Soft drop</li>
+            <li><strong>Arrow Up:</strong> Rotate piece</li>
+            <li><strong>Shift + Arrow Up:</strong> Rotate piece opposite</li>
+            <li><strong>Space:</strong> Quick drop</li>
+            <li>
+              <strong>{listening ? "Press key..." : bindings.holdKey + ":"}</strong>{" "}
+              <span onClick={() => setListening(true)} onKeyDown={handleKeyBinding} tabIndex={0}>
+                Hold piece
+              </span>
+            </li>
+          </ul>
+        </DialogDescription>
+        <DialogFooter>
+          <Button variant="outline">Close</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
