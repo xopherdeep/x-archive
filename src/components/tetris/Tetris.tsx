@@ -294,52 +294,6 @@ export default function Tetris() {
   };
 
 
-  const drop = useCallback(() => {
-    setPosition((prev) => {
-      const newPos = { x: prev.x, y: prev.y + 1 };
-      if (checkCollision(board, current.tetromino, newPos)) {
-        const merged = mergeBoard(board, current.tetromino, prev);
-        const { board: clearedBoard, cleared } = clearLines(merged);
-        setBoard(clearedBoard);
-        if (cleared > 0) {
-          toast(`🎉 Cleared ${cleared} lines! 🚀`);
-          if (cleared === 4) {
-            confetti({
-              particleCount: 150,
-              spread: 60,
-              origin: { y: 0.8 },
-            });
-          }
-        }
-        if (prev.y < 0) {
-          setGameOver(true);
-          return prev;
-        }
-        setScore((prevScore) => {
-          const newScore = prevScore + cleared * 10;
-          if (newScore >= level * 50) {
-            setLevel((prevLevel) => prevLevel + 1);
-            dropInterval.current = Math.max(100, dropInterval.current - 100);
-          }
-          return newScore;
-        });
-        const newPiece = next;
-        setDropStats((prev) => ({
-          ...prev,
-          [newPiece.key]: (prev[newPiece.key] || 0) + 1,
-        }));
-        setCurrent(newPiece);
-        setNext(randomTetromino(theme, level));
-        return {
-          x:
-            Math.floor(COLS / 2) -
-            Math.floor(newPiece.tetromino.shape[0].length / 2),
-          y: -1,
-        };
-      }
-      return newPos;
-    });
-  }, [board, current.tetromino, next, theme, level]);
 
   useEffect(() => {
     if (gameOver) return;
