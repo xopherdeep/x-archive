@@ -228,7 +228,35 @@ function clearLines(board: Cell[][]): { board: Cell[][]; cleared: number } {
 import useTetris from "./useTetris";
 
 export default function Tetris() {
-  const { mergedBoard, ghostPosition, handleKeyDown, score, level, gameOver, dropStats, setBoard, setTheme, theme, COLS, ROWS } = useTetris("light");
+  const {
+    mergedBoard,
+    ghostPosition,
+    handleKeyDown,
+    score,
+    level,
+    gameOver,
+    dropStats,
+    current,
+    next,
+    hold,
+    quickDropping,
+    setBoard,
+    setTheme,
+    theme,
+    setCurrent,
+    setNext,
+    setPosition,
+    setScore,
+    setGameOver,
+    setDropStats,
+    drop,
+    move,
+    rotatePiece,
+    quickDrop,
+    holdPiece,
+    COLS,
+    ROWS,
+  } = useTetris("light");
 
   // Helper functions to normalize tetromino shape for preview display
   const cropShape = (shape: number[][]) => {
