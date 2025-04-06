@@ -37,6 +37,7 @@ type GameViewProps = {
   setGameOver: (value: boolean) => void;
   setDropStats: (value: Record<string, number>) => void;
   setTheme: (theme: "light" | "dark") => void;
+  setHold: (value: { key: string; tetromino: { shape: number[][]; color: string } } | null) => void;
 };
 
 export default function GameView(props: GameViewProps) {
@@ -63,6 +64,7 @@ export default function GameView(props: GameViewProps) {
     setScore,
     setGameOver,
     setDropStats,
+    setHold,
     setTheme,
   } = props;
   const [started, setStarted] = React.useState(false);
