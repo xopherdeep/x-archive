@@ -171,6 +171,33 @@ export default function Tetris() {
   const dropInterval = useRef<number>(1000);
   const [quickDropping, setQuickDropping] = useState(false);
 
+  // Helper functions to normalize tetromino shape for preview display
+  const cropShape = (shape: number[][]) => {
+    const croppedRows = shape.filter(row => row.some(cell => cell));
+    if (croppedRows.length === 0) return croppedRows;
+    const colCount = croppedRows[0].length;
+    let firstNonZeroCol = colCount;
+    let lastNonZeroCol = -1;
+    for (let col = 0; col < colCount; col++) {
+      for (let row of croppedRows) {
+        if (row[col]) {
+          firstNonZeroCol = Math.min(firstNonZeroCol, col);
+          lastNonZeroCol = Math.max(lastNonZeroCol, col);
+        }
+      }
+    }
+    return croppedRows.map(row => row.slice(firstNonZeroCol, lastNonZeroCol + 1));
+  };
+
+  const getPreviewShape = (letter: string, shape: number[][]) => {
+    const cropped = cropShape(shape);
+    if (letter === "I" && cropped.length === 1) {
+      // Rotate a 1xN shape into an N×1 vertical column.
+      return cropped[0].map(val => [val]);
+    }
+    return cropped;
+  };
+
   React.useEffect(() => {
     setCurrent(prev => ({
       key: prev.key,
@@ -310,27 +337,30 @@ export default function Tetris() {
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4" tabIndex={0} onKeyDown={handleKeyDown}>
       <h2 className="text-4xl font-bold mb-4 text-gray-800">Tetris</h2>
       <div className="flex space-x-4 mb-4">
-        {Object.entries(TETROMINOES).map(([key, tetromino]) => (
-          <div key={key} className="flex flex-col items-center">
-            <div className="mb-1 font-bold">{key}</div>
-            <div
-              className="grid gap-0.5 p-1"
-              style={{ gridTemplateColumns: `repeat(${tetromino.shape[0].length}, 20px)` }}
-            >
-              {tetromino.shape.flat().map((cell, index) => (
-                <div
-                  key={index}
-                  style={{
-                    width: 20,
-                    height: 20,
-                    backgroundColor: cell ? tetromino.color : "transparent",
-                    border: "1px solid #ccc"
-                  }}
-                />
-              ))}
+        {Object.entries(TETROMINOES).map(([key, tetromino]) => {
+          const previewShape = getPreviewShape(key, tetromino.shape);
+          return (
+            <div key={key} className="flex flex-col items-center">
+              <div className="mb-1 font-bold">{key}</div>
+              <div
+                className="grid gap-0.5 p-1"
+                style={{ gridTemplateColumns: `repeat(${previewShape[0].length}, 20px)` }}
+              >
+                {previewShape.flat().map((cell, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      width: 20,
+                      height: 20,
+                      backgroundColor: cell ? tetromino.color : "transparent",
+                      border: "1px solid #ccc"
+                    }}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
       <div className="flex space-x-4 mb-4">
         <Button variant={activeTab === "game" ? "default" : "outline"} onClick={() => setActiveTab("game")}>Game</Button>
