@@ -389,14 +389,14 @@ export default function Tetris() {
       </div>
       {activeTab === "game" ? (
       <div className="flex flex-col md:flex-row gap-8 items-center">
-        <div className={`relative grid grid-cols-10 ${quickDropping ? "transition-transform duration-300 transform translate-y-2" : ""}`} style={{ width: COLS * 30, height: ROWS * 30, background: "url('/assets/retro-bg.png') repeat", backgroundSize: "auto" }}>
+        <div className={`relative grid grid-cols-10 ${quickDropping ? "transition-transform duration-300 transform translate-y-2" : ""}`} style={{ width: COLS * 30 + "px", height: ROWS * 30 + "px", background: "url('/assets/retro-bg.png') repeat", backgroundSize: "auto" }}>
           {mergedBoard.map((cell, index) => (
             <div
               key={index}
               className="transition-all duration-300"
               style={{
-                width: 30,
-                height: 30,
+                width: "30px",
+                height: "30px",
                 backgroundColor: cell === 0 ? "transparent" : cell,
                 boxSizing: "border-box",
                 border: "1px solid #999",
@@ -413,10 +413,10 @@ export default function Tetris() {
                     key={`ghost-${py}-${px}`}
                     className="absolute pointer-events-none opacity-50"
                     style={{
-                      width: 30,
-                      height: 30,
-                      left: ghostX * 30,
-                      top: ghostY * 30,
+                      width: "30px",
+                      height: "30px",
+                      left: ghostX * 30 + "px",
+                      top: ghostY * 30 + "px",
                       backgroundColor: current.tetromino.color,
                       boxSizing: "border-box",
                       border: "1px solid #999",
@@ -439,14 +439,14 @@ export default function Tetris() {
               <CardTitle className="text-lg">Next Piece</CardTitle>
             </CardHeader>
             <CardContent className="p-2">
-              <div className="relative grid" style={{ gridTemplateColumns: `repeat(${next.tetromino.shape[0].length}, 30px)`, width: next.tetromino.shape[0].length * 30, height: next.tetromino.shape.length * 30, border: "2px solid #ccc" }}>
+              <div className="relative grid" style={{ gridTemplateColumns: `repeat(${next.tetromino.shape[0].length}, 30px)`, width: next.tetromino.shape[0].length * 30 + "px", height: next.tetromino.shape.length * 30 + "px", border: "2px solid #ccc" }}>
                 {next.tetromino.shape.flatMap((row, y) =>
                   row.map((cell, x) => (
                     <div
                       key={`${x}-${y}`}
                       style={{
-                        width: 30,
-                        height: 30,
+                        width: "30px",
+                        height: "30px",
                         backgroundColor: cell ? next.tetromino.color : "transparent",
                         boxSizing: "border-box",
                         border: "1px solid #999",
