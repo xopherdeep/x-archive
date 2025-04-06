@@ -139,6 +139,13 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
     });
   };
 
+  const rotatePieceOpposite = () => {
+    setCurrent((prev) => {
+      const rotated = { ...prev, tetromino: { ...prev.tetromino, shape: rotate(rotate(rotate(prev.tetromino.shape))) } };
+      return checkCollision(board, rotated.tetromino, position) ? prev : rotated;
+    });
+  };
+
   const holdPiece = () => {
     let newCurrent, newHold;
     if (!hold) {
@@ -231,6 +238,10 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
       event.preventDefault();
     }
     if (gameOver) return;
+    if (event.key === "ArrowUp" && event.shiftKey) {
+      rotatePieceOpposite();
+      return;
+    }
     switch (event.key) {
       case "ArrowLeft":
         move(-1);

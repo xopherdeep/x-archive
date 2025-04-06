@@ -22,6 +22,7 @@ export default function Controls({ bindings, setBindings }: { bindings: { holdKe
           <li><strong>Arrow Right:</strong> Move right</li>
           <li><strong>Arrow Down:</strong> Soft drop</li>
           <li><strong>Arrow Up:</strong> Rotate piece</li>
+          <li><strong>Shift + Arrow Up:</strong> Rotate piece opposite</li>
           <li><strong>Space:</strong> Quick drop</li>
           <li>
             <strong>{listening ? "Press key..." : bindings.holdKey + ":"}</strong>{" "}
