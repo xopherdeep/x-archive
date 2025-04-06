@@ -49,6 +49,7 @@ export default function GameView(props: GameViewProps) {
     COLS,
     ROWS,
     dropStats,
+    holdStats,
     linesCleared,
     score,
     level,
