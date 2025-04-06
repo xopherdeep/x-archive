@@ -50,7 +50,7 @@ export default function Stats({ dropStats, holdStats = {}, onReset, TETROMINOES,
               return (
                 <div key={key} className="transition-all duration-500">
                   <div className="text-center font-bold">{key}</div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 justify-between">
                     <div className="text-sm">{dropStats[key] || 0}</div>
                     <div
                       className="grid gap-0.5"
@@ -68,7 +68,7 @@ export default function Stats({ dropStats, holdStats = {}, onReset, TETROMINOES,
                         />
                       ))}
                     </div>
-                    <div className="ml-auto text-sm">{holdStats[key] || 0}</div>
+                    <div className="text-sm">{holdStats[key] || 0}</div>
                   </div>
                 </div>
               );
