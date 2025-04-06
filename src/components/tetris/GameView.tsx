@@ -126,7 +126,6 @@ export default function GameView(props: GameViewProps) {
               L: null,
             }).reduce((acc, key) => ({ ...acc, [key]: 0 }), {});
             setDropStats(resetStats);
-            setHoldStats(resetStats);
           }}
         TETROMINOES={{
           I: { shape: [
