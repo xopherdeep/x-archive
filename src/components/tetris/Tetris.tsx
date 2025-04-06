@@ -4,6 +4,7 @@ import useTetris from "./useTetris";
 import GameView from "./GameView";
 import Controls from "./Controls";
 import { Button } from "../ui/button";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 const LIGHT_THEME = {
   I: "cyan",
@@ -253,7 +254,6 @@ export default function Tetris() {
   } = useTetris("light", bindings);
 
   const [mounted, setMounted] = React.useState(false);
-  const [activeTab, setActiveTab] = React.useState("game");
   const [topScore, setTopScore] = React.useState<number>(0);
 
   React.useEffect(() => {
@@ -284,50 +284,43 @@ export default function Tetris() {
         TETRIS
       </h1>
 
-      <div className="flex space-x-4 mb-4">
-        <Button
-          variant={activeTab === "game" ? "default" : "outline"}
-          onClick={() => setActiveTab("game")}
-        >
-          Game
-        </Button>
-        <Button
-          variant={activeTab === "controls" ? "default" : "outline"}
-          onClick={() => setActiveTab("controls")}
-        >
-          Controls
-        </Button>
-      </div>
-      {activeTab === "game" ? (
-        <GameView
-          mergedBoard={mergedBoard}
-          current={current}
-          quickDropping={quickDropping}
-          ghostPosition={ghostPosition}
-          gameOver={gameOver}
-          COLS={COLS}
-          ROWS={ROWS}
-          dropStats={dropStats}
-          linesCleared={linesCleared}
-          score={score}
-          level={level}
-          next={next}
-          hold={hold}
-          topScore={topScore}
-          theme={theme}
-          setBoard={setBoard}
-          setCurrent={setCurrent}
-          setNext={setNext}
-          setPosition={setPosition}
-          setScore={setScore}
-          setGameOver={setGameOver}
-          setDropStats={setDropStats}
-          setHold={setHold}
-          setTheme={setTheme}
-        />
-      ) : activeTab === "controls" ? (
-        <Controls bindings={bindings} setBindings={setBindings} />
-      ) : null}
+      <Tabs defaultValue="game">
+        <TabsList>
+          <TabsTrigger value="game">Game</TabsTrigger>
+          <TabsTrigger value="controls">Controls</TabsTrigger>
+        </TabsList>
+        <TabsContent value="game">
+          <GameView
+            mergedBoard={mergedBoard}
+            current={current}
+            quickDropping={quickDropping}
+            ghostPosition={ghostPosition}
+            gameOver={gameOver}
+            COLS={COLS}
+            ROWS={ROWS}
+            dropStats={dropStats}
+            linesCleared={linesCleared}
+            score={score}
+            level={level}
+            next={next}
+            hold={hold}
+            topScore={topScore}
+            theme={theme}
+            setBoard={setBoard}
+            setCurrent={setCurrent}
+            setNext={setNext}
+            setPosition={setPosition}
+            setScore={setScore}
+            setGameOver={setGameOver}
+            setDropStats={setDropStats}
+            setHold={setHold}
+            setTheme={setTheme}
+          />
+        </TabsContent>
+        <TabsContent value="controls">
+          <Controls bindings={bindings} setBindings={setBindings} />
+        </TabsContent>
+      </Tabs>
     </div>
   ) : (
     <div />
