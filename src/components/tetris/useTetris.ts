@@ -77,6 +77,7 @@ export default function useTetris(initialTheme: "light" | "dark") {
   const [level, setLevel] = useState(1);
   const initialStats = Object.keys(TETROMINOES).reduce((acc, key) => ({ ...acc, [key]: 0 }), {});
   const [dropStats, setDropStats] = useState<Record<string, number>>(initialStats);
+  const [holdStats, setHoldStats] = useState<Record<string, number>>(initialStats);
   const [linesCleared, setLinesCleared] = useState(0);
   const [hold, setHold] = useState<null | { key: string; tetromino: { shape: number[][]; color: string } }>(null);
   const [quickDropping, setQuickDropping] = useState(false);
@@ -147,6 +148,7 @@ export default function useTetris(initialTheme: "light" | "dark") {
       newCurrent = hold;
       newHold = current;
     }
+    setHoldStats((prev) => ({ ...prev, [current.key]: (prev[current.key] || 0) + 1 }));
     setHold(newHold);
     setCurrent(newCurrent);
     setPosition({ x: Math.floor(COLS / 2) - Math.floor(newCurrent.tetromino.shape[0].length / 2), y: -1 });
@@ -281,6 +283,8 @@ export default function useTetris(initialTheme: "light" | "dark") {
     setTheme,
     theme,
     drop,
+    holdStats,
+    setHoldStats,
     COLS,
     ROWS,
   };

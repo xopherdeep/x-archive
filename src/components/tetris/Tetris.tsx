@@ -239,6 +239,7 @@ export default function Tetris() {
     setScore,
     setGameOver,
     setDropStats,
+    holdStats,
     drop,
     move,
     rotatePiece,

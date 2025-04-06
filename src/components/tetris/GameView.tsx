@@ -22,6 +22,7 @@ type GameViewProps = {
   COLS: number;
   ROWS: number;
   dropStats: Record<string, number>;
+  holdStats: Record<string, number>;
   linesCleared: number;
   score: number;
   level: number;
@@ -104,17 +105,7 @@ export default function GameView(props: GameViewProps) {
     <div className="flex flex-col md:flex-row gap-8 items-start">
       <Stats
         dropStats={dropStats}
-        holdStats={
-          Object.keys({
-            I: null,
-            O: null,
-            T: null,
-            S: null,
-            Z: null,
-            J: null,
-            L: null,
-          }).reduce((acc, key) => ({ ...acc, [key]: 0 }), {})
-        }
+        holdStats={holdStats}
         onReset={() =>
           setDropStats(
             Object.keys({
