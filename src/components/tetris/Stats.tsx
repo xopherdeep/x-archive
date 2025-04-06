@@ -41,6 +41,7 @@ export default function Stats({
   bindings,
   setBindings,
 }: StatsProps) {
+  const [listening, setListening] = React.useState(false);
   const holdRanking = Object.keys(TETROMINOES).sort((a, b) => (holdStats[b] || 0) - (holdStats[a] || 0));
   return (
     <Card className="w-50">
