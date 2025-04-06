@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink } from "@/components/ui/navigation-menu";
 import { Sidebar } from "@/components/ui/sidebar";
 
@@ -54,6 +55,7 @@ export default function RootLayout({
           <footer className="bg-gray-100 text-center p-4 text-sm">
             © {new Date().getFullYear()} X's Archive. All rights reserved.
           </footer>
+          <Toaster />
         </div>
       </body>
     </html>
