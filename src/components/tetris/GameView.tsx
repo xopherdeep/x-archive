@@ -247,7 +247,7 @@ export default function GameView(props: GameViewProps) {
           <CardHeader>
             <CardTitle className="text-lg m-0 p-0">Score</CardTitle>
           </CardHeader>
-          <CardContent className="p-2">
+          <CardContent className="p-2 text-center">
             <div
               className="text-3xl font-bold tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]"
               style={{ fontFamily: '"VT323", monospace' }}
@@ -255,7 +255,7 @@ export default function GameView(props: GameViewProps) {
               {score}
             </div>
             <div
-              className="mt-1 text-xl tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]"
+              className="text-xl tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]"
               style={{ fontFamily: '"VT323", monospace' }}
             >
               Top Score: {topScore}
@@ -267,7 +267,7 @@ export default function GameView(props: GameViewProps) {
           <CardHeader>
             <CardTitle className="text-lg m-0 p-0">Level</CardTitle>
           </CardHeader>
-          <CardContent className="p-2">
+          <CardContent className="p-2 text-center">
             <div
               className="text-3xl font-bold tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]"
               style={{ fontFamily: '"VT323", monospace' }}
@@ -280,9 +280,9 @@ export default function GameView(props: GameViewProps) {
           <CardHeader>
             <CardTitle className="text-lg m-0 p-0">Next Piece</CardTitle>
           </CardHeader>
-          <CardContent className="p-2">
+          <CardContent className="p-2 text-center">
             <div
-              className="relative grid"
+              className="relative grid justify-center"
               style={{
                 gridTemplateColumns: `repeat(${next.tetromino.shape[0].length}, 30px)`,
                 width: next.tetromino.shape[0].length * 30 + "px",
