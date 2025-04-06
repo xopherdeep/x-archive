@@ -19,7 +19,9 @@ export default function Stats({ dropStats, onReset, TETROMINOES, cropShape, hold
       </CardHeader>
       <CardContent className="p-2">
         <div className="flex flex-col gap-2">
-          {Object.entries(TETROMINOES).map(([key, tetromino]) => {
+          {Object.entries(TETROMINOES)
+            .sort((a, b) => (dropStats[b[0]] || 0) - (dropStats[a[0]] || 0))
+            .map(([key, tetromino]) => {
             const cropped = cropShape(tetromino.shape);
             return (
               <div key={key} className="flex items-center gap-2">
