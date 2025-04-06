@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
-import ClientBodyFixer from "@/components/ClientBodyFixer";
+import dynamic from "next/dynamic";
+const ClientBodyFixer = dynamic(() => import("@/components/ClientBodyFixer"), { ssr: false });
 import {
   NavigationMenu,
   NavigationMenuList,
