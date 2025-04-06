@@ -38,7 +38,12 @@ type GameViewProps = {
   setGameOver: (value: boolean) => void;
   setDropStats: (value: Record<string, number>) => void;
   setTheme: (theme: "light" | "dark") => void;
-  setHold: (value: { key: string; tetromino: { shape: number[][]; color: string } } | null) => void;
+  setHold: (
+    value: {
+      key: string;
+      tetromino: { shape: number[][]; color: string };
+    } | null
+  ) => void;
 };
 
 export default function GameView(props: GameViewProps) {
@@ -116,24 +121,27 @@ export default function GameView(props: GameViewProps) {
         dropStats={dropStats}
         holdStats={holdStats}
         onReset={() => {
-            const resetStats = Object.keys({
-              I: null,
-              O: null,
-              T: null,
-              S: null,
-              Z: null,
-              J: null,
-              L: null,
-            }).reduce((acc, key) => ({ ...acc, [key]: 0 }), {});
-            setDropStats(resetStats);
-          }}
+          const resetStats = Object.keys({
+            I: null,
+            O: null,
+            T: null,
+            S: null,
+            Z: null,
+            J: null,
+            L: null,
+          }).reduce((acc, key) => ({ ...acc, [key]: 0 }), {});
+          setDropStats(resetStats);
+        }}
         TETROMINOES={{
-          I: { shape: [
-                    [0, 0, 0, 0],
-                    [1, 1, 1, 1],
-                    [0, 0, 0, 0],
-                    [0, 0, 0, 0],
-                  ], color: "cyan" },
+          I: {
+            shape: [
+              [0, 0, 0, 0],
+              [1, 1, 1, 1],
+              [0, 0, 0, 0],
+              [0, 0, 0, 0],
+            ],
+            color: "cyan",
+          },
           O: {
             shape: [
               [1, 1],
@@ -206,54 +214,62 @@ export default function GameView(props: GameViewProps) {
               {gameOver ? (
                 <>
                   <div className="mb-4 flex flex-col items-center">
-                    <span className="text-5xl font-extrabold text-white">💀</span>
-                    <span className="mt-2 text-4xl font-bold text-white">GAME OVER</span>
+                    <span className="text-5xl font-extrabold text-white">
+                      💀
+                    </span>
+                    <span className="mt-2 text-4xl font-bold text-white">
+                      GAME OVER
+                    </span>
                   </div>
                   <div className="mb-2 text-2xl text-white">Score: {score}</div>
-                  <div className="mb-4 text-2xl text-white">Lines Cleared: {linesCleared}</div>
+                  <div className="mb-4 text-2xl text-white">
+                    Lines Cleared: {linesCleared}
+                  </div>
                   <div className="flex flex-col gap-2">
-                    <Button className="px-6" onClick={() => { resetGame(); setStarted(true); }}>Start Over</Button>
-                    <Button className="px-6" onClick={() => { restartLevel(); }}>Restart Level</Button>
+                    <Button
+                      className="px-6"
+                      onClick={() => {
+                        resetGame();
+                        setStarted(true);
+                      }}
+                    >
+                      Start Over
+                    </Button>
+                    <Button
+                      className="px-6"
+                      onClick={() => {
+                        restartLevel();
+                      }}
+                    >
+                      Restart Level
+                    </Button>
                   </div>
                 </>
               ) : (
                 <>
-                  <div className="mb-4 text-4xl font-bold text-white">Welcome to Tetris!</div>
-                  <Button className="px-6" onClick={() => { resetGame(); setStarted(true); }}>Start Game</Button>
+                  <div className="mb-4 text-4xl font-bold text-white">
+                    Welcome to Tetris!
+                  </div>
+                  <Button
+                    className="px-6"
+                    onClick={() => {
+                      resetGame();
+                      setStarted(true);
+                    }}
+                  >
+                    Start Game
+                  </Button>
                 </>
               )}
             </div>
           )}
         </div>
-        <div className="mt-4">
-          <StyleBoxes />
-        </div>
         <div className="mt-4 text-xl font-bold text-center">
           Lines Cleared: {linesCleared}
         </div>
       </div>
-      <div className="flex flex-col items-start gap-4">
-        <Card className="w-40">
-          <CardHeader>
-            <CardTitle className="text-lg m-0 p-0">Score</CardTitle>
-          </CardHeader>
-          <CardContent className="p-2 text-center">
-            <div
-              className="text-3xl font-bold tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]"
-              style={{ fontFamily: '"VT323", monospace' }}
-            >
-              {score}
-            </div>
-            <div
-              className="text-xl tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]"
-              style={{ fontFamily: '"VT323", monospace' }}
-            >
-              Top Score: {topScore}
-            </div>
-            <Button variant="outline" size="sm" className="mt-2" onClick={resetGame}>Restart</Button>
-          </CardContent>
-        </Card>
-        <Card className="w-40">
+      <div className="flex flex-col items-start gap-4 w-40">
+        <Card className="w-full">
           <CardHeader>
             <CardTitle className="text-lg m-0 p-0">Next</CardTitle>
           </CardHeader>
@@ -286,7 +302,7 @@ export default function GameView(props: GameViewProps) {
             </div>
           </CardContent>
         </Card>
-        <Card className="w-40">
+        <Card className="w-full">
           <CardHeader>
             <CardTitle className="text-lg m-0 p-0">Level</CardTitle>
           </CardHeader>
@@ -297,6 +313,33 @@ export default function GameView(props: GameViewProps) {
             >
               {level}
             </div>
+          </CardContent>
+        </Card>
+        <Card className="w-full">
+          <CardHeader>
+            <CardTitle className="text-lg m-0 p-0">Score</CardTitle>
+          </CardHeader>
+          <CardContent className="p-2 text-center">
+            <div
+              className="text-3xl font-bold tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]"
+              style={{ fontFamily: '"VT323", monospace' }}
+            >
+              {score}
+            </div>
+            <div
+              className="text-xl tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]"
+              style={{ fontFamily: '"VT323", monospace' }}
+            >
+              Top Score: {topScore}
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              className="mt-2"
+              onClick={resetGame}
+            >
+              Restart
+            </Button>
           </CardContent>
         </Card>
       </div>

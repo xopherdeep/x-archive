@@ -3,6 +3,7 @@ import React from "react";
 import useTetris from "./useTetris";
 import GameView from "./GameView";
 import { Button } from "../ui/button";
+import { toast } from "sonner";
 
 const LIGHT_THEME = {
   I: "cyan",
@@ -253,6 +254,17 @@ export default function Tetris() {
 
   const [mounted, setMounted] = React.useState(false);
   const [topScore, setTopScore] = React.useState<number>(0);
+
+  React.useEffect(() => {
+    toast("🎉 Welcome to Tetris! Have fun! 🚀", {
+      style: {
+        background: "linear-gradient(45deg, #ff6ec4, #7873f5)",
+        color: "#fff",
+        fontWeight: "bold",
+        borderRadius: "8px",
+      },
+    });
+  }, []);
 
   React.useEffect(() => {
     const storedTop = localStorage.getItem("tetris-topscore");
