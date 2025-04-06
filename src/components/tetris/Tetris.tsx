@@ -283,7 +283,6 @@ export default function Tetris() {
       <h1 className="text-5xl font-extrabold mb-4 text-red-500 drop-shadow-[0_2px_3px_rgba(0,0,0,0.5)] tracking-[0.25em]">
         TETRIS
       </h1>
-      <div className="mb-4 text-2xl text-white">Top Score: {topScore}</div>
 
       <div className="flex space-x-4 mb-4">
         <Button
@@ -314,6 +313,7 @@ export default function Tetris() {
           level={level}
           next={next}
           hold={hold}
+          topScore={topScore}
           theme={theme}
           setBoard={setBoard}
           setCurrent={setCurrent}

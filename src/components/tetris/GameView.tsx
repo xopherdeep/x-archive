@@ -26,6 +26,7 @@ type GameViewProps = {
   linesCleared: number;
   score: number;
   level: number;
+  topScore: number;
   next: { tetromino: { shape: number[][]; color: string } };
   hold: { key: string; tetromino: { shape: number[][]; color: string } } | null;
   theme: "light" | "dark";
@@ -257,6 +258,12 @@ export default function GameView(props: GameViewProps) {
               style={{ fontFamily: '"VT323", monospace' }}
             >
               Level: {level}
+            </div>
+            <div
+              className="mt-1 text-xl tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]"
+              style={{ fontFamily: '"VT323", monospace' }}
+            >
+              Top Score: {topScore}
             </div>
             <Button variant="outline" size="sm" className="mt-2" onClick={resetGame}>Restart</Button>
           </CardContent>
