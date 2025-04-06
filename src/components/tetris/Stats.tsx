@@ -95,11 +95,11 @@ export default function Stats({
                           {(() => {
                              const rank = holdRanking.indexOf(key);
                              return rank === 0 ? (
-                               <span className="absolute -top-1 -right-1 text-xl">🥇</span>
+                               <span className="absolute top-0 left-full -ml-4 text-xl">🥇</span>
                              ) : rank === 1 ? (
-                               <span className="absolute -top-1 -right-1 text-xl">🥈</span>
+                               <span className="absolute top-0 left-full -ml-4 text-xl">🥈</span>
                              ) : rank === 2 ? (
-                               <span className="absolute -top-1 -right-1 text-xl">🥉</span>
+                               <span className="absolute top-0 left-full -ml-4 text-xl">🥉</span>
                              ) : null;
                           })()}
                         </div>
