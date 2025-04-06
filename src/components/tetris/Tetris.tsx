@@ -209,31 +209,33 @@ export default function Tetris() {
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4" tabIndex={0} onKeyDown={handleKeyDown}>
       <h2 className="text-4xl font-bold mb-8">Tetris</h2>
       <div className="flex flex-col md:flex-row gap-8 items-center">
-        <div className="relative" style={{ width: COLS * 30, height: ROWS * 30, border: "4px solid #333" }}>
-          {board.map((row, y) =>
-            row.map((cell, x) => {
-              let color = cell !== 0 ? cell : "transparent";
-              current.tetromino.shape.forEach((r, py) => {
-                r.forEach((v, px) => {
-                  if (v && y === position.y + py && x === position.x + px) {
-                    color = current.tetromino.color;
-                  }
-                });
+        <div className="relative grid grid-cols-10" style={{ width: COLS * 30, height: ROWS * 30, border: "4px solid #333" }}>
+          {(() => {
+            // Create a copy of the board.
+            const displayBoard = board.map(row => [...row]);
+            // Overlay the current tetromino.
+            current.tetromino.shape.forEach((r, py) => {
+              r.forEach((v, px) => {
+                const boardY = position.y + py;
+                const boardX = position.x + px;
+                if (v && boardY >= 0 && boardY < ROWS && boardX >= 0 && boardX < COLS) {
+                  displayBoard[boardY][boardX] = current.tetromino.color;
+                }
               });
-              return (
-                <div
-                  key={`${x}-${y}`}
-                  style={{
-                    width: 30,
-                    height: 30,
-                    backgroundColor: color,
-                    boxSizing: "border-box",
-                    border: "1px solid #999",
-                  }}
-                />
-              );
-            })
-          )}
+            });
+            return displayBoard.flat().map((cell, index) => (
+              <div
+                key={index}
+                style={{
+                  width: 30,
+                  height: 30,
+                  backgroundColor: cell === 0 ? "transparent" : cell,
+                  boxSizing: "border-box",
+                  border: "1px solid #999",
+                }}
+              />
+            ));
+          })()}
           {gameOver && (
             <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
               <span className="text-white text-3xl font-bold">Game Over</span>
