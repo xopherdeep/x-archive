@@ -555,7 +555,7 @@ export default function Tetris() {
                           <div key={index} style={{ width: 20, height: 20, backgroundColor: cell ? tetromino.color : "transparent", border: "1px solid #ccc" }}/>
                         ))}
                       </div>
-                      <div className="ml-2 text-sm">{dropStats[key] || 0}</div>
+                      <div className="ml-auto text-sm">{dropStats[key] || 0}</div>
                     </div>
                   );
                 })}
