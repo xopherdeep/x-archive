@@ -206,10 +206,10 @@ export default function Tetris() {
   };
 
   return (
-    <div className="p-8" tabIndex={0} onKeyDown={handleKeyDown}>
-      <h2 className="text-2xl font-bold mb-4">Tetris Game</h2>
-      <div className="flex gap-8">
-        <div className="relative" style={{ width: COLS * 30, height: ROWS * 30, border: "2px solid #333" }}>
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4" tabIndex={0} onKeyDown={handleKeyDown}>
+      <h2 className="text-4xl font-bold mb-8">Tetris</h2>
+      <div className="flex flex-col md:flex-row gap-8 items-center">
+        <div className="relative" style={{ width: COLS * 30, height: ROWS * 30, border: "4px solid #333" }}>
           {board.map((row, y) =>
             row.map((cell, x) => {
               let color = cell !== 0 ? cell : "transparent";
@@ -240,10 +240,10 @@ export default function Tetris() {
             </div>
           )}
         </div>
-        <div>
-          <div className="mb-4">Score: {score}</div>
+        <div className="flex flex-col items-center">
+          <div className="text-xl mb-4">Score: {score}</div>
           <button
-            className="px-4 py-2 bg-blue-500 text-white rounded"
+            className="px-6 py-3 bg-blue-600 text-white rounded-lg"
             onClick={() => {
               setBoard(Array.from({ length: ROWS }, () => new Array(COLS).fill(0)));
               setCurrent(randomTetromino());
