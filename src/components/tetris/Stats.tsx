@@ -122,6 +122,7 @@ export default function Stats({
         <Button variant="outline" size="sm" onClick={onReset}>
           Reset
         </Button>
+              <ul className="list-disc list-inside">
                 <li><strong>Arrow Right:</strong> Move right</li>
                 <li><strong>Arrow Down:</strong> Soft drop</li>
                 <li><strong>Arrow Up:</strong> Rotate piece</li>
