@@ -13,7 +13,7 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@/components/ui/tooltip";
-import { GameControlsDialog } from "@/components/ui/dialog";
+import { GameControlsDialog } from "@/components/tetris/GameControlsDialog";
 
 interface StatsProps {
   dropStats: Record<string, number>;
