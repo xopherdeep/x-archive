@@ -518,6 +518,9 @@ export default function Tetris() {
       onKeyDown={handleKeyDown}
     >
       <h1 className="text-5xl font-extrabold mb-4 text-red-500 drop-shadow-[0_2px_3px_rgba(0,0,0,0.5)] tracking-[0.25em]">TETRIS</h1>
+      <div className="text-3xl font-bold tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)] mb-4" style={{ fontFamily: '"Press Start 2P", cursive' }}>
+         SCORE: {score} | LEVEL: {level}
+      </div>
       <div className="flex space-x-4 mb-4">
         {Object.entries(TETROMINOES).map(([key, tetromino]) => {
           const previewShape = getPreviewShape(key, tetromino.shape);
@@ -558,12 +561,6 @@ export default function Tetris() {
           onClick={() => setActiveTab("controls")}
         >
           Controls
-        </Button>
-        <Button
-          variant={activeTab === "score" ? "default" : "outline"}
-          onClick={() => setActiveTab("score")}
-        >
-          Scoreboard
         </Button>
       </div>
       {activeTab === "game" ? (
@@ -695,9 +692,6 @@ export default function Tetris() {
                 </div>
               </CardContent>
             </Card>
-            <div className="text-2xl font-mono tracking-wide text-yellow-300 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)] px-4 py-2 border-2 border-yellow-300 rounded-xl bg-black bg-opacity-50">
-              SCORE: {score} | LEVEL: {level}
-            </div>
             <div className="flex gap-4">
               <Button
                 onClick={() => {
@@ -741,15 +735,6 @@ export default function Tetris() {
         </div>
       ) : activeTab === "controls" ? (
         <Controls />
-      ) : activeTab === "score" ? (
-        <div className="flex flex-col items-center gap-4">
-          <div className="text-2xl tracking-widest text-green-400 drop-shadow-lg">
-            Score: {score}
-          </div>
-          <div className="text-xl tracking-wider text-blue-500 drop-shadow">
-            Level: {level}
-          </div>
-        </div>
       ) : null}
     </div>
   ) : (
