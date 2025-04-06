@@ -310,6 +310,29 @@ export default function Tetris() {
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4" tabIndex={0} onKeyDown={handleKeyDown}>
       <h2 className="text-4xl font-bold mb-4 text-gray-800">Tetris</h2>
       <div className="flex space-x-4 mb-4">
+        {Object.entries(TETROMINOES).map(([key, tetromino]) => (
+          <div key={key} className="flex flex-col items-center">
+            <div className="mb-1 font-bold">{key}</div>
+            <div
+              className="grid gap-0.5 p-1"
+              style={{ gridTemplateColumns: `repeat(${tetromino.shape[0].length}, 20px)` }}
+            >
+              {tetromino.shape.flat().map((cell, index) => (
+                <div
+                  key={index}
+                  style={{
+                    width: 20,
+                    height: 20,
+                    backgroundColor: cell ? tetromino.color : "transparent",
+                    border: "1px solid #ccc"
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="flex space-x-4 mb-4">
         <Button variant={activeTab === "game" ? "default" : "outline"} onClick={() => setActiveTab("game")}>Game</Button>
         <Button variant={activeTab === "controls" ? "default" : "outline"} onClick={() => setActiveTab("controls")}>Controls</Button>
       </div>
