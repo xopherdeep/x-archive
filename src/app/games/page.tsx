@@ -34,6 +34,14 @@ export default function GamesPage() {
             <p>This is a description of Game 3.</p>
           </CardContent>
         </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Tetris</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <a href="/games/tetris" className="text-gray-700 hover:text-gray-900">Play Tetris</a>
+          </CardContent>
+        </Card>
       </section>
     </div>
   );
