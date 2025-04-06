@@ -147,19 +147,21 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
   };
 
   const holdPiece = () => {
-    let newCurrent, newHold;
+    const pieceToHold = current;
+    let newCurrent;
     if (!hold) {
-      newHold = current;
       newCurrent = next;
       setNext(randomTetromino(theme, level));
     } else {
       newCurrent = hold;
-      newHold = current;
     }
-    setHoldStats((prev) => ({ ...prev, [newHold.key]: (prev[newHold.key] || 0) + 1 }));
-    setHold(newHold);
+    setHoldStats((prev) => ({ ...prev, [pieceToHold.key]: (prev[pieceToHold.key] || 0) + 1 }));
+    setHold(pieceToHold);
     setCurrent(newCurrent);
-    setPosition({ x: Math.floor(COLS / 2) - Math.floor(newCurrent.tetromino.shape[0].length / 2), y: -1 });
+    setPosition({
+      x: Math.floor(COLS / 2) - Math.floor(newCurrent.tetromino.shape[0].length / 2),
+      y: -1,
+    });
   };
 
   const quickDrop = () => {
