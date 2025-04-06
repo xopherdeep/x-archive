@@ -1,7 +1,13 @@
 import React from "react";
 import Stats from "./Stats";
 import Board from "./Board";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -315,32 +321,36 @@ export default function GameView(props: GameViewProps) {
             </div>
           </CardContent>
         </Card>
-        <Card className="w-full">
+        <Card className="w-full gap-0">
           <CardHeader>
             <CardTitle className="text-lg m-0 p-0">Score</CardTitle>
           </CardHeader>
-          <CardContent className="p-2 text-center">
+          <CardContent className="p-2 text-left">
             <div
-              className="text-3xl font-bold tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]"
+              className="flex flex-col text-xl tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]"
               style={{ fontFamily: '"VT323", monospace' }}
             >
-              {score}
+              <p>Top</p>
+              <p>{topScore}</p>
             </div>
             <div
-              className="text-xl tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]"
+              className="text-xl font-bold tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]"
               style={{ fontFamily: '"VT323", monospace' }}
             >
-              Top Score: {topScore}
+              <p>Score</p>
+              <p>{score}</p>
             </div>
+          </CardContent>
+          <CardFooter>
             <Button
               variant="outline"
-              size="sm"
-              className="mt-2"
+              size="small"
+              className="mt-2 w-full"
               onClick={resetGame}
             >
               Restart
             </Button>
-          </CardContent>
+          </CardFooter>
         </Card>
       </div>
     </div>
