@@ -9,7 +9,11 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select";
-import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
 
 interface StatsProps {
   dropStats: Record<string, number>;
@@ -22,11 +26,23 @@ interface StatsProps {
   setTheme: (value: "light" | "dark") => void;
 }
 
-export default function Stats({ dropStats, holdStats = {}, onReset, TETROMINOES, cropShape, hold, theme, setTheme }: StatsProps) {
+export default function Stats({
+  dropStats,
+  holdStats = {},
+  onReset,
+  TETROMINOES,
+  cropShape,
+  hold,
+  theme,
+  setTheme,
+}: StatsProps) {
   return (
-    <Card className="w-40">
+    <Card className="w-50">
       <CardHeader>
-        <Select value={theme} onValueChange={(val) => setTheme(val as "light" | "dark")}>
+        <Select
+          value={theme}
+          onValueChange={(val) => setTheme(val as "light" | "dark")}
+        >
           <SelectTrigger>
             <SelectValue placeholder="Theme" />
           </SelectTrigger>
@@ -35,10 +51,10 @@ export default function Stats({ dropStats, holdStats = {}, onReset, TETROMINOES,
             <SelectItem value="dark">Dark</SelectItem>
           </SelectContent>
         </Select>
-        <CardTitle className="text-lg m-0 p-0">Hold Piece Drop</CardTitle>
+        <CardTitle className="text-lg m-0 p-0">Tetrominoes</CardTitle>
         <div className="flex justify-between">
           <div className="text-xs text-muted">Hold</div>
-          <div className="text-xs text-muted">Piece</div>
+          {/* <div className="text-xs text-muted">Piece</div> */}
           <div className="text-xs text-muted">Drop</div>
         </div>
       </CardHeader>
@@ -56,7 +72,11 @@ export default function Stats({ dropStats, holdStats = {}, onReset, TETROMINOES,
                       <TooltipTrigger asChild>
                         <div
                           className="grid gap-0.5 px-2"
-                          style={{ gridTemplateColumns: `repeat(${cropped[0]?.length || 0}, 20px)` }}
+                          style={{
+                            gridTemplateColumns: `repeat(${
+                              cropped[0]?.length || 0
+                            }, 20px)`,
+                          }}
                         >
                           {cropped.flat().map((cell, index) => (
                             <div
@@ -64,7 +84,9 @@ export default function Stats({ dropStats, holdStats = {}, onReset, TETROMINOES,
                               style={{
                                 width: 20,
                                 height: 20,
-                                backgroundColor: cell ? tetromino.color : "transparent",
+                                backgroundColor: cell
+                                  ? tetromino.color
+                                  : "transparent",
                                 border: "1px solid #ccc",
                               }}
                             />
@@ -103,7 +125,9 @@ export default function Stats({ dropStats, holdStats = {}, onReset, TETROMINOES,
                       style={{
                         width: "30px",
                         height: "30px",
-                        backgroundColor: cell ? hold.tetromino.color : "transparent",
+                        backgroundColor: cell
+                          ? hold.tetromino.color
+                          : "transparent",
                         boxSizing: "border-box",
                         border: "1px solid #999",
                       }}
