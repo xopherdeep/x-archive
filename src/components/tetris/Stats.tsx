@@ -40,7 +40,6 @@ export default function Stats({
   bindings,
   setBindings,
 }: StatsProps) {
-  const [listening, setListening] = React.useState(false);
   const holdRanking = Object.keys(TETROMINOES).sort((a, b) => (holdStats[b] || 0) - (holdStats[a] || 0));
   return (
     <Card className="w-50">
@@ -177,44 +176,7 @@ export default function Stats({
             )}
           </>
         )}
-        <Dialog>
-          <Button variant="outline" size="sm">
-            <DialogTrigger asChild>
-              Controls
-            </DialogTrigger>
-          </Button>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Game Controls</DialogTitle>
-            </DialogHeader>
-            <DialogDescription>
-              <ul className="list-disc list-inside">
-                <li><strong>Arrow Left:</strong> Move left</li>
-                <li><strong>Arrow Right:</strong> Move right</li>
-                <li><strong>Arrow Down:</strong> Soft drop</li>
-                <li><strong>Arrow Up:</strong> Rotate piece</li>
-                <li><strong>Shift + Arrow Up:</strong> Rotate piece opposite</li>
-                <li><strong>Space:</strong> Quick drop</li>
-                <li>
-                  <strong>{listening ? "Press key..." : (bindings?.holdKey || "Hold Key")}:</strong>{" "}
-                  <span
-                    onClick={() => setListening(true)}
-                    onKeyDown={(e) => {
-                      setBindings({ ...bindings, holdKey: e.key });
-                      setListening(false);
-                    }}
-                    tabIndex={0}
-                  >
-                    Hold piece
-                  </span>
-                </li>
-              </ul>
-            </DialogDescription>
-            <DialogFooter>
-              <Button variant="outline">Close</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+        <GameControlsDialog bindings={bindings} setBindings={setBindings} />
       </CardContent>
     </Card>
   );
