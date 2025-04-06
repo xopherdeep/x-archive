@@ -124,7 +124,7 @@ export default function GameView(props: GameViewProps) {
 
   return (
     <div className="flex flex-col md:flex-row gap-8 items-center">
-      <div className="w-40">
+      <div>
         <Stats
           dropStats={dropStats}
           holdStats={holdStats}
@@ -207,6 +207,12 @@ export default function GameView(props: GameViewProps) {
         />
       </div>
       <div>
+        <h1
+          style={{ fontFamily: "'Press Start 2P', cursive" }}
+          className="text-5xl font-extrabold mb-4 text-red-500 drop-shadow-[0_2px_3px_rgba(0,0,0,0.5)] tracking-[0.25em] text-center"
+        >
+          TETRIS
+        </h1>
         <GameCard>
           <div className="relative">
             <Board

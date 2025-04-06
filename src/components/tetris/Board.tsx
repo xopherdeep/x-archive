@@ -29,7 +29,7 @@ export default function Board({
       return { backgroundColor: "transparent" };
     }
     const patternSize = Math.max(3, 10 - level);
-    switch(cell) {
+    switch (cell) {
       case "#00ffff":
         return { backgroundImage: generateSVGPattern(cell, "#ffffff", 30) };
       case "#ffff00":
@@ -37,13 +37,29 @@ export default function Board({
       case "#dda0dd":
         return { backgroundImage: generateSVGPattern(cell, "#ffffff", 30) };
       case "#7fff00":
-        return { backgroundImage: `repeating-linear-gradient(135deg, ${cell}, ${cell} ${patternSize}px, rgba(0,0,0,0.1) ${patternSize}px, rgba(0,0,0,0.1) ${patternSize*2}px)` };
+        return {
+          backgroundImage: `repeating-linear-gradient(135deg, ${cell}, ${cell} ${patternSize}px, rgba(0,0,0,0.1) ${patternSize}px, rgba(0,0,0,0.1) ${
+            patternSize * 2
+          }px)`,
+        };
       case "#ff4500":
-        return { backgroundImage: `repeating-linear-gradient(45deg, ${cell}, ${cell} ${patternSize}px, rgba(0,0,0,0.2) ${patternSize}px, rgba(0,0,0,0.2) ${patternSize*2}px)` };
+        return {
+          backgroundImage: `repeating-linear-gradient(45deg, ${cell}, ${cell} ${patternSize}px, rgba(0,0,0,0.2) ${patternSize}px, rgba(0,0,0,0.2) ${
+            patternSize * 2
+          }px)`,
+        };
       case "#1e90ff":
-        return { backgroundImage: `repeating-linear-gradient(135deg, ${cell}, ${cell} ${patternSize}px, rgba(0,0,0,0.1) ${patternSize}px, rgba(0,0,0,0.1) ${patternSize*2}px)` };
+        return {
+          backgroundImage: `repeating-linear-gradient(135deg, ${cell}, ${cell} ${patternSize}px, rgba(0,0,0,0.1) ${patternSize}px, rgba(0,0,0,0.1) ${
+            patternSize * 2
+          }px)`,
+        };
       case "#ff8c00":
-        return { backgroundImage: `repeating-linear-gradient(45deg, ${cell}, ${cell} ${patternSize}px, rgba(0,0,0,0.2) ${patternSize}px, rgba(0,0,0,0.2) ${patternSize*2}px)` };
+        return {
+          backgroundImage: `repeating-linear-gradient(45deg, ${cell}, ${cell} ${patternSize}px, rgba(0,0,0,0.2) ${patternSize}px, rgba(0,0,0,0.2) ${
+            patternSize * 2
+          }px)`,
+        };
       default:
         return { backgroundColor: cell };
     }
@@ -53,7 +69,9 @@ export default function Board({
       <CardContent>
         <div
           className={`relative grid grid-cols-10 ${
-            quickDropping ? "transition-transform duration-300 transform translate-y-2" : ""
+            quickDropping
+              ? "transition-transform duration-300 transform translate-y-2"
+              : ""
           }`}
           style={{
             width: COLS * 30 + "px",
@@ -65,7 +83,8 @@ export default function Board({
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
-              backgroundImage: "linear-gradient(to right, rgba(0,0,0,0.2) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.2) 1px, transparent 1px)",
+              backgroundImage:
+                "linear-gradient(to right, rgba(0,0,0,0.2) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.2) 1px, transparent 1px)",
               backgroundSize: "30px 30px",
             }}
           />
