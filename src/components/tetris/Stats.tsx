@@ -26,7 +26,7 @@ export default function Stats({ dropStats, onReset, TETROMINOES, cropShape, hold
                 <div className="w-8 text-center font-bold">{key}</div>
                 <div
                   className="grid gap-0.5"
-                  style={{ gridTemplateColumns: `repeat(${cropped[0].length}, 20px)` }}
+                  style={{ gridTemplateColumns: `repeat(${cropped[0]?.length || 0}, 20px)` }}
                 >
                   {cropped.flat().map((cell, index) => (
                     <div
