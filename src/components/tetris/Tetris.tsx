@@ -133,6 +133,7 @@ export default function Tetris() {
     Array.from({ length: ROWS }, () => new Array(COLS).fill(0))
   );
   const [current, setCurrent] = useState<{ key: string; tetromino: Tetromino }>(() => randomTetromino());
+  const [next, setNext] = useState<{ key: string; tetromino: Tetromino }>(() => randomTetromino());
   const [position, setPosition] = useState<Position>({ x: Math.floor(COLS / 2) - 1, y: -1 });
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
@@ -150,9 +151,10 @@ export default function Tetris() {
           return prev;
         }
         setScore(prevScore => prevScore + cleared * 10);
-        const next = randomTetromino();
-        setCurrent(next);
-        return { x: Math.floor(COLS / 2) - Math.floor(next.tetromino.shape[0].length / 2), y: -1 };
+        const newPiece = next;
+        setCurrent(newPiece);
+        setNext(randomTetromino());
+        return { x: Math.floor(COLS / 2) - Math.floor(newPiece.tetromino.shape[0].length / 2), y: -1 };
       }
       return newPos;
     });
@@ -242,13 +244,33 @@ export default function Tetris() {
             </div>
           )}
         </div>
-        <div className="flex flex-col items-center">
-          <div className="text-xl mb-4">Score: {score}</div>
+        <div className="flex flex-col items-center gap-4">
+          <div>
+            <h3 className="text-xl font-bold mb-2">Next Piece</h3>
+            <div className="relative grid" style={{ width: next.tetromino.shape[0].length * 30, height: next.tetromino.shape.length * 30, border: "4px solid #333" }}>
+              {next.tetromino.shape.flatMap((row, y) =>
+                row.map((cell, x) => (
+                  <div
+                    key={`${x}-${y}`}
+                    style={{
+                      width: 30,
+                      height: 30,
+                      backgroundColor: cell ? next.tetromino.color : "transparent",
+                      boxSizing: "border-box",
+                      border: "1px solid #999",
+                    }}
+                  />
+                ))
+              )}
+            </div>
+          </div>
+          <div className="text-xl">Score: {score}</div>
           <button
             className="px-6 py-3 bg-blue-600 text-white rounded-lg"
             onClick={() => {
               setBoard(Array.from({ length: ROWS }, () => new Array(COLS).fill(0)));
               setCurrent(randomTetromino());
+              setNext(randomTetromino());
               setPosition({ x: Math.floor(COLS / 2) - 1, y: -1 });
               setScore(0);
               setGameOver(false);
