@@ -267,6 +267,7 @@ export default function useTetris(initialTheme: "light" | "dark") {
     setScore,
     level,
     dropStats,
+    setDropStats,
     linesCleared,
     hold,
     quickDropping,
