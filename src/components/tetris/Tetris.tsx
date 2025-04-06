@@ -241,6 +241,7 @@ export default function Tetris() {
     setGameOver,
     setDropStats,
     setHoldStats,
+    setHold,
     holdStats,
     drop,
     move,
