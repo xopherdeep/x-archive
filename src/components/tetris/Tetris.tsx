@@ -195,6 +195,9 @@ export default function Tetris() {
       // Rotate a 1xN shape into an N×1 vertical column.
       return cropped[0].map(val => [val]);
     }
+    if (letter === "L" || letter === "J") {
+      return rotate(cropped);
+    }
     return cropped;
   };
 
