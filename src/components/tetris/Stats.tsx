@@ -69,34 +69,39 @@ export default function Stats({
                 <div key={key} className="transition-all duration-500">
                   <div className="flex items-center gap-2 justify-between">
                     <div className="text-sm px-2">
-                      {holdStats[key] || 0}{(() => { 
-                        const rank = holdRanking.indexOf(key);
-                        return rank === 0 ? " 🥇" : rank === 1 ? " 🥈" : rank === 2 ? " 🥉" : "";
-                      })()}
+                      {holdStats[key] || 0}
                     </div>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <div
-                          className="grid gap-0.5 px-2"
-                          style={{
-                            gridTemplateColumns: `repeat(${
-                              cropped[0]?.length || 0
-                            }, 20px)`,
-                          }}
-                        >
-                          {cropped.flat().map((cell, index) => (
-                            <div
-                              key={index}
-                              style={{
-                                width: 20,
-                                height: 20,
-                                backgroundColor: cell
-                                  ? tetromino.color
-                                  : "transparent",
-                                border: "1px solid #ccc",
-                              }}
-                            />
-                          ))}
+                        <div className="relative inline-block">
+                          <div
+                            className="grid gap-0.5 px-2"
+                            style={{
+                              gridTemplateColumns: `repeat(${cropped[0]?.length || 0}, 20px)`,
+                            }}
+                          >
+                            {cropped.flat().map((cell, index) => (
+                              <div
+                                key={index}
+                                style={{
+                                  width: 20,
+                                  height: 20,
+                                  backgroundColor: cell ? tetromino.color : "transparent",
+                                  border: "1px solid #ccc",
+                                }}
+                              />
+                            ))}
+                          </div>
+                          {(() => {
+                             const rank = holdRanking.indexOf(key);
+                             return rank === 0 ? (
+                               <span className="absolute -top-1 -right-1 text-xl">🥇</span>
+                             ) : rank === 1 ? (
+                               <span className="absolute -top-1 -right-1 text-xl">🥈</span>
+                             ) : rank === 2 ? (
+                               <span className="absolute -top-1 -right-1 text-xl">🥉</span>
+                             ) : null;
+                          })()}
                         </div>
                       </TooltipTrigger>
                       <TooltipContent>{key}</TooltipContent>
