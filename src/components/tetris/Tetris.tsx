@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { toast } from "sonner";
+import confetti from "canvas-confetti";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Controls from "./Controls";
@@ -278,14 +279,11 @@ export default function Tetris() {
         if (cleared > 0) {
           toast(`🎉 Cleared ${cleared} lines! 🚀`);
           if (cleared === 4) {
-            if (typeof window !== 'undefined') {
-              const confetti = require('canvas-confetti');
               confetti({
                 particleCount: 150,
                 spread: 60,
                 origin: { y: 0.8 },
               });
-            }
           }
         }
         if (prev.y < 0) {
@@ -384,14 +382,11 @@ export default function Tetris() {
     if (cleared > 0) {
       toast(`🎉 Cleared ${cleared} lines! 🚀`);
       if (cleared === 4) {
-        if (typeof window !== 'undefined') {
-          const confetti = require('canvas-confetti');
-          confetti({
-            particleCount: 150,
-            spread: 60,
-            origin: { y: 0.8 },
-          });
-        }
+        confetti({
+          particleCount: 150,
+          spread: 60,
+          origin: { y: 0.8 },
+        });
       }
     }
     if (posCopy.y < 0) {
