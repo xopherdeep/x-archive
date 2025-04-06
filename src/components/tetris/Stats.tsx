@@ -141,7 +141,7 @@ export default function Stats({
                 <li><strong>Shift + Arrow Up:</strong> Rotate piece opposite</li>
                 <li><strong>Space:</strong> Quick drop</li>
                 <li>
-                  <strong>{listening ? "Press key..." : bindings.holdKey}:</strong>{" "}
+                  <strong>{listening ? "Press key..." : (bindings?.holdKey || "Hold Key")}:</strong>{" "}
                   <span
                     onClick={() => setListening(true)}
                     onKeyDown={(e) => {
