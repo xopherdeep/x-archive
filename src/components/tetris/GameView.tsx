@@ -10,6 +10,7 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select";
+import StyleBoxes from "./StyleBoxes";
 
 type GameViewProps = {
   mergedBoard: (0 | string)[];
@@ -200,6 +201,9 @@ export default function GameView(props: GameViewProps) {
           COLS={COLS}
           ROWS={ROWS}
         />
+        <div className="mt-4">
+          <StyleBoxes />
+        </div>
         <div className="mt-4 text-xl font-bold text-center">
           Lines Cleared: {linesCleared}
         </div>
