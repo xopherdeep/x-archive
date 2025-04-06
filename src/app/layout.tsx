@@ -2,8 +2,14 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
-import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink } from "@/components/ui/navigation-menu";
+import {
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuLink,
+} from "@/components/ui/navigation-menu";
 import { Sidebar } from "@/components/ui/sidebar";
+import { useEffect } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,13 +31,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  React.useEffect(() => {
+  useEffect(() => {
     document.body.removeAttribute("data-new-gr-c-s-check-loaded");
     document.body.removeAttribute("data-gr-ext-installed");
   }, []);
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
         <div className="min-h-screen flex flex-col">
           <header className="bg-gray-800 text-white px-4 py-2">
             <NavigationMenu>
@@ -43,7 +51,9 @@ export default function RootLayout({
                   <NavigationMenuLink href="/games">Games</NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <NavigationMenuLink href="/components">Components</NavigationMenuLink>
+                  <NavigationMenuLink href="/components">
+                    Components
+                  </NavigationMenuLink>
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
@@ -52,9 +62,7 @@ export default function RootLayout({
             <aside className="hidden md:block">
               <Sidebar />
             </aside>
-            <main className="flex-1 p-4">
-              {children}
-            </main>
+            <main className="flex-1 p-4">{children}</main>
           </div>
           <footer className="bg-gray-100 text-center p-4 text-sm">
             © {new Date().getFullYear()} X's Archive. All rights reserved.
