@@ -160,7 +160,6 @@ function clearLines(board: Cell[][]): { board: Cell[][]; cleared: number } {
 export default function Tetris() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => { setMounted(true); }, []);
-  if (!mounted) return null;
   const [board, setBoard] = useState<Cell[][]>(
     Array.from({ length: ROWS }, () => new Array(COLS).fill(0))
   );
@@ -357,7 +356,7 @@ export default function Tetris() {
     return ghost;
   }, [board, current.tetromino, position]);
   
-  return (
+  return mounted ? (
     <div className="h-screen w-screen bg-gray-50 flex flex-col items-center justify-center overflow-hidden" tabIndex={0} onKeyDown={handleKeyDown}>
       <h2 className="text-4xl font-bold mb-4 text-gray-800">Tetris</h2>
       <div className="flex space-x-4 mb-4">
@@ -507,5 +506,5 @@ export default function Tetris() {
         </div>
       ) : null}
     </div>
-  );
+  ) : <div />;
 }
