@@ -6,7 +6,17 @@ export default function Home() {
   return (
     <SidebarProvider>
       <div className="flex">
-        <Sidebar />
+        <Sidebar>
+          <nav className="p-4">
+            <ul className="space-y-2">
+              <li>
+                <a href="/games" className="text-gray-700 hover:text-gray-900">
+                  Games
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </Sidebar>
         <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
           <header className="w-full text-center py-4">
             <h1 className="text-3xl font-bold">X's Archive</h1>
