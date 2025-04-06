@@ -169,6 +169,7 @@ export default function Tetris() {
   const [level, setLevel] = useState(1);
   const [activeTab, setActiveTab] = useState("game");
   const dropInterval = useRef<number>(1000);
+  const [quickDropping, setQuickDropping] = useState(false);
 
   React.useEffect(() => {
     setCurrent(prev => ({
@@ -237,6 +238,7 @@ export default function Tetris() {
   };
 
   const quickDrop = () => {
+    setQuickDropping(true);
     let posCopy = position;
     while (!checkCollision(board, current.tetromino, { x: posCopy.x, y: posCopy.y + 1 })) {
       posCopy = { x: posCopy.x, y: posCopy.y + 1 };
@@ -261,6 +263,7 @@ export default function Tetris() {
     setCurrent(newPiece);
     setNext(randomTetromino(theme));
     setPosition({ x: Math.floor(COLS / 2) - Math.floor(newPiece.tetromino.shape[0].length / 2), y: -1 });
+    setTimeout(() => setQuickDropping(false), 300);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
@@ -312,10 +315,11 @@ export default function Tetris() {
       </div>
       {activeTab === "game" ? (
       <div className="flex flex-col md:flex-row gap-8 items-center">
-        <div className="relative grid grid-cols-10" style={{ width: COLS * 30, height: ROWS * 30, background: "url('/assets/retro-bg.png') repeat", backgroundSize: "auto" }}>
+        <div className={`relative grid grid-cols-10 ${quickDropping ? "transition-transform duration-300 transform translate-y-2" : ""}`} style={{ width: COLS * 30, height: ROWS * 30, background: "url('/assets/retro-bg.png') repeat", backgroundSize: "auto" }}>
           {mergedBoard.map((cell, index) => (
             <div
               key={index}
+              className="transition-all duration-300"
               style={{
                 width: 30,
                 height: 30,
