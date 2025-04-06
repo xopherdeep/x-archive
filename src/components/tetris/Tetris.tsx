@@ -333,90 +333,20 @@ export default function Tetris() {
       </div>
       {activeTab === "game" ? (
         <div className="flex flex-col md:flex-row gap-8 items-start">
-          <Card className="w-40">
-            <CardHeader>
-              <CardTitle className="text-lg m-0 p-0">Stats</CardTitle>
-            </CardHeader>
-            <CardContent className="p-2">
-              <div className="flex flex-col gap-2">
-                {Object.entries(TETROMINOES).map(([key, tetromino]) => {
-                  const cropped = cropShape(tetromino.shape);
-                  return (
-                    <div key={key} className="flex items-center gap-2">
-                      <div className="w-8 text-center font-bold">{key}</div>
-                      <div
-                        className="grid gap-0.5"
-                        style={{
-                          gridTemplateColumns: `repeat(${cropped[0].length}, 20px)`,
-                        }}
-                      >
-                        {cropped.flat().map((cell, index) => (
-                          <div
-                            key={index}
-                            style={{
-                              width: 20,
-                              height: 20,
-                              backgroundColor: cell
-                                ? tetromino.color
-                                : "transparent",
-                              border: "1px solid #ccc",
-                            }}
-                          />
-                        ))}
-                      </div>
-                      <div className="ml-auto text-sm">
-                        {dropStats[key] || 0}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setDropStats(initialStats)}
-              >
-                Reset
-              </Button>
-            </CardContent>
-          </Card>
-          <Card className="w-40">
-            <CardHeader>
-              <CardTitle className="text-lg m-0 p-0">Hold Piece</CardTitle>
-            </CardHeader>
-            <CardContent className="p-2">
-              {hold ? (
-                <div
-                  className="relative grid"
-                  style={{
-                    gridTemplateColumns: `repeat(${hold.tetromino.shape[0].length}, 30px)`,
-                    width: hold.tetromino.shape[0].length * 30 + "px",
-                    height: hold.tetromino.shape.length * 30 + "px",
-                    border: "2px solid #ccc",
-                  }}
-                >
-                  {hold.tetromino.shape.flatMap((row, y) =>
-                    row.map((cell, x) => (
-                      <div
-                        key={`${x}-${y}`}
-                        style={{
-                          width: "30px",
-                          height: "30px",
-                          backgroundColor: cell
-                            ? hold.tetromino.color
-                            : "transparent",
-                          boxSizing: "border-box",
-                          border: "1px solid #999",
-                        }}
-                      />
-                    ))
-                  )}
-                </div>
-              ) : (
-                <div className="text-sm text-gray-500">Empty</div>
-              )}
-            </CardContent>
-          </Card>
+          <Stats 
+            dropStats={dropStats} 
+            onReset={() =>
+              setDropStats(
+                Object.keys(TETROMINOES).reduce(
+                  (acc, key) => ({ ...acc, [key]: 0 }),
+                  {}
+                )
+              )
+            }
+            TETROMINOES={TETROMINOES}
+            cropShape={cropShape}
+            hold={hold}
+          />
           <div>
             <Board
               mergedBoard={mergedBoard}
