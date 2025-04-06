@@ -298,7 +298,6 @@ export default function Tetris() {
           }
           return newScore;
         });
-        setHasHeld(false);
         const newPiece = next;
         setCurrent(newPiece);
         setNext(randomTetromino(theme));
@@ -341,8 +340,7 @@ export default function Tetris() {
   };
 
   const holdPiece = () => {
-    if (hasHeld) return;
-    setHasHeld(true);
+    // Allow swapping hold piece repeatedly
     let newCurrent, newHold;
     if (!hold) {
       // If nothing is held, store the current piece and load the next piece.
@@ -357,9 +355,7 @@ export default function Tetris() {
     setHold(newHold);
     setCurrent(newCurrent);
     setPosition({
-      x:
-        Math.floor(COLS / 2) -
-        Math.floor(newCurrent.tetromino.shape[0].length / 2),
+      x: Math.floor(COLS / 2) - Math.floor(newCurrent.tetromino.shape[0].length / 2),
       y: -1,
     });
   };
