@@ -100,14 +100,7 @@ export default function useTetris(initialTheme: "light" | "dark") {
           setGameOver(true);
           return prev;
         }
-        setScore((prevScore) => {
-          const newScore = prevScore + cleared * 10;
-          if (newScore >= level * 50) {
-            setLevel((prevLevel) => prevLevel + 1);
-            dropInterval.current = Math.max(100, dropInterval.current - 100);
-          }
-          return newScore;
-        });
+        setScore((prevScore) => prevScore + cleared * 10);
         const newPiece = next;
         setDropStats((prevStats) => ({
           ...prevStats,
@@ -177,14 +170,7 @@ export default function useTetris(initialTheme: "light" | "dark") {
       setGameOver(true);
       return;
     }
-    setScore((prevScore) => {
-      const newScore = prevScore + cleared * 10;
-      if (newScore >= level * 50) {
-        setLevel((prevLevel) => prevLevel + 1);
-        dropInterval.current = Math.max(100, dropInterval.current - 100);
-      }
-      return newScore;
-    });
+    setScore((prevScore) => prevScore + cleared * 10);
     const newPiece = next;
     setDropStats((prevStats) => ({
       ...prevStats,
@@ -217,6 +203,14 @@ export default function useTetris(initialTheme: "light" | "dark") {
     }
     return ghost;
   }, [board, current.tetromino, position]);
+
+  React.useEffect(() => {
+    const newLevel = 1 + Math.floor(linesCleared / 10);
+    if (newLevel !== level) {
+      setLevel(newLevel);
+      dropInterval.current = Math.max(100, 1000 - 100 * (newLevel - 1));
+    }
+  }, [linesCleared, level]);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp", " "].includes(event.key)) {
