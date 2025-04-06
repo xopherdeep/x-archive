@@ -188,6 +188,9 @@ export default function Tetris() {
   };
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp"].includes(event.key)) {
+      event.preventDefault();
+    }
     if (gameOver) return;
     switch (event.key) {
       case "ArrowLeft":
