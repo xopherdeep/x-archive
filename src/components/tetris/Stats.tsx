@@ -120,26 +120,7 @@ export default function Stats({
         <Button variant="outline" size="sm" onClick={onReset}>
           Reset
         </Button>
-              <ul className="list-disc list-inside">
-                <li><strong>Arrow Right:</strong> Move right</li>
-                <li><strong>Arrow Down:</strong> Soft drop</li>
-                <li><strong>Arrow Up:</strong> Rotate piece</li>
-                <li><strong>Shift + Arrow Up:</strong> Rotate piece opposite</li>
-                <li><strong>Space:</strong> Quick drop</li>
-                <li>
-                  <strong>{listening ? "Press key..." : (bindings?.holdKey || "Hold Key")}:</strong>{" "}
-                  <span
-                    onClick={() => setListening(true)}
-                    onKeyDown={(e) => {
-                      setBindings({ ...bindings, holdKey: e.key });
-                      setListening(false);
-                    }}
-                    tabIndex={0}
-                  >
-                    Hold piece
-                  </span>
-                </li>
-              </ul>
+              
         {hold !== undefined && (
           <>
             <hr className="my-2" />
