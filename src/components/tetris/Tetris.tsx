@@ -5,6 +5,7 @@ import confetti from "canvas-confetti";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Controls from "./Controls";
+import Stats from "./Stats";
 import {
   Select,
   SelectTrigger,
