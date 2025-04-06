@@ -460,7 +460,7 @@ export default function Tetris() {
           )}
         </div>
         <div className="flex flex-col items-center gap-4">
-          <Card className="w-fit">
+          <Card className="w-40">
             <CardHeader>
               <CardTitle className="text-lg">Hold Piece</CardTitle>
             </CardHeader>
@@ -487,7 +487,7 @@ export default function Tetris() {
               )}
             </CardContent>
           </Card>
-          <Card className="w-fit">
+          <Card className="w-40">
             <CardHeader>
               <CardTitle className="text-lg">Next Piece</CardTitle>
             </CardHeader>

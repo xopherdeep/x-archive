@@ -16,6 +16,7 @@ export default function Controls() {
           <li><strong>Arrow Down:</strong> Soft drop</li>
           <li><strong>Arrow Up:</strong> Rotate piece</li>
           <li><strong>Space:</strong> Quick drop</li>
+          <li><strong>c:</strong> Hold piece</li>
         </ul>
         <div className="mt-4">
           <Button variant="outline">Edit Controls</Button>
