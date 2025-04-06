@@ -195,21 +195,27 @@ export default function GameView(props: GameViewProps) {
             level={level}
           />
           {(!started || gameOver) && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center z-10">
-              {gameOver && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center z-10 bg-black bg-opacity-75 p-4">
+              {gameOver ? (
                 <>
-                  <div className="mb-2 text-4xl font-bold text-white drop-shadow-lg">
-                    💀 Game Over
+                  <div className="mb-4 text-5xl font-extrabold text-white">
+                    💀 GAME OVER
                   </div>
-                  <div className="mb-4 text-xl text-white drop-shadow-lg">
-                    Final Score: {score}
+                  <div className="mb-2 text-2xl text-white">
+                    Score: {score}
+                  </div>
+                  <div className="mb-4 text-2xl text-white">
+                    Lines Cleared: {linesCleared}
                   </div>
                 </>
+              ) : (
+                <div className="mb-4 text-4xl font-bold text-white">
+                  Welcome to Tetris!
+                </div>
               )}
-              <div className="flex gap-6">
-                <Button className="px-6" onClick={() => { resetGame(); setStarted(true); }}>{`Restart @ level ${level}`}</Button>
-                <Button className="px-6" onClick={() => { resetGame(); setStarted(true); }}>Start</Button>
-              </div>
+              <Button className="px-6" onClick={() => { resetGame(); setStarted(true); }}>
+                {gameOver ? "Restart" : "Start Game"}
+              </Button>
             </div>
           )}
         </div>
