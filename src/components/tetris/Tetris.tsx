@@ -167,6 +167,17 @@ export default function Tetris() {
   const [score, setScore] = useState(0);
   const dropInterval = useRef<number>(1000);
 
+  React.useEffect(() => {
+    setCurrent(prev => ({
+      key: prev.key,
+      tetromino: { ...TETROMINOES[prev.key], color: theme === "light" ? LIGHT_THEME[prev.key] : DARK_THEME[prev.key] }
+    }));
+    setNext(prev => ({
+      key: prev.key,
+      tetromino: { ...TETROMINOES[prev.key], color: theme === "light" ? LIGHT_THEME[prev.key] : DARK_THEME[prev.key] }
+    }));
+  }, [theme]);
+
   const drop = useCallback(() => {
     setPosition(prev => {
       const newPos = { x: prev.x, y: prev.y + 1 };
