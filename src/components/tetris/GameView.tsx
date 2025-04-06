@@ -327,18 +327,18 @@ export default function GameView(props: GameViewProps) {
           </CardHeader>
           <CardContent className="p-2 text-left">
             <div
-              className="flex flex-col text-xl tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]"
+              className="flex flex-col text-xl tracking-[0.15em] text-white font-bold"
               style={{ fontFamily: '"Press Start 2P", cursive' }}
             >
               <p>Top</p>
-              <p>{topScore}</p>
+              <p>{topScore.toString().padStart(8, '0')}</p>
             </div>
             <div
-              className="text-xl font-bold tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]"
+              className="text-xl font-bold tracking-[0.15em] text-white"
               style={{ fontFamily: '"Press Start 2P", cursive' }}
             >
               <p>Score</p>
-              <p>{score}</p>
+              <p>{score.toString().padStart(8, '0')}</p>
             </div>
           </CardContent>
           <CardFooter>
