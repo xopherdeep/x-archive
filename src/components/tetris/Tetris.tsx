@@ -293,32 +293,6 @@ export default function Tetris() {
     return cropped;
   };
 
-  React.useEffect(() => {
-    setCurrent((prev) => ({
-      key: prev.key,
-      tetromino: {
-        ...TETROMINOES[prev.key],
-        color:
-          level < 5
-            ? NES_LOW_LEVEL[prev.key]
-            : level < 10
-            ? NES_MID_LEVEL[prev.key]
-            : NES_HIGH_LEVEL[prev.key],
-      },
-    }));
-    setNext((prev) => ({
-      key: prev.key,
-      tetromino: {
-        ...TETROMINOES[prev.key],
-        color:
-          level < 5
-            ? NES_LOW_LEVEL[prev.key]
-            : level < 10
-            ? NES_MID_LEVEL[prev.key]
-            : NES_HIGH_LEVEL[prev.key],
-      },
-    }));
-  }, [theme, level]);
 
   const drop = useCallback(() => {
     setPosition((prev) => {
