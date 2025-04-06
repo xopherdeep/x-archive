@@ -204,7 +204,7 @@ export default function useTetris(initialTheme: "light" | "dark") {
     return ghost;
   }, [board, current.tetromino, position]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const newLevel = 1 + Math.floor(linesCleared / 10);
     if (newLevel !== level) {
       setLevel(newLevel);
