@@ -258,15 +258,22 @@ export default function GameView(props: GameViewProps) {
               className="mt-1 text-xl tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]"
               style={{ fontFamily: '"VT323", monospace' }}
             >
-              Level: {level}
-            </div>
-            <div
-              className="mt-1 text-xl tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]"
-              style={{ fontFamily: '"VT323", monospace' }}
-            >
               Top Score: {topScore}
             </div>
             <Button variant="outline" size="sm" className="mt-2" onClick={resetGame}>Restart</Button>
+          </CardContent>
+        </Card>
+        <Card className="w-40">
+          <CardHeader>
+            <CardTitle className="text-lg m-0 p-0">Level</CardTitle>
+          </CardHeader>
+          <CardContent className="p-2">
+            <div
+              className="text-3xl font-bold tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]"
+              style={{ fontFamily: '"VT323", monospace' }}
+            >
+              {level}
+            </div>
           </CardContent>
         </Card>
         <Card className="w-40">
