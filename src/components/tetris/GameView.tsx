@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import StyleBoxes from "./StyleBoxes";
-import GameCard from "@/components/tetris/GameCard";
+import GameCard from "./GameCard";
 import { randomTetromino } from "./helpers";
 
 type GameViewProps = {
