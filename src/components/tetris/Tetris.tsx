@@ -3,6 +3,7 @@ import React from "react";
 import useTetris from "./useTetris";
 import GameView from "./GameView";
 import Controls from "./Controls";
+import { Button } from "../ui/button";
 
 const LIGHT_THEME = {
   I: "cyan",
@@ -215,8 +216,6 @@ function clearLines(board: Cell[][]): { board: Cell[][]; cleared: number } {
   return { board: newBoard, cleared };
 }
 
-import useTetris from "./useTetris";
-
 export default function Tetris() {
   const {
     mergedBoard,
@@ -248,14 +247,6 @@ export default function Tetris() {
     COLS,
     ROWS,
   } = useTetris("light");
-
-  
-
-
-
-  
-
-
 
   const [mounted, setMounted] = React.useState(false);
   const [activeTab, setActiveTab] = React.useState("game");
