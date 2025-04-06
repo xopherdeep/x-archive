@@ -269,7 +269,7 @@ export default function GameView(props: GameViewProps) {
           </CardHeader>
           <CardContent className="p-1 text-center">
             <div
-              className="relative grid justify-center"
+              className="relative grid justify-center items-center"
               style={{
                 gridTemplateColumns: `repeat(${next.tetromino.shape[0].length}, 30px)`,
                 width: next.tetromino.shape[0].length * 30 + "px",
