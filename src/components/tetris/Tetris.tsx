@@ -229,6 +229,17 @@ export default function Tetris() {
         setBoard(clearedBoard);
         if (cleared > 0) {
           toast(`🎉 Cleared ${cleared} lines! 🚀`);
+          if (cleared === 4) {
+            import("canvas-confetti").then(confetti => {
+              if (confetti.default) {
+                confetti.default({
+                  particleCount: 150,
+                  spread: 60,
+                  origin: { y: 0.8 },
+                });
+              }
+            });
+          }
         }
         if (prev.y < 0) {
           setGameOver(true);
@@ -313,6 +324,17 @@ export default function Tetris() {
     setBoard(clearedBoard);
     if (cleared > 0) {
       toast(`🎉 Cleared ${cleared} lines! 🚀`);
+      if (cleared === 4) {
+        import("canvas-confetti").then(confetti => {
+          if (confetti.default) {
+            confetti.default({
+              particleCount: 150,
+              spread: 60,
+              origin: { y: 0.8 },
+            });
+          }
+        });
+      }
     }
     if (posCopy.y < 0) {
       setGameOver(true);
