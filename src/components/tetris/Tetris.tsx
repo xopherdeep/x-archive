@@ -442,38 +442,6 @@ export default function Tetris() {
     setTimeout(() => setQuickDropping(false), 300);
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (
-      ["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp", " "].includes(
-        event.key
-      )
-    ) {
-      event.preventDefault();
-    }
-    if (gameOver) return;
-    switch (event.key) {
-      case "ArrowLeft":
-        move(-1);
-        break;
-      case "ArrowRight":
-        move(1);
-        break;
-      case "ArrowDown":
-        drop();
-        break;
-      case "ArrowUp":
-        rotatePiece();
-        break;
-      case " ":
-        quickDrop();
-        break;
-      case "x":
-        holdPiece();
-        break;
-      default:
-        break;
-    }
-  };
 
   const mergedBoard = React.useMemo(() => {
     const newBoard = board.map((row) => [...row]);
