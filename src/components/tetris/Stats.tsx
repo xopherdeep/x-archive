@@ -12,6 +12,7 @@ import {
 
 interface StatsProps {
   dropStats: Record<string, number>;
+  holdStats: Record<string, number>;
   onReset: () => void;
   TETROMINOES: { [key: string]: { shape: number[][]; color: string } };
   cropShape: (shape: number[][]) => number[][];
@@ -43,7 +44,6 @@ export default function Stats({ dropStats, onReset, TETROMINOES, cropShape, hold
             const cropped = cropShape(tetromino.shape);
             return (
               <div key={key} className="flex items-center gap-2 transition-all duration-500">
-                <div className="w-8 text-center font-bold">{key}</div>
                 <div
                   className="grid gap-0.5"
                   style={{ gridTemplateColumns: `repeat(${cropped[0]?.length || 0}, 20px)` }}
@@ -60,7 +60,9 @@ export default function Stats({ dropStats, onReset, TETROMINOES, cropShape, hold
                     />
                   ))}
                 </div>
+                <div className="w-8 text-center font-bold">{key}</div>
                 <div className="ml-auto text-sm">{dropStats[key] || 0}</div>
+                <div className="ml-auto text-sm">{holdStats[key] || 0}</div>
               </div>
             );
           })}
