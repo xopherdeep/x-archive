@@ -11,6 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import StyleBoxes from "./StyleBoxes";
+import { randomTetromino } from "./helpers";
 
 type GameViewProps = {
   mergedBoard: (0 | string)[];
@@ -159,8 +160,8 @@ export default function GameView(props: GameViewProps) {
               setBoard(
                 Array.from({ length: ROWS }, () => new Array(COLS).fill(0))
               );
-              setCurrent(/* You may call your random tetromino generator here */);
-              setNext(/* Likewise here */);
+              setCurrent(randomTetromino(theme, level));
+              setNext(randomTetromino(theme, level));
               setPosition({ x: Math.floor(COLS / 2) - 1, y: -1 });
               setScore(0);
               setGameOver(false);
