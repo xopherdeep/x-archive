@@ -325,7 +325,7 @@ export default function GameView(props: GameViewProps) {
           <CardHeader>
             <CardTitle className="text-lg m-0 p-0">Score</CardTitle>
           </CardHeader>
-          <CardContent className="p-2 text-left">
+          <CardContent className="p-2 text-left bg-gray-900">
             <div
               className="flex flex-col text-xl tracking-[0.15em] text-white font-bold"
               style={{ fontFamily: '"Press Start 2P", cursive' }}
