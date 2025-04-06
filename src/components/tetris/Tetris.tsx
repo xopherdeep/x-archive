@@ -285,11 +285,9 @@ export default function Tetris() {
       </h1>
 
       <Tabs defaultValue="game">
-        <TabsList className="flex items-center justify-between">
-          <div className="flex gap-2">
-            <TabsTrigger value="game">Game</TabsTrigger>
-            <TabsTrigger value="controls">Controls</TabsTrigger>
-          </div>
+        <TabsList className="justify-center w-full">
+          <TabsTrigger value="game">Game</TabsTrigger>
+          <TabsTrigger value="controls">Controls</TabsTrigger>
           <Button variant="outline" onClick={() => {
               if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen();
