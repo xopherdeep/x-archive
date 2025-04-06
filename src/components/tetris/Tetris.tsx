@@ -1,5 +1,6 @@
 "use client"
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { toast } from "sonner";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Controls from "./Controls";
@@ -222,6 +223,9 @@ export default function Tetris() {
         const merged = mergeBoard(board, current.tetromino, prev);
         const { board: clearedBoard, cleared } = clearLines(merged);
         setBoard(clearedBoard);
+        if (cleared > 0) {
+          toast(`Cleared ${cleared} lines!`);
+        }
         if (prev.y < 0) {
           setGameOver(true);
           return prev;
@@ -280,6 +284,9 @@ export default function Tetris() {
     const merged = mergeBoard(board, current.tetromino, posCopy);
     const { board: clearedBoard, cleared } = clearLines(merged);
     setBoard(clearedBoard);
+    if (cleared > 0) {
+      toast(`Cleared ${cleared} lines!`);
+    }
     if (posCopy.y < 0) {
       setGameOver(true);
       return;
