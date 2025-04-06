@@ -9,6 +9,7 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 
 interface StatsProps {
   dropStats: Record<string, number>;
