@@ -225,8 +225,8 @@ export default function Tetris() {
   }, [board, current, position]);
   
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4" tabIndex={0} onKeyDown={handleKeyDown}>
-      <h2 className="text-4xl font-bold mb-8">Tetris</h2>
+    <div className="min-h-screen bg-gradient-to-r from-gray-900 to-black flex flex-col items-center justify-center p-4" tabIndex={0} onKeyDown={handleKeyDown}>
+      <h2 className="text-4xl font-bold mb-8 text-green-400 drop-shadow-lg">Tetris</h2>
       <div className="flex flex-col md:flex-row gap-8 items-center">
         <div className="relative grid grid-cols-10" style={{ width: COLS * 30, height: ROWS * 30, border: "4px solid #333" }}>
           {mergedBoard.map((cell, index) => (
