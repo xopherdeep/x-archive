@@ -93,6 +93,7 @@ export default function Stats({
                             ))}
                           </div>
                           {(() => {
+                             if (!(holdStats[key] > 0)) return null;
                              const rank = holdRanking.indexOf(key);
                              return rank === 0 ? (
                                <span className="absolute top-0 left-full -ml-4 text-xl">🥇</span>
