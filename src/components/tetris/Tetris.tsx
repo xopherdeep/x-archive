@@ -1,5 +1,6 @@
 "use client"
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
 type Cell = 0 | string;
 const COLS = 10;
