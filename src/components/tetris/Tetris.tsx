@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 
 const LIGHT_THEME = {
   I: "cyan",
@@ -323,11 +324,15 @@ export default function Tetris() {
             >
               Fullscreen
             </Button>
-            <Button
-              onClick={() => setTheme(prev => (prev === "light" ? "dark" : "light"))}
-            >
-              Toggle Theme
-            </Button>
+            <Select value={theme} onValueChange={(val) => setTheme(val as Theme)}>
+              <SelectTrigger>
+                <SelectValue placeholder="Theme" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="light">Light</SelectItem>
+                <SelectItem value="dark">Dark</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
       </div>
