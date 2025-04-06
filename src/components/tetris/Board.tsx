@@ -62,6 +62,13 @@ export default function Board({
             backgroundSize: "auto",
           }}
         >
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              backgroundImage: "linear-gradient(to right, rgba(0,0,0,0.2) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.2) 1px, transparent 1px)",
+              backgroundSize: "30px 30px",
+            }}
+          />
           {mergedBoard.map((cell, index) => (
             <div
               key={index}
