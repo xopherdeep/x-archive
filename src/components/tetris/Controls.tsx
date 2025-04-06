@@ -4,6 +4,14 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 export default function Controls() {
+  const [holdKey, setHoldKey] = React.useState('x');
+  const [listening, setListening] = React.useState(false);
+
+  const handleKeyBinding = (event: React.KeyboardEvent<HTMLSpanElement>) => {
+    setHoldKey(event.key);
+    setListening(false);
+  };
+
   return (
     <Card className="w-fit max-w-md mx-auto mt-8">
       <CardHeader>
@@ -16,7 +24,12 @@ export default function Controls() {
           <li><strong>Arrow Down:</strong> Soft drop</li>
           <li><strong>Arrow Up:</strong> Rotate piece</li>
           <li><strong>Space:</strong> Quick drop</li>
-          <li><strong>x:</strong> Hold piece</li>
+          <li>
+            <strong>{listening ? "Press key..." : holdKey + ":"}</strong>{" "}
+            <span onClick={() => setListening(true)} onKeyDown={handleKeyBinding} tabIndex={0}>
+              Hold piece
+            </span>
+          </li>
         </ul>
         <div className="mt-4">
           <Button variant="outline">Edit Controls</Button>
