@@ -8,7 +8,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
   const { theme = "system" } = useTheme()
 
   React.useEffect(() => {
-    toast("Welcome to Tetris! Have fun!");
+    toast("🎉 Welcome to Tetris! Have fun! 🚀", { style: { background: "linear-gradient(45deg, #ff6ec4, #7873f5)", color: "#fff", fontWeight: "bold", borderRadius: "8px" } });
   }, []);
 
   return (
