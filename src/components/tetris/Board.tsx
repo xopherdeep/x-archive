@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
+import { generateSVGPattern } from "../tetris/helpers";
 
 interface BoardProps {
   mergedBoard: (0 | string)[];
@@ -30,11 +31,11 @@ export default function Board({
     const patternSize = Math.max(3, 10 - level);
     switch(cell) {
       case "#00ffff":
-        return { backgroundImage: `repeating-linear-gradient(45deg, ${cell}, ${cell} ${patternSize}px, rgba(0,0,0,0.2) ${patternSize}px, rgba(0,0,0,0.2) ${patternSize*2}px)` };
+        return { backgroundImage: generateSVGPattern(cell, "#ffffff", 30) };
       case "#ffff00":
-        return { backgroundImage: `repeating-linear-gradient(135deg, ${cell}, ${cell} ${patternSize}px, rgba(0,0,0,0.15) ${patternSize}px, rgba(0,0,0,0.15) ${patternSize*2}px)` };
+        return { backgroundImage: generateSVGPattern(cell, "#ffffff", 30) };
       case "#dda0dd":
-        return { backgroundImage: `repeating-linear-gradient(45deg, ${cell}, ${cell} ${patternSize}px, rgba(0,0,0,0.2) ${patternSize}px, rgba(0,0,0,0.2) ${patternSize*2}px)` };
+        return { backgroundImage: generateSVGPattern(cell, "#ffffff", 30) };
       case "#7fff00":
         return { backgroundImage: `repeating-linear-gradient(135deg, ${cell}, ${cell} ${patternSize}px, rgba(0,0,0,0.1) ${patternSize}px, rgba(0,0,0,0.1) ${patternSize*2}px)` };
       case "#ff4500":

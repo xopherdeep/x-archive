@@ -111,3 +111,8 @@ export function randomTetromino(theme: "light" | "dark", level: number = 1): { k
     },
   };
 }
+
+export function generateSVGPattern(primary: string, secondary: string, size: number = 30): string {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><rect width="${size}" height="${size}" fill="${secondary}" stroke="${primary}" stroke-width="2"/></svg>`;
+  return \`url("data:image/svg+xml;utf8,\${encodeURIComponent(svg)}")\`;
+}
