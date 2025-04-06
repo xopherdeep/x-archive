@@ -23,6 +23,34 @@ const LIGHT_THEME = {
   L: "orange",
 };
 
+const NES_LOW_LEVEL = {
+  I: "#00ffff",
+  O: "#ffff00",
+  T: "#dda0dd",
+  S: "#7fff00",
+  Z: "#ff4500",
+  J: "#1e90ff",
+  L: "#ff8c00",
+};
+const NES_MID_LEVEL = {
+  I: "#00cccc",
+  O: "#cccc00",
+  T: "#ba8bb0",
+  S: "#6fbf00",
+  Z: "#e03e00",
+  J: "#199ae6",
+  L: "#e68a00",
+};
+const NES_HIGH_LEVEL = {
+  I: "#009999",
+  O: "#999900",
+  T: "#a275a2",
+  S: "#5fb000",
+  Z: "#c02e00",
+  J: "#157bb8",
+  L: "#cc7000",
+};
+
 const DARK_THEME = {
   I: "#00ffff",
   O: "#ffff00",
@@ -108,16 +136,23 @@ type Position = {
   y: number;
 };
 
-function randomTetromino(theme: Theme): { key: string; tetromino: Tetromino } {
+function randomTetromino(theme: Theme, level: number): { key: string; tetromino: Tetromino } {
   const keys = Object.keys(TETROMINOES);
   const randKey = keys[Math.floor(Math.random() * keys.length)];
   const tetromino = TETROMINOES[randKey];
-  const themeMapping = theme === "light" ? LIGHT_THEME : DARK_THEME;
+  let palette;
+  if (level < 5) {
+    palette = NES_LOW_LEVEL;
+  } else if (level < 10) {
+    palette = NES_MID_LEVEL;
+  } else {
+    palette = NES_HIGH_LEVEL;
+  }
   return {
     key: randKey,
     tetromino: {
       ...tetromino,
-      color: themeMapping[randKey] || tetromino.color,
+      color: palette[randKey] || tetromino.color,
     },
   };
 }
@@ -196,10 +231,10 @@ export default function Tetris() {
   );
   const [theme, setTheme] = useState<Theme>("light");
   const [current, setCurrent] = useState<{ key: string; tetromino: Tetromino }>(
-    () => randomTetromino("light")
+    () => randomTetromino("light", 1)
   );
   const [next, setNext] = useState<{ key: string; tetromino: Tetromino }>(() =>
-    randomTetromino("light")
+    randomTetromino("light", 1)
   );
   const [position, setPosition] = useState<Position>({
     x: Math.floor(COLS / 2) - 1,
@@ -257,17 +292,27 @@ export default function Tetris() {
       key: prev.key,
       tetromino: {
         ...TETROMINOES[prev.key],
-        color: theme === "light" ? LIGHT_THEME[prev.key] : DARK_THEME[prev.key],
+        color:
+          level < 5
+            ? NES_LOW_LEVEL[prev.key]
+            : level < 10
+            ? NES_MID_LEVEL[prev.key]
+            : NES_HIGH_LEVEL[prev.key],
       },
     }));
     setNext((prev) => ({
       key: prev.key,
       tetromino: {
         ...TETROMINOES[prev.key],
-        color: theme === "light" ? LIGHT_THEME[prev.key] : DARK_THEME[prev.key],
+        color:
+          level < 5
+            ? NES_LOW_LEVEL[prev.key]
+            : level < 10
+            ? NES_MID_LEVEL[prev.key]
+            : NES_HIGH_LEVEL[prev.key],
       },
     }));
-  }, [theme]);
+  }, [theme, level]);
 
   const drop = useCallback(() => {
     setPosition((prev) => {
@@ -300,7 +345,7 @@ export default function Tetris() {
         });
         const newPiece = next;
         setCurrent(newPiece);
-        setNext(randomTetromino(theme));
+        setNext(randomTetromino(theme, level));
         return {
           x:
             Math.floor(COLS / 2) -
@@ -399,7 +444,7 @@ export default function Tetris() {
     });
     const newPiece = next;
     setCurrent(newPiece);
-    setNext(randomTetromino(theme));
+    setNext(randomTetromino(theme, level));
     setPosition({
       x:
         Math.floor(COLS / 2) -
@@ -659,8 +704,8 @@ export default function Tetris() {
                   setBoard(
                     Array.from({ length: ROWS }, () => new Array(COLS).fill(0))
                   );
-                  setCurrent(randomTetromino(theme));
-                  setNext(randomTetromino(theme));
+                  setCurrent(randomTetromino(theme, 1));
+                  setNext(randomTetromino(theme, 1));
                   setPosition({ x: Math.floor(COLS / 2) - 1, y: -1 });
                   setScore(0);
                   setGameOver(false);
