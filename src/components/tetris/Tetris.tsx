@@ -389,6 +389,7 @@ export default function Tetris() {
       <div className="flex space-x-4 mb-4">
         <Button variant={activeTab === "game" ? "default" : "outline"} onClick={() => setActiveTab("game")}>Game</Button>
         <Button variant={activeTab === "controls" ? "default" : "outline"} onClick={() => setActiveTab("controls")}>Controls</Button>
+        <Button variant={activeTab === "score" ? "default" : "outline"} onClick={() => setActiveTab("score")}>Scoreboard</Button>
       </div>
       {activeTab === "game" ? (
       <div className="flex flex-col md:flex-row gap-8 items-center">
@@ -497,9 +498,14 @@ export default function Tetris() {
           </div>
         </div>
       </div>
-      ) : (
+      ) : activeTab === "controls" ? (
         <Controls />
-      )}
+      ) : activeTab === "score" ? (
+        <div className="flex flex-col items-center gap-4">
+          <div className="text-2xl tracking-widest text-green-400 drop-shadow-lg">Score: {score}</div>
+          <div className="text-xl tracking-wider text-blue-500 drop-shadow">Level: {level}</div>
+        </div>
+      ) : null}
     </div>
   );
 }
