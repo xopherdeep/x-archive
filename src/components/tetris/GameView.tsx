@@ -182,18 +182,6 @@ export default function GameView(props: GameViewProps) {
           >
             Fullscreen
           </Button>
-          <Select
-            value={theme}
-            onValueChange={(val) => setTheme(val as "light" | "dark")}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Theme" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="light">Light</SelectItem>
-              <SelectItem value="dark">Dark</SelectItem>
-            </SelectContent>
-          </Select>
         </div>
         <div className="relative">
           <Board
