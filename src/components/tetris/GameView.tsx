@@ -265,20 +265,7 @@ export default function GameView(props: GameViewProps) {
         </Card>
         <Card className="w-40">
           <CardHeader>
-            <CardTitle className="text-lg m-0 p-0">Level</CardTitle>
-          </CardHeader>
-          <CardContent className="p-2 text-center">
-            <div
-              className="text-3xl font-bold tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]"
-              style={{ fontFamily: '"VT323", monospace' }}
-            >
-              {level}
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="w-40">
-          <CardHeader>
-            <CardTitle className="text-lg m-0 p-0">Next Piece</CardTitle>
+            <CardTitle className="text-lg m-0 p-0">nexr.</CardTitle>
           </CardHeader>
           <CardContent className="p-2 text-center">
             <div
@@ -306,6 +293,19 @@ export default function GameView(props: GameViewProps) {
                   />
                 ))
               )}
+            </div>
+          </CardContent>
+        </Card>
+        <Card className="w-40">
+          <CardHeader>
+            <CardTitle className="text-lg m-0 p-0">Level</CardTitle>
+          </CardHeader>
+          <CardContent className="p-2 text-center">
+            <div
+              className="text-3xl font-bold tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]"
+              style={{ fontFamily: '"VT323", monospace' }}
+            >
+              {level}
             </div>
           </CardContent>
         </Card>
