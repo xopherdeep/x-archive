@@ -261,6 +261,7 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
         quickDrop();
         break;
       case holdKey:
+        event.preventDefault();
         holdPiece();
         break;
       default:
