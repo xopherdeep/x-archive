@@ -171,6 +171,8 @@ export default function Tetris() {
   const [score, setScore] = useState(0);
   const [level, setLevel] = useState(1);
   const [activeTab, setActiveTab] = useState("game");
+  const [hold, setHold] = useState<{ key: string; tetromino: Tetromino } | null>(null);
+  const [hasHeld, setHasHeld] = useState(false);
   const dropInterval = useRef<number>(1000);
   const [quickDropping, setQuickDropping] = useState(false);
 
@@ -240,6 +242,7 @@ export default function Tetris() {
           }
           return newScore;
         });
+        setHasHeld(false);
         const newPiece = next;
         setCurrent(newPiece);
         setNext(randomTetromino(theme));
@@ -274,6 +277,23 @@ export default function Tetris() {
       }
       return prev;
     });
+  };
+
+  const holdPiece = () => {
+    if (hasHeld) return;
+    setHasHeld(true);
+    if (!hold) {
+      setHold(current);
+      const newPiece = next;
+      setCurrent(newPiece);
+      setNext(randomTetromino(theme));
+      setPosition({ x: Math.floor(COLS / 2) - Math.floor(newPiece.tetromino.shape[0].length / 2), y: -1 });
+    } else {
+      const held = hold;
+      setHold(current);
+      setCurrent(held);
+      setPosition({ x: Math.floor(COLS / 2) - Math.floor(held.tetromino.shape[0].length / 2), y: -1 });
+    }
   };
 
   const quickDrop = () => {
@@ -328,6 +348,9 @@ export default function Tetris() {
         break;
       case " ":
         quickDrop();
+        break;
+      case "c":
+        holdPiece();
         break;
       default:
         break;
@@ -437,6 +460,33 @@ export default function Tetris() {
           )}
         </div>
         <div className="flex flex-col items-center gap-4">
+          <Card className="w-fit">
+            <CardHeader>
+              <CardTitle className="text-lg">Hold Piece</CardTitle>
+            </CardHeader>
+            <CardContent className="p-2">
+              {hold ? (
+                <div className="relative grid" style={{ gridTemplateColumns: `repeat(${hold.tetromino.shape[0].length}, 30px)`, width: hold.tetromino.shape[0].length * 30 + "px", height: hold.tetromino.shape.length * 30 + "px", border: "2px solid #ccc" }}>
+                  {hold.tetromino.shape.flatMap((row, y) =>
+                    row.map((cell, x) => (
+                      <div
+                        key={`${x}-${y}`}
+                        style={{
+                          width: "30px",
+                          height: "30px",
+                          backgroundColor: cell ? hold.tetromino.color : "transparent",
+                          boxSizing: "border-box",
+                          border: "1px solid #999",
+                        }}
+                      />
+                    ))
+                  )}
+                </div>
+              ) : (
+                <div className="text-sm text-gray-500">Empty</div>
+              )}
+            </CardContent>
+          </Card>
           <Card className="w-fit">
             <CardHeader>
               <CardTitle className="text-lg">Next Piece</CardTitle>
