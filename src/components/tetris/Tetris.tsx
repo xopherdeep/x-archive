@@ -277,10 +277,10 @@ export default function Tetris() {
         drop();
         break;
       case "ArrowUp":
-        quickDrop();
+        rotatePiece();
         break;
       case " ":
-        rotatePiece();
+        quickDrop();
         break;
       default:
         break;
