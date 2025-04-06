@@ -309,6 +309,41 @@ export default function GameView(props: GameViewProps) {
             </div>
           </CardContent>
         </Card>
+        <Card className="w-40">
+          <CardHeader>
+            <CardTitle className="text-lg m-0 p-0">Hold</CardTitle>
+          </CardHeader>
+          <CardContent className="p-1 text-center">
+            {hold ? (
+              <div
+                className="relative grid mx-auto"
+                style={{
+                  gridTemplateColumns: `repeat(${hold.tetromino.shape[0].length}, 30px)`,
+                  width: hold.tetromino.shape[0].length * 30 + "px",
+                  height: hold.tetromino.shape.length * 30 + "px",
+                  border: "2px solid #ccc",
+                }}
+              >
+                {hold.tetromino.shape.flatMap((row, y) =>
+                  row.map((cell, x) => (
+                    <div
+                      key={`${x}-${y}`}
+                      style={{
+                        width: "30px",
+                        height: "30px",
+                        backgroundColor: cell ? hold.tetromino.color : "transparent",
+                        boxSizing: "border-box",
+                        border: "1px solid #999",
+                      }}
+                    />
+                  ))
+                )}
+              </div>
+            ) : (
+              <div className="text-sm text-gray-500 text-center">Empty</div>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
