@@ -21,7 +21,7 @@ interface StatsProps {
   setTheme: (value: "light" | "dark") => void;
 }
 
-export default function Stats({ dropStats, onReset, TETROMINOES, cropShape, hold, theme, setTheme }: StatsProps) {
+export default function Stats({ dropStats, holdStats, onReset, TETROMINOES, cropShape, hold, theme, setTheme }: StatsProps) {
   return (
     <Card className="w-40">
       <CardHeader>
