@@ -228,7 +228,7 @@ export default function Tetris() {
         const { board: clearedBoard, cleared } = clearLines(merged);
         setBoard(clearedBoard);
         if (cleared > 0) {
-          toast(`Cleared ${cleared} lines!`);
+          toast(`🎉 Cleared ${cleared} lines! 🚀`);
         }
         if (prev.y < 0) {
           setGameOver(true);
@@ -312,7 +312,7 @@ export default function Tetris() {
     const { board: clearedBoard, cleared } = clearLines(merged);
     setBoard(clearedBoard);
     if (cleared > 0) {
-      toast(`Cleared ${cleared} lines!`);
+      toast(`🎉 Cleared ${cleared} lines! 🚀`);
     }
     if (posCopy.y < 0) {
       setGameOver(true);
