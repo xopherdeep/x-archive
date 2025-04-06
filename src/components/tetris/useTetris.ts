@@ -1,0 +1,273 @@
+"use client";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { randomTetromino, mergeBoard, checkCollision, clearLines, cropShape, rotate } from "./helpers";
+import { toast } from "sonner";
+import confetti from "canvas-confetti";
+
+const COLS = 10;
+const ROWS = 20;
+
+const TETROMINOES = {
+  I: {
+    shape: [
+      [0, 0, 0, 0],
+      [1, 1, 1, 1],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+    ],
+    color: "cyan",
+  },
+  O: {
+    shape: [
+      [1, 1],
+      [1, 1],
+    ],
+    color: "yellow",
+  },
+  T: {
+    shape: [
+      [0, 1, 0],
+      [1, 1, 1],
+      [0, 0, 0],
+    ],
+    color: "purple",
+  },
+  S: {
+    shape: [
+      [0, 1, 1],
+      [1, 1, 0],
+      [0, 0, 0],
+    ],
+    color: "green",
+  },
+  Z: {
+    shape: [
+      [1, 1, 0],
+      [0, 1, 1],
+      [0, 0, 0],
+    ],
+    color: "red",
+  },
+  J: {
+    shape: [
+      [1, 0, 0],
+      [1, 1, 1],
+      [0, 0, 0],
+    ],
+    color: "blue",
+  },
+  L: {
+    shape: [
+      [0, 0, 1],
+      [1, 1, 1],
+      [0, 0, 0],
+    ],
+    color: "orange",
+  },
+};
+
+export default function useTetris(initialTheme: "light" | "dark") {
+  const [board, setBoard] = useState<Array<Array<0 | string>>>(Array.from({ length: ROWS }, () => new Array(COLS).fill(0)));
+  const [theme, setTheme] = useState<"light" | "dark">(initialTheme);
+  const [current, setCurrent] = useState(() => randomTetromino(theme, 1));
+  const [next, setNext] = useState(() => randomTetromino(theme, 1));
+  const [position, setPosition] = useState({ x: Math.floor(COLS / 2) - 1, y: -1 });
+  const [gameOver, setGameOver] = useState(false);
+  const [score, setScore] = useState(0);
+  const [level, setLevel] = useState(1);
+  const initialStats = Object.keys(TETROMINOES).reduce((acc, key) => ({ ...acc, [key]: 0 }), {});
+  const [dropStats, setDropStats] = useState<Record<string, number>>(initialStats);
+  const [hold, setHold] = useState<null | { key: string; tetromino: { shape: number[][]; color: string } }>(null);
+  const [quickDropping, setQuickDropping] = useState(false);
+  const dropInterval = useRef<number>(1000);
+
+  const drop = useCallback(() => {
+    setPosition((prev) => {
+      const newPos = { x: prev.x, y: prev.y + 1 };
+      if (checkCollision(board, current.tetromino, newPos)) {
+        const merged = mergeBoard(board, current.tetromino, prev);
+        const { board: clearedBoard, cleared } = clearLines(merged);
+        setBoard(clearedBoard);
+        if (cleared > 0) {
+          toast(`Cleared ${cleared} lines!`);
+          if (cleared === 4) {
+            confetti({ particleCount: 150, spread: 60, origin: { y: 0.8 } });
+          }
+        }
+        if (prev.y < 0) {
+          setGameOver(true);
+          return prev;
+        }
+        setScore((prevScore) => {
+          const newScore = prevScore + cleared * 10;
+          if (newScore >= level * 50) {
+            setLevel((prevLevel) => prevLevel + 1);
+            dropInterval.current = Math.max(100, dropInterval.current - 100);
+          }
+          return newScore;
+        });
+        const newPiece = next;
+        setDropStats((prevStats) => ({
+          ...prevStats,
+          [newPiece.key]: (prevStats[newPiece.key] || 0) + 1,
+        }));
+        setCurrent(newPiece);
+        setNext(randomTetromino(theme, level));
+        return { x: Math.floor(COLS / 2) - Math.floor(newPiece.tetromino.shape[0].length / 2), y: -1 };
+      }
+      return newPos;
+    });
+  }, [board, current.tetromino, next, theme, level]);
+
+  useEffect(() => {
+    if (gameOver) return;
+    const timer = setInterval(drop, dropInterval.current);
+    return () => clearInterval(timer);
+  }, [drop, gameOver]);
+
+  const move = (dx: number) => {
+    setPosition((prev) => {
+      const newPos = { x: prev.x + dx, y: prev.y };
+      return checkCollision(board, current.tetromino, newPos) ? prev : newPos;
+    });
+  };
+
+  const rotatePiece = () => {
+    setCurrent((prev) => {
+      const rotated = { ...prev, tetromino: { ...prev.tetromino, shape: rotate(prev.tetromino.shape) } };
+      return checkCollision(board, rotated.tetromino, position) ? prev : rotated;
+    });
+  };
+
+  const holdPiece = () => {
+    let newCurrent, newHold;
+    if (!hold) {
+      newHold = current;
+      newCurrent = next;
+      setNext(randomTetromino(theme, level));
+    } else {
+      newCurrent = hold;
+      newHold = current;
+    }
+    setHold(newHold);
+    setCurrent(newCurrent);
+    setPosition({ x: Math.floor(COLS / 2) - Math.floor(newCurrent.tetromino.shape[0].length / 2), y: -1 });
+  };
+
+  const quickDrop = () => {
+    setQuickDropping(true);
+    let posCopy = position;
+    while (!checkCollision(board, current.tetromino, { x: posCopy.x, y: posCopy.y + 1 })) {
+      posCopy = { x: posCopy.x, y: posCopy.y + 1 };
+    }
+    setPosition(posCopy);
+    const merged = mergeBoard(board, current.tetromino, posCopy);
+    const { board: clearedBoard, cleared } = clearLines(merged);
+    setBoard(clearedBoard);
+    if (cleared > 0) {
+      toast(`Cleared ${cleared} lines!`);
+      if (cleared === 4) {
+        confetti({ particleCount: 150, spread: 60, origin: { y: 0.8 } });
+      }
+    }
+    if (posCopy.y < 0) {
+      setGameOver(true);
+      return;
+    }
+    setScore((prevScore) => {
+      const newScore = prevScore + cleared * 10;
+      if (newScore >= level * 50) {
+        setLevel((prevLevel) => prevLevel + 1);
+        dropInterval.current = Math.max(100, dropInterval.current - 100);
+      }
+      return newScore;
+    });
+    const newPiece = next;
+    setDropStats((prevStats) => ({
+      ...prevStats,
+      [newPiece.key]: (prevStats[newPiece.key] || 0) + 1,
+    }));
+    setCurrent(newPiece);
+    setNext(randomTetromino(theme, level));
+    setPosition({ x: Math.floor(COLS / 2) - Math.floor(newPiece.tetromino.shape[0].length / 2), y: -1 });
+    setTimeout(() => setQuickDropping(false), 300);
+  };
+
+  const mergedBoard = useMemo(() => {
+    const newBoard = board.map((row) => row.slice());
+    current.tetromino.shape.forEach((r, py) => {
+      r.forEach((v, px) => {
+        const boardY = position.y + py;
+        const boardX = position.x + px;
+        if (v && boardY >= 0 && boardY < ROWS && boardX >= 0 && boardX < COLS) {
+          newBoard[boardY][boardX] = current.tetromino.color;
+        }
+      });
+    });
+    return newBoard.flat();
+  }, [board, current, position]);
+
+  const ghostPosition = useMemo(() => {
+    let ghost = { ...position };
+    while (!checkCollision(board, current.tetromino, { x: ghost.x, y: ghost.y + 1 })) {
+      ghost.y++;
+    }
+    return ghost;
+  }, [board, current.tetromino, position]);
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp", " "].includes(event.key)) {
+      event.preventDefault();
+    }
+    if (gameOver) return;
+    switch (event.key) {
+      case "ArrowLeft":
+        move(-1);
+        break;
+      case "ArrowRight":
+        move(1);
+        break;
+      case "ArrowDown":
+        drop();
+        break;
+      case "ArrowUp":
+        rotatePiece();
+        break;
+      case " ":
+        quickDrop();
+        break;
+      case "x":
+        holdPiece();
+        break;
+      default:
+        break;
+    }
+  };
+
+  return {
+    board,
+    setBoard,
+    current,
+    next,
+    position,
+    setPosition,
+    gameOver,
+    score,
+    level,
+    dropStats,
+    hold,
+    quickDropping,
+    mergedBoard,
+    ghostPosition,
+    handleKeyDown,
+    move,
+    rotatePiece,
+    quickDrop,
+    holdPiece,
+    setTheme,
+    theme,
+    drop,
+    COLS,
+    ROWS,
+  };
+}
