@@ -17,6 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import StyleBoxes from "./StyleBoxes";
+import GameCard from "./GameCard";
 import { randomTetromino } from "./helpers";
 
 type GameViewProps = {
@@ -308,19 +309,9 @@ export default function GameView(props: GameViewProps) {
             </div>
           </CardContent>
         </Card>
-        <Card className="w-full">
-          <CardHeader>
-            <CardTitle className="text-lg m-0 p-0">Level</CardTitle>
-          </CardHeader>
-          <CardContent className="p-2 text-center">
-            <div
-              className="text-3xl font-bold tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]"
-              style={{ fontFamily: '"Press Start 2P", cursive' }}
-            >
-              {level}
-            </div>
-          </CardContent>
-        </Card>
+        <GameCard title="Level">
+          {level}
+        </GameCard>
         <Card className="w-full gap-0">
           <CardContent className="p-2 text-left bg-gray-900 rounded-sm mx-2 space-y-2">
             <div
