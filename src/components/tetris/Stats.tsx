@@ -1,0 +1,53 @@
+"use client";
+import React from "react";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+
+interface StatsProps {
+  dropStats: Record<string, number>;
+  onReset: () => void;
+  TETROMINOES: { [key: string]: { shape: number[][]; color: string } };
+  cropShape: (shape: number[][]) => number[][];
+}
+
+export default function Stats({ dropStats, onReset, TETROMINOES, cropShape }: StatsProps) {
+  return (
+    <Card className="w-40">
+      <CardHeader>
+        <CardTitle className="text-lg m-0 p-0">Stats</CardTitle>
+      </CardHeader>
+      <CardContent className="p-2">
+        <div className="flex flex-col gap-2">
+          {Object.entries(TETROMINOES).map(([key, tetromino]) => {
+            const cropped = cropShape(tetromino.shape);
+            return (
+              <div key={key} className="flex items-center gap-2">
+                <div className="w-8 text-center font-bold">{key}</div>
+                <div
+                  className="grid gap-0.5"
+                  style={{ gridTemplateColumns: `repeat(${cropped[0].length}, 20px)` }}
+                >
+                  {cropped.flat().map((cell, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        width: 20,
+                        height: 20,
+                        backgroundColor: cell ? tetromino.color : "transparent",
+                        border: "1px solid #ccc",
+                      }}
+                    />
+                  ))}
+                </div>
+                <div className="ml-auto text-sm">{dropStats[key] || 0}</div>
+              </div>
+            );
+          })}
+        </div>
+        <Button variant="outline" size="sm" onClick={onReset}>
+          Reset
+        </Button>
+      </CardContent>
+    </Card>
+  );
+}
