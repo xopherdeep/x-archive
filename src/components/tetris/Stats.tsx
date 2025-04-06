@@ -122,19 +122,6 @@ export default function Stats({
         <Button variant="outline" size="sm" onClick={onReset}>
           Reset
         </Button>
-        <Dialog>
-          <Button variant="outline" size="sm">
-            <DialogTrigger asChild>
-              Controls
-            </DialogTrigger>
-          </Button>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Game Controls</DialogTitle>
-            </DialogHeader>
-            <DialogDescription>
-              <ul className="list-disc list-inside">
-                <li><strong>Arrow Left:</strong> Move left</li>
                 <li><strong>Arrow Right:</strong> Move right</li>
                 <li><strong>Arrow Down:</strong> Soft drop</li>
                 <li><strong>Arrow Up:</strong> Rotate piece</li>
@@ -196,6 +183,44 @@ export default function Stats({
             )}
           </>
         )}
+        <Dialog>
+          <Button variant="outline" size="sm">
+            <DialogTrigger asChild>
+              Controls
+            </DialogTrigger>
+          </Button>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Game Controls</DialogTitle>
+            </DialogHeader>
+            <DialogDescription>
+              <ul className="list-disc list-inside">
+                <li><strong>Arrow Left:</strong> Move left</li>
+                <li><strong>Arrow Right:</strong> Move right</li>
+                <li><strong>Arrow Down:</strong> Soft drop</li>
+                <li><strong>Arrow Up:</strong> Rotate piece</li>
+                <li><strong>Shift + Arrow Up:</strong> Rotate piece opposite</li>
+                <li><strong>Space:</strong> Quick drop</li>
+                <li>
+                  <strong>{listening ? "Press key..." : (bindings?.holdKey || "Hold Key")}:</strong>{" "}
+                  <span
+                    onClick={() => setListening(true)}
+                    onKeyDown={(e) => {
+                      setBindings({ ...bindings, holdKey: e.key });
+                      setListening(false);
+                    }}
+                    tabIndex={0}
+                  >
+                    Hold piece
+                  </span>
+                </li>
+              </ul>
+            </DialogDescription>
+            <DialogFooter>
+              <Button variant="outline">Close</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </CardContent>
     </Card>
   );
