@@ -396,6 +396,30 @@ export default function Tetris() {
               }}
             />
           ))}
+          {current.tetromino.shape.map((row, py) =>
+            row.map((v, px) => {
+              if (v) {
+                const ghostX = ghostPosition.x + px;
+                const ghostY = ghostPosition.y + py;
+                return (
+                  <div
+                    key={`ghost-${py}-${px}`}
+                    className="absolute pointer-events-none opacity-50"
+                    style={{
+                      width: 30,
+                      height: 30,
+                      left: ghostX * 30,
+                      top: ghostY * 30,
+                      backgroundColor: current.tetromino.color,
+                      boxSizing: "border-box",
+                      border: "1px solid #999",
+                    }}
+                  />
+                );
+              }
+              return null;
+            })
+          )}
           {gameOver && (
             <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
               <span className="text-white text-3xl font-bold">Game Over</span>
