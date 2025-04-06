@@ -323,6 +323,11 @@ export default function Tetris() {
             >
               Fullscreen
             </Button>
+            <Button
+              onClick={() => setTheme(prev => (prev === "light" ? "dark" : "light"))}
+            >
+              Toggle Theme
+            </Button>
           </div>
         </div>
       </div>
