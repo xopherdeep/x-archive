@@ -201,6 +201,7 @@ export default function GameView(props: GameViewProps) {
           gameOver={gameOver}
           COLS={COLS}
           ROWS={ROWS}
+          level={level}
         />
         <div className="mt-4">
           <StyleBoxes />

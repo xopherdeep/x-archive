@@ -10,6 +10,7 @@ interface BoardProps {
   gameOver: boolean;
   COLS: number;
   ROWS: number;
+  level: number;
 }
 
 export default function Board({
@@ -20,7 +21,32 @@ export default function Board({
   gameOver,
   COLS,
   ROWS,
+  level,
 }: BoardProps) {
+  function getCellStyle(cell: 0 | string, level: number): React.CSSProperties {
+    if (cell === 0) {
+      return { backgroundColor: "transparent" };
+    }
+    const patternSize = Math.max(3, 10 - level);
+    switch(cell) {
+      case "#00ffff":
+        return { backgroundImage: `repeating-linear-gradient(45deg, ${cell}, ${cell} ${patternSize}px, rgba(0,0,0,0.2) ${patternSize}px, rgba(0,0,0,0.2) ${patternSize*2}px)` };
+      case "#ffff00":
+        return { backgroundImage: `repeating-linear-gradient(135deg, ${cell}, ${cell} ${patternSize}px, rgba(0,0,0,0.15) ${patternSize}px, rgba(0,0,0,0.15) ${patternSize*2}px)` };
+      case "#dda0dd":
+        return { backgroundImage: `repeating-linear-gradient(45deg, ${cell}, ${cell} ${patternSize}px, rgba(0,0,0,0.2) ${patternSize}px, rgba(0,0,0,0.2) ${patternSize*2}px)` };
+      case "#7fff00":
+        return { backgroundImage: `repeating-linear-gradient(135deg, ${cell}, ${cell} ${patternSize}px, rgba(0,0,0,0.1) ${patternSize}px, rgba(0,0,0,0.1) ${patternSize*2}px)` };
+      case "#ff4500":
+        return { backgroundImage: `repeating-linear-gradient(45deg, ${cell}, ${cell} ${patternSize}px, rgba(0,0,0,0.2) ${patternSize}px, rgba(0,0,0,0.2) ${patternSize*2}px)` };
+      case "#1e90ff":
+        return { backgroundImage: `repeating-linear-gradient(135deg, ${cell}, ${cell} ${patternSize}px, rgba(0,0,0,0.1) ${patternSize}px, rgba(0,0,0,0.1) ${patternSize*2}px)` };
+      case "#ff8c00":
+        return { backgroundImage: `repeating-linear-gradient(45deg, ${cell}, ${cell} ${patternSize}px, rgba(0,0,0,0.2) ${patternSize}px, rgba(0,0,0,0.2) ${patternSize*2}px)` };
+      default:
+        return { backgroundColor: cell };
+    }
+  }
   return (
     <Card className="w-fit">
       <CardContent>
@@ -42,7 +68,7 @@ export default function Board({
               style={{
                 width: "30px",
                 height: "30px",
-                backgroundColor: cell === 0 ? "transparent" : cell,
+                ...getCellStyle(cell, level),
                 boxSizing: "border-box",
                 border: "1px solid #999",
               }}
