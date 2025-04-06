@@ -250,7 +250,7 @@ export default function Tetris() {
         <div className="flex flex-col items-center gap-4">
           <div>
             <h3 className="text-xl font-bold mb-2">Next Piece</h3>
-            <div className="relative grid" style={{ gridTemplateColumns: `repeat(${next.tetromino.shape[0].length}, 30px)`, width: next.tetromino.shape[0].length * 30, height: next.tetromino.shape.length * 30, border: "4px solid #333" }}>
+            <div className="relative grid" style={{ gridTemplateColumns: `repeat(${next.tetromino.shape[0].length}, 30px)`, width: next.tetromino.shape[0].length * 30, height: next.tetromino.shape.length * 30, border: "4px solid #0f0" }}>
               {next.tetromino.shape.flatMap((row, y) =>
                 row.map((cell, x) => (
                   <div
@@ -267,10 +267,10 @@ export default function Tetris() {
               )}
             </div>
           </div>
-          <div className="text-xl">Score: {score}</div>
+          <div className="text-2xl tracking-widest text-green-400 drop-shadow-lg">Score: {score}</div>
           <div className="flex gap-4">
             <button
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg"
+              className="px-6 py-3 bg-green-700 hover:bg-green-800 text-white rounded-lg"
               onClick={() => {
                 setBoard(Array.from({ length: ROWS }, () => new Array(COLS).fill(0)));
                 setCurrent(randomTetromino());
@@ -283,7 +283,7 @@ export default function Tetris() {
               Restart
             </button>
             <button
-              className="px-6 py-3 bg-green-600 text-white rounded-lg"
+              className="px-6 py-3 bg-green-700 hover:bg-green-800 text-white rounded-lg"
               onClick={() => {
                 if (!document.fullscreenElement) {
                   document.documentElement.requestFullscreen();
