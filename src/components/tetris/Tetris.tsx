@@ -2,9 +2,10 @@
 import React from "react";
 import useTetris from "./useTetris";
 import GameView from "./GameView";
-import Background from "./Background";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
+import GameCard from "./GameCard";
+import Background from "./Background";
 
 const LIGHT_THEME = {
   I: "cyan",
@@ -286,43 +287,48 @@ export default function Tetris() {
   }, []);
 
   return mounted ? (
-    <div
-      className="relative h-screen w-full bg-gray-50 flex flex-col items-center justify-center overflow-hidden"
-      tabIndex={0}
-      onKeyDown={handleKeyDown}
-    >
-      <Background theme={theme} />
-      <h1 style={{ fontFamily: "'Press Start 2P', cursive" }} className="text-5xl font-extrabold mb-4 text-red-500 drop-shadow-[0_2px_3px_rgba(0,0,0,0.5)] tracking-[0.25em]">
-        TETRIS
-      </h1>
+    <GameCard>
+      <div
+        className="h-screen w-full flex flex-col items-center justify-center overflow-hidden"
+        tabIndex={0}
+        onKeyDown={handleKeyDown}
+      >
+        <Background theme={theme} />
+        <h1
+          style={{ fontFamily: "'Press Start 2P', cursive" }}
+          className="w-full text-5xl font-extrabold mb-4 text-red-500 drop-shadow-[0_2px_3px_rgba(0,0,0,0.5)] tracking-[0.25em] text-center"
+        >
+          TETRIS
+        </h1>
 
-      <GameView
-        mergedBoard={mergedBoard}
-        current={current}
-        quickDropping={quickDropping}
-        ghostPosition={ghostPosition}
-        gameOver={gameOver}
-        COLS={COLS}
-        ROWS={ROWS}
-        dropStats={dropStats}
-        linesCleared={linesCleared}
-        score={score}
-        level={level}
-        next={next}
-        hold={hold}
-        topScore={topScore}
-        theme={theme}
-        setBoard={setBoard}
-        setCurrent={setCurrent}
-        setNext={setNext}
-        setPosition={setPosition}
-        setScore={setScore}
-        setGameOver={setGameOver}
-        setDropStats={setDropStats}
-        setHold={setHold}
-        setTheme={setTheme}
-      />
-    </div>
+        <GameView
+          mergedBoard={mergedBoard}
+          current={current}
+          quickDropping={quickDropping}
+          ghostPosition={ghostPosition}
+          gameOver={gameOver}
+          COLS={COLS}
+          ROWS={ROWS}
+          dropStats={dropStats}
+          linesCleared={linesCleared}
+          score={score}
+          level={level}
+          next={next}
+          hold={hold}
+          topScore={topScore}
+          theme={theme}
+          setBoard={setBoard}
+          setCurrent={setCurrent}
+          setNext={setNext}
+          setPosition={setPosition}
+          setScore={setScore}
+          setGameOver={setGameOver}
+          setDropStats={setDropStats}
+          setHold={setHold}
+          setTheme={setTheme}
+        />
+      </div>
+    </GameCard>
   ) : (
     <div />
   );
