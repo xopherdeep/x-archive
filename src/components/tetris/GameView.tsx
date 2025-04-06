@@ -194,9 +194,15 @@ export default function GameView(props: GameViewProps) {
             ROWS={ROWS}
             level={level}
           />
-          {!started && !gameOver && (
-            <div className="absolute inset-0 flex items-center justify-center z-10">
-              <Button onClick={() => { resetGame(); setStarted(true); }}>Start Game</Button>
+          {(!started || gameOver) && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center z-10">
+              {gameOver && (
+                <div className="mb-4 text-white text-3xl font-bold">Game Over</div>
+              )}
+              <div className="flex gap-4">
+                <Button onClick={() => { resetGame(); setStarted(true); }}>Restart</Button>
+                <Button onClick={() => { resetGame(); setStarted(true); }}>Start Game</Button>
+              </div>
             </div>
           )}
         </div>
