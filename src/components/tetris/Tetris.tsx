@@ -234,8 +234,35 @@ export default function Tetris() {
     });
   };
 
+  const quickDrop = () => {
+    let posCopy = position;
+    while (!checkCollision(board, current.tetromino, { x: posCopy.x, y: posCopy.y + 1 })) {
+      posCopy = { x: posCopy.x, y: posCopy.y + 1 };
+    }
+    setPosition(posCopy);
+    const merged = mergeBoard(board, current.tetromino, posCopy);
+    const { board: clearedBoard, cleared } = clearLines(merged);
+    setBoard(clearedBoard);
+    if (posCopy.y < 0) {
+      setGameOver(true);
+      return;
+    }
+    setScore(prevScore => {
+      const newScore = prevScore + cleared * 10;
+      if (newScore >= level * 50) {
+        setLevel(prevLevel => prevLevel + 1);
+        dropInterval.current = Math.max(100, dropInterval.current - 100);
+      }
+      return newScore;
+    });
+    const newPiece = next;
+    setCurrent(newPiece);
+    setNext(randomTetromino(theme));
+    setPosition({ x: Math.floor(COLS / 2) - Math.floor(newPiece.tetromino.shape[0].length / 2), y: -1 });
+  };
+
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp"].includes(event.key)) {
+    if (["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp", " "].includes(event.key)) {
       event.preventDefault();
     }
     if (gameOver) return;
@@ -250,6 +277,9 @@ export default function Tetris() {
         drop();
         break;
       case "ArrowUp":
+        quickDrop();
+        break;
+      case " ":
         rotatePiece();
         break;
       default:
