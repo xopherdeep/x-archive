@@ -25,6 +25,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  React.useEffect(() => {
+    document.body.removeAttribute("data-new-gr-c-s-check-loaded");
+    document.body.removeAttribute("data-gr-ext-installed");
+  }, []);
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
