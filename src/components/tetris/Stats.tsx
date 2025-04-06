@@ -33,7 +33,7 @@ export default function Stats({ dropStats, onReset, TETROMINOES, cropShape, hold
             <SelectItem value="dark">Dark</SelectItem>
           </SelectContent>
         </Select>
-        <CardTitle className="text-lg m-0 p-0">Stats</CardTitle>
+        <CardTitle className="text-lg m-0 p-0">Tetrominos</CardTitle>
       </CardHeader>
       <CardContent className="p-2">
         <div className="flex flex-col gap-2">
