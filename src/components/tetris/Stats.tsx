@@ -50,26 +50,30 @@ export default function Stats({ dropStats, holdStats = {}, onReset, TETROMINOES,
               const cropped = cropShape(tetromino.shape);
               return (
                 <div key={key} className="transition-all duration-500">
-                  <div className="text-center font-bold">{key}</div>
                   <div className="flex items-center gap-2 justify-between">
-                    <div className="text-sm">{dropStats[key] || 0}</div>
-                    <div
-                      className="grid gap-0.5"
-                      style={{ gridTemplateColumns: `repeat(${cropped[0]?.length || 0}, 20px)` }}
-                    >
-                      {cropped.flat().map((cell, index) => (
+                    <div className="text-sm px-2">{dropStats[key] || 0}</div>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
                         <div
-                          key={index}
-                          style={{
-                            width: 20,
-                            height: 20,
-                            backgroundColor: cell ? tetromino.color : "transparent",
-                            border: "1px solid #ccc",
-                          }}
-                        />
-                      ))}
-                    </div>
-                    <div className="text-sm">{holdStats[key] || 0}</div>
+                          className="grid gap-0.5 px-2"
+                          style={{ gridTemplateColumns: `repeat(${cropped[0]?.length || 0}, 20px)` }}
+                        >
+                          {cropped.flat().map((cell, index) => (
+                            <div
+                              key={index}
+                              style={{
+                                width: 20,
+                                height: 20,
+                                backgroundColor: cell ? tetromino.color : "transparent",
+                                border: "1px solid #ccc",
+                              }}
+                            />
+                          ))}
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>{key}</TooltipContent>
+                    </Tooltip>
+                    <div className="text-sm px-2">{holdStats[key] || 0}</div>
                   </div>
                 </div>
               );
