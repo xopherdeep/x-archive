@@ -539,22 +539,29 @@ export default function Tetris() {
       </div>
       {activeTab === "game" ? (
         <div className="flex flex-col md:flex-row gap-8 items-start">
-          <div className="flex flex-col gap-2">
-            {Object.entries(TETROMINOES).map(([key, tetromino]) => {
-              const cropped = cropShape(tetromino.shape);
-              return (
-                <div key={key} className="flex items-center gap-2">
-                  <div className="w-8 text-center font-bold">{key}</div>
-                  <div className="grid gap-0.5" style={{ gridTemplateColumns: `repeat(${cropped[0].length}, 20px)` }}>
-                    {cropped.flat().map((cell, index) => (
-                      <div key={index} style={{ width: 20, height: 20, backgroundColor: cell ? tetromino.color : "transparent", border: "1px solid #ccc" }}/>
-                    ))}
-                  </div>
-                  <div className="ml-2 text-sm">{dropStats[key] || 0}</div>
-                </div>
-              );
-            })}
-          </div>
+          <Card className="w-40">
+            <CardHeader>
+              <CardTitle className="text-lg">Stats</CardTitle>
+            </CardHeader>
+            <CardContent className="p-2">
+              <div className="flex flex-col gap-2">
+                {Object.entries(TETROMINOES).map(([key, tetromino]) => {
+                  const cropped = cropShape(tetromino.shape);
+                  return (
+                    <div key={key} className="flex items-center gap-2">
+                      <div className="w-8 text-center font-bold">{key}</div>
+                      <div className="grid gap-0.5" style={{ gridTemplateColumns: `repeat(${cropped[0].length}, 20px)` }}>
+                        {cropped.flat().map((cell, index) => (
+                          <div key={index} style={{ width: 20, height: 20, backgroundColor: cell ? tetromino.color : "transparent", border: "1px solid #ccc" }}/>
+                        ))}
+                      </div>
+                      <div className="ml-2 text-sm">{dropStats[key] || 0}</div>
+                    </div>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
           <div>
             <div className="text-3xl font-bold tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)] mb-4" style={{ fontFamily: '"VT323", monospace' }}>
               SCORE: {score}
