@@ -104,11 +104,11 @@ export default function useTetris(initialTheme: "light" | "dark") {
           return prev;
         }
         setScore((prevScore) => prevScore + cleared * 10);
-        const newPiece = next;
         setDropStats((prevStats) => ({
           ...prevStats,
-          [newPiece.key]: (prevStats[newPiece.key] || 0) + 1,
+          [current.key]: (prevStats[current.key] || 0) + 1,
         }));
+        const newPiece = next;
         setCurrent(newPiece);
         setNext(randomTetromino(theme, level));
         return { x: Math.floor(COLS / 2) - Math.floor(newPiece.tetromino.shape[0].length / 2), y: -1 };
@@ -177,11 +177,11 @@ export default function useTetris(initialTheme: "light" | "dark") {
       return;
     }
     setScore((prevScore) => prevScore + cleared * 10);
-    const newPiece = next;
     setDropStats((prevStats) => ({
       ...prevStats,
-      [newPiece.key]: (prevStats[newPiece.key] || 0) + 1,
+      [current.key]: (prevStats[current.key] || 0) + 1,
     }));
+    const newPiece = next;
     setCurrent(newPiece);
     setNext(randomTetromino(theme, level));
     setPosition({ x: Math.floor(COLS / 2) - Math.floor(newPiece.tetromino.shape[0].length / 2), y: -1 });
