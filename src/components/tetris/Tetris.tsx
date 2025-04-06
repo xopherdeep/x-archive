@@ -251,6 +251,7 @@ export default function Tetris() {
     ROWS,
   } = useTetris("light", bindings);
 
+  const [bindings, setBindings] = React.useState({ holdKey: "x" });
   const [mounted, setMounted] = React.useState(false);
   const [topScore, setTopScore] = React.useState<number>(0);
 

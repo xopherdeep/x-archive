@@ -139,7 +139,19 @@ export default function Stats({
                 <li><strong>Arrow Up:</strong> Rotate piece</li>
                 <li><strong>Shift + Arrow Up:</strong> Rotate piece opposite</li>
                 <li><strong>Space:</strong> Quick drop</li>
-                <li><strong>Hold Key:</strong> Hold piece</li>
+                <li>
+                  <strong>{listening ? "Press key..." : bindings.holdKey}:</strong>{" "}
+                  <span
+                    onClick={() => setListening(true)}
+                    onKeyDown={(e) => {
+                      setBindings({ ...bindings, holdKey: e.key });
+                      setListening(false);
+                    }}
+                    tabIndex={0}
+                  >
+                    Hold piece
+                  </span>
+                </li>
               </ul>
             </DialogDescription>
             <DialogFooter>
