@@ -202,8 +202,8 @@ export default function GameView(props: GameViewProps) {
                 </div>
               )}
               <div className="flex gap-6">
-                <Button className="px-6" onClick={() => { resetGame(); setStarted(true); }}>Restart</Button>
-                <Button className="px-6" onClick={() => { resetGame(); setStarted(true); }}>Start Game</Button>
+                <Button className="px-6" onClick={() => { resetGame(); setStarted(true); }}>{`Restart @ level ${level}`}</Button>
+                <Button className="px-6" onClick={() => { resetGame(); setStarted(true); }}>Start</Button>
               </div>
             </div>
           )}
