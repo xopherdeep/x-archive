@@ -518,9 +518,6 @@ export default function Tetris() {
       onKeyDown={handleKeyDown}
     >
       <h1 className="text-5xl font-extrabold mb-4 text-red-500 drop-shadow-[0_2px_3px_rgba(0,0,0,0.5)] tracking-[0.25em]">TETRIS</h1>
-      <div className="text-3xl font-bold tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)] mb-4" style={{ fontFamily: '"Press Start 2P", cursive' }}>
-         SCORE: {score} | LEVEL: {level}
-      </div>
       <div className="flex space-x-4 mb-4">
         {Object.entries(TETROMINOES).map(([key, tetromino]) => {
           const previewShape = getPreviewShape(key, tetromino.shape);
@@ -565,6 +562,9 @@ export default function Tetris() {
       </div>
       {activeTab === "game" ? (
         <div className="flex flex-col md:flex-row gap-8 items-center">
+          <div className="text-3xl font-bold tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)] mb-4" style={{ fontFamily: '"VT323", monospace' }}>
+             SCORE: {score} | LEVEL: {level}
+          </div>
           <div
             className={`relative grid grid-cols-10 ${
               quickDropping
