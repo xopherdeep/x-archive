@@ -459,6 +459,11 @@ export default function Tetris() {
     return newBoard.flat();
   }, [board, current, position]);
 
+  const [mounted, setMounted] = React.useState(false);
+  const [activeTab, setActiveTab] = React.useState("game");
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return mounted ? (
     <div
