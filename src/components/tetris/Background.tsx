@@ -5,8 +5,8 @@ import { randomTetromino } from "./helpers";
 type TetrominoData = {
   key: string;
   tetromino: {
-    shape: number[][],
-    color: string,
+    shape: number[][];
+    color: string;
   };
   x: number;
   y: number;
@@ -15,7 +15,11 @@ type TetrominoData = {
 const NUM_TETROMINOS = 20; // adjust number of tetromino pieces
 const CELL_SIZE = 20; // in pixels
 
-export default function Background({ theme = "light" }: { theme?: "light" | "dark" }) {
+export default function Background({
+  theme = "light",
+}: {
+  theme?: "light" | "dark";
+}) {
   const tetrominos = useMemo(() => {
     const items: TetrominoData[] = [];
     const viewportWidth = window.innerWidth;
@@ -42,11 +46,19 @@ export default function Background({ theme = "light" }: { theme?: "light" | "dar
         width: "100%",
         height: "100%",
         pointerEvents: "none",
-        zIndex: -1,
+        // zIndex: -1,
       }}
     >
       {tetrominos.map((item, index) => (
-        <div key={index} style={{ position: "absolute", top: item.y, left: item.x, opacity: 0.1 }}>
+        <div
+          key={index}
+          style={{
+            position: "absolute",
+            top: item.y,
+            left: item.x,
+            opacity: 0.1,
+          }}
+        >
           {item.tetromino.shape.map((row, rowIndex) => (
             <div key={rowIndex} style={{ display: "flex" }}>
               {row.map((cell, colIndex) =>
@@ -62,7 +74,10 @@ export default function Background({ theme = "light" }: { theme?: "light" | "dar
                     }}
                   />
                 ) : (
-                  <div key={colIndex} style={{ width: CELL_SIZE, height: CELL_SIZE }} />
+                  <div
+                    key={colIndex}
+                    style={{ width: CELL_SIZE, height: CELL_SIZE }}
+                  />
                 )
               )}
             </div>
