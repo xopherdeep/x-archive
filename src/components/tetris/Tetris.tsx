@@ -560,6 +560,9 @@ export default function Tetris() {
                   );
                 })}
               </div>
+              <Button variant="outline" size="sm" onClick={() => setDropStats(initialStats)}>
+                Reset
+              </Button>
             </CardContent>
           </Card>
           <div>
