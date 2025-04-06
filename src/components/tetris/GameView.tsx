@@ -315,7 +315,7 @@ export default function GameView(props: GameViewProps) {
           <CardContent className="p-2 text-center">
             <div
               className="text-3xl font-bold tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]"
-              style={{ fontFamily: '"VT323", monospace' }}
+              style={{ fontFamily: '"Press Start 2P", cursive' }}
             >
               {level}
             </div>
@@ -328,14 +328,14 @@ export default function GameView(props: GameViewProps) {
           <CardContent className="p-2 text-left">
             <div
               className="flex flex-col text-xl tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]"
-              style={{ fontFamily: '"VT323", monospace' }}
+              style={{ fontFamily: '"Press Start 2P", cursive' }}
             >
               <p>Top</p>
               <p>{topScore}</p>
             </div>
             <div
               className="text-xl font-bold tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]"
-              style={{ fontFamily: '"VT323", monospace' }}
+              style={{ fontFamily: '"Press Start 2P", cursive' }}
             >
               <p>Score</p>
               <p>{score}</p>
