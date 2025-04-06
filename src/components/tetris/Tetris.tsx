@@ -2,9 +2,7 @@
 import React from "react";
 import useTetris from "./useTetris";
 import GameView from "./GameView";
-import Controls from "./Controls";
 import { Button } from "../ui/button";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 const LIGHT_THEME = {
   I: "cyan",
@@ -284,52 +282,32 @@ export default function Tetris() {
         TETRIS
       </h1>
 
-      <Tabs defaultValue="game">
-        <TabsList className="justify-center w-full">
-          <TabsTrigger value="game">Game</TabsTrigger>
-          <TabsTrigger value="controls">Controls</TabsTrigger>
-          <Button variant="outline" onClick={() => {
-              if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen();
-              } else {
-                document.exitFullscreen();
-              }
-            }}>
-            Fullscreen
-          </Button>
-        </TabsList>
-        <TabsContent value="game">
-          <GameView
-            mergedBoard={mergedBoard}
-            current={current}
-            quickDropping={quickDropping}
-            ghostPosition={ghostPosition}
-            gameOver={gameOver}
-            COLS={COLS}
-            ROWS={ROWS}
-            dropStats={dropStats}
-            linesCleared={linesCleared}
-            score={score}
-            level={level}
-            next={next}
-            hold={hold}
-            topScore={topScore}
-            theme={theme}
-            setBoard={setBoard}
-            setCurrent={setCurrent}
-            setNext={setNext}
-            setPosition={setPosition}
-            setScore={setScore}
-            setGameOver={setGameOver}
-            setDropStats={setDropStats}
-            setHold={setHold}
-            setTheme={setTheme}
-          />
-        </TabsContent>
-        <TabsContent value="controls">
-          <Controls bindings={bindings} setBindings={setBindings} />
-        </TabsContent>
-      </Tabs>
+      <GameView
+        mergedBoard={mergedBoard}
+        current={current}
+        quickDropping={quickDropping}
+        ghostPosition={ghostPosition}
+        gameOver={gameOver}
+        COLS={COLS}
+        ROWS={ROWS}
+        dropStats={dropStats}
+        linesCleared={linesCleared}
+        score={score}
+        level={level}
+        next={next}
+        hold={hold}
+        topScore={topScore}
+        theme={theme}
+        setBoard={setBoard}
+        setCurrent={setCurrent}
+        setNext={setNext}
+        setPosition={setPosition}
+        setScore={setScore}
+        setGameOver={setGameOver}
+        setDropStats={setDropStats}
+        setHold={setHold}
+        setTheme={setTheme}
+      />
     </div>
   ) : (
     <div />

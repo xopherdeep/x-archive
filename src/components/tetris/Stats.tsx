@@ -14,6 +14,7 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@/components/ui/tooltip";
+import { Dialog, DialogTrigger, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 interface StatsProps {
   dropStats: Record<string, number>;
@@ -116,6 +117,32 @@ export default function Stats({
         <Button variant="outline" size="sm" onClick={onReset}>
           Reset
         </Button>
+        <Dialog>
+          <Button variant="outline" size="sm">
+            <DialogTrigger>
+              Controls
+            </DialogTrigger>
+          </Button>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Game Controls</DialogTitle>
+            </DialogHeader>
+            <DialogDescription>
+              <ul className="list-disc list-inside">
+                <li><strong>Arrow Left:</strong> Move left</li>
+                <li><strong>Arrow Right:</strong> Move right</li>
+                <li><strong>Arrow Down:</strong> Soft drop</li>
+                <li><strong>Arrow Up:</strong> Rotate piece</li>
+                <li><strong>Shift + Arrow Up:</strong> Rotate piece opposite</li>
+                <li><strong>Space:</strong> Quick drop</li>
+                <li><strong>Hold Key:</strong> Hold piece</li>
+              </ul>
+            </DialogDescription>
+            <DialogFooter>
+              <Button variant="outline">Close</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
         {hold !== undefined && (
           <>
             <hr className="my-2" />
