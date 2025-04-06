@@ -35,11 +35,11 @@ export default function Stats({ dropStats, holdStats = {}, onReset, TETROMINOES,
             <SelectItem value="dark">Dark</SelectItem>
           </SelectContent>
         </Select>
-        <CardTitle className="text-lg m-0 p-0">Tetrominos</CardTitle>
+        <CardTitle className="text-lg m-0 p-0">Hold Piece Drop</CardTitle>
         <div className="flex justify-between">
-          <div className="text-xs text-muted">Drop</div>
-          <div className="text-xs text-muted">Piece</div>
           <div className="text-xs text-muted">Hold</div>
+          <div className="text-xs text-muted">Piece</div>
+          <div className="text-xs text-muted">Drop</div>
         </div>
       </CardHeader>
       <CardContent className="p-2">
@@ -51,7 +51,7 @@ export default function Stats({ dropStats, holdStats = {}, onReset, TETROMINOES,
               return (
                 <div key={key} className="transition-all duration-500">
                   <div className="flex items-center gap-2 justify-between">
-                    <div className="text-sm px-2">{dropStats[key] || 0}</div>
+                    <div className="text-sm px-2">{holdStats[key] || 0}</div>
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <div
@@ -73,7 +73,7 @@ export default function Stats({ dropStats, holdStats = {}, onReset, TETROMINOES,
                       </TooltipTrigger>
                       <TooltipContent>{key}</TooltipContent>
                     </Tooltip>
-                    <div className="text-sm px-2">{holdStats[key] || 0}</div>
+                    <div className="text-sm px-2">{dropStats[key] || 0}</div>
                   </div>
                 </div>
               );
