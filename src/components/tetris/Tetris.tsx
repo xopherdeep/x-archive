@@ -12,6 +12,7 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select";
+import Board from "./Board";
 
 const LIGHT_THEME = {
   I: "cyan",
@@ -136,7 +137,10 @@ type Position = {
   y: number;
 };
 
-function randomTetromino(theme: Theme, level: number): { key: string; tetromino: Tetromino } {
+function randomTetromino(
+  theme: Theme,
+  level: number
+): { key: string; tetromino: Tetromino } {
   const keys = Object.keys(TETROMINOES);
   const randKey = keys[Math.floor(Math.random() * keys.length)];
   const tetromino = TETROMINOES[randKey];
@@ -243,8 +247,12 @@ export default function Tetris() {
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
   const [level, setLevel] = useState(1);
-  const initialStats = Object.keys(TETROMINOES).reduce((acc, key) => ({ ...acc, [key]: 0 }), {});
-  const [dropStats, setDropStats] = useState<Record<string, number>>(initialStats);
+  const initialStats = Object.keys(TETROMINOES).reduce(
+    (acc, key) => ({ ...acc, [key]: 0 }),
+    {}
+  );
+  const [dropStats, setDropStats] =
+    useState<Record<string, number>>(initialStats);
   const [activeTab, setActiveTab] = useState("game");
   const [hold, setHold] = useState<{
     key: string;
@@ -326,11 +334,11 @@ export default function Tetris() {
         if (cleared > 0) {
           toast(`🎉 Cleared ${cleared} lines! 🚀`);
           if (cleared === 4) {
-              confetti({
-                particleCount: 150,
-                spread: 60,
-                origin: { y: 0.8 },
-              });
+            confetti({
+              particleCount: 150,
+              spread: 60,
+              origin: { y: 0.8 },
+            });
           }
         }
         if (prev.y < 0) {
@@ -346,7 +354,10 @@ export default function Tetris() {
           return newScore;
         });
         const newPiece = next;
-        setDropStats(prev => ({ ...prev, [newPiece.key]: (prev[newPiece.key] || 0) + 1 }));
+        setDropStats((prev) => ({
+          ...prev,
+          [newPiece.key]: (prev[newPiece.key] || 0) + 1,
+        }));
         setCurrent(newPiece);
         setNext(randomTetromino(theme, level));
         return {
@@ -403,7 +414,9 @@ export default function Tetris() {
     setHold(newHold);
     setCurrent(newCurrent);
     setPosition({
-      x: Math.floor(COLS / 2) - Math.floor(newCurrent.tetromino.shape[0].length / 2),
+      x:
+        Math.floor(COLS / 2) -
+        Math.floor(newCurrent.tetromino.shape[0].length / 2),
       y: -1,
     });
   };
@@ -446,7 +459,10 @@ export default function Tetris() {
       return newScore;
     });
     const newPiece = next;
-    setDropStats(prev => ({ ...prev, [newPiece.key]: (prev[newPiece.key] || 0) + 1 }));
+    setDropStats((prev) => ({
+      ...prev,
+      [newPiece.key]: (prev[newPiece.key] || 0) + 1,
+    }));
     setCurrent(newPiece);
     setNext(randomTetromino(theme, level));
     setPosition({
@@ -521,8 +537,10 @@ export default function Tetris() {
       tabIndex={0}
       onKeyDown={handleKeyDown}
     >
-      <h1 className="text-5xl font-extrabold mb-4 text-red-500 drop-shadow-[0_2px_3px_rgba(0,0,0,0.5)] tracking-[0.25em]">TETRIS</h1>
-      
+      <h1 className="text-5xl font-extrabold mb-4 text-red-500 drop-shadow-[0_2px_3px_rgba(0,0,0,0.5)] tracking-[0.25em]">
+        TETRIS
+      </h1>
+
       <div className="flex space-x-4 mb-4">
         <Button
           variant={activeTab === "game" ? "default" : "outline"}
@@ -550,23 +568,47 @@ export default function Tetris() {
                   return (
                     <div key={key} className="flex items-center gap-2">
                       <div className="w-8 text-center font-bold">{key}</div>
-                      <div className="grid gap-0.5" style={{ gridTemplateColumns: `repeat(${cropped[0].length}, 20px)` }}>
+                      <div
+                        className="grid gap-0.5"
+                        style={{
+                          gridTemplateColumns: `repeat(${cropped[0].length}, 20px)`,
+                        }}
+                      >
                         {cropped.flat().map((cell, index) => (
-                          <div key={index} style={{ width: 20, height: 20, backgroundColor: cell ? tetromino.color : "transparent", border: "1px solid #ccc" }}/>
+                          <div
+                            key={index}
+                            style={{
+                              width: 20,
+                              height: 20,
+                              backgroundColor: cell
+                                ? tetromino.color
+                                : "transparent",
+                              border: "1px solid #ccc",
+                            }}
+                          />
                         ))}
                       </div>
-                      <div className="ml-auto text-sm">{dropStats[key] || 0}</div>
+                      <div className="ml-auto text-sm">
+                        {dropStats[key] || 0}
+                      </div>
                     </div>
                   );
                 })}
               </div>
-              <Button variant="outline" size="sm" onClick={() => setDropStats(initialStats)}>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setDropStats(initialStats)}
+              >
                 Reset
               </Button>
             </CardContent>
           </Card>
           <div>
-            <div className="text-3xl font-bold tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)] mb-4" style={{ fontFamily: '"VT323", monospace' }}>
+            <div
+              className="text-3xl font-bold tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)] mb-4"
+              style={{ fontFamily: '"VT323", monospace' }}
+            >
               SCORE: {score}
             </div>
             <Board
@@ -578,7 +620,10 @@ export default function Tetris() {
               COLS={COLS}
               ROWS={ROWS}
             />
-            <div className="mt-2 text-3xl font-bold tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]" style={{ fontFamily: '"VT323", monospace' }}>
+            <div
+              className="mt-2 text-3xl font-bold tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]"
+              style={{ fontFamily: '"VT323", monospace' }}
+            >
               LEVEL: {level}
             </div>
           </div>
