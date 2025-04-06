@@ -13,7 +13,7 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@/components/ui/tooltip";
-import { Dialog, DialogTrigger, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { GameControlsDialog } from "@/components/ui/dialog";
 
 interface StatsProps {
   dropStats: Record<string, number>;
