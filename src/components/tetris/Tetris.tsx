@@ -298,19 +298,6 @@ export default function Tetris() {
   
 
 
-  const mergedBoard = React.useMemo(() => {
-    const newBoard = board.map((row) => [...row]);
-    current.tetromino.shape.forEach((r, py) => {
-      r.forEach((v, px) => {
-        const boardY = position.y + py;
-        const boardX = position.x + px;
-        if (v && boardY >= 0 && boardY < ROWS && boardX >= 0 && boardX < COLS) {
-          newBoard[boardY][boardX] = current.tetromino.color;
-        }
-      });
-    });
-    return newBoard.flat();
-  }, [board, current, position]);
 
   const [mounted, setMounted] = React.useState(false);
   const [activeTab, setActiveTab] = React.useState("game");
