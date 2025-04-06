@@ -283,16 +283,24 @@ export default function Tetris() {
     if (hasHeld) return;
     setHasHeld(true);
     if (!hold) {
+      // If nothing is held, store the current piece and get a new one.
       setHold(current);
       const newPiece = next;
       setCurrent(newPiece);
       setNext(randomTetromino(theme));
-      setPosition({ x: Math.floor(COLS / 2) - Math.floor(newPiece.tetromino.shape[0].length / 2), y: -1 });
+      setPosition({
+        x: Math.floor(COLS / 2) - Math.floor(newPiece.tetromino.shape[0].length / 2),
+        y: -1,
+      });
     } else {
-      const held = hold;
-      setHold(current);
-      setCurrent(held);
-      setPosition({ x: Math.floor(COLS / 2) - Math.floor(held.tetromino.shape[0].length / 2), y: -1 });
+      // Swap the held piece with the current piece.
+      const temp = current;
+      setCurrent(hold);
+      setHold(temp);
+      setPosition({
+        x: Math.floor(COLS / 2) - Math.floor(hold.tetromino.shape[0].length / 2),
+        y: -1,
+      });
     }
   };
 
