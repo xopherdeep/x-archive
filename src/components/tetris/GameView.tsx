@@ -55,6 +55,7 @@ export default function GameView(props: GameViewProps) {
     linesCleared,
     score,
     level,
+    topScore,
     next,
     hold,
     theme,
