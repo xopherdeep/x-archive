@@ -158,6 +158,9 @@ function clearLines(board: Cell[][]): { board: Cell[][]; cleared: number } {
 }
 
 export default function Tetris() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+  if (!mounted) return null;
   const [board, setBoard] = useState<Cell[][]>(
     Array.from({ length: ROWS }, () => new Array(COLS).fill(0))
   );
