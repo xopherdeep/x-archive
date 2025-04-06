@@ -1,8 +1,11 @@
 import Image from "next/image";
+import Sidebar from "../components/Sidebar";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+    <div className="flex">
+      <Sidebar />
+      <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <header className="w-full text-center py-4">
         <h1 className="text-3xl font-bold">X's Archive</h1>
       </header>
@@ -93,5 +96,6 @@ export default function Home() {
         </a>
       </footer>
     </div>
+  </div>
   );
 }
