@@ -36,6 +36,7 @@ export default function Stats({
   theme,
   setTheme,
 }: StatsProps) {
+  const holdRanking = Object.keys(TETROMINOES).sort((a, b) => (holdStats[b] || 0) - (holdStats[a] || 0));
   return (
     <Card className="w-50">
       <CardHeader>
@@ -67,7 +68,12 @@ export default function Stats({
               return (
                 <div key={key} className="transition-all duration-500">
                   <div className="flex items-center gap-2 justify-between">
-                    <div className="text-sm px-2">{holdStats[key] || 0}</div>
+                    <div className="text-sm px-2">
+                      {holdStats[key] || 0}{(() => { 
+                        const rank = holdRanking.indexOf(key);
+                        return rank === 0 ? " 🥇" : rank === 1 ? " 🥈" : rank === 2 ? " 🥉" : "";
+                      })()}
+                    </div>
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <div
