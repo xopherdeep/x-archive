@@ -73,6 +73,7 @@ export default function GameView(props: GameViewProps) {
     setPosition({ x: Math.floor(COLS / 2) - 1, y: -1 });
     setScore(0);
     setGameOver(false);
+    setHold(null);
   };
 
   const restartLevel = () => {
@@ -81,6 +82,7 @@ export default function GameView(props: GameViewProps) {
     setNext(randomTetromino(theme, level));
     setPosition({ x: Math.floor(COLS / 2) - 1, y: -1 });
     setGameOver(false);
+    setHold(null);
   };
 
   const cropShape = (shape: number[][]) => {

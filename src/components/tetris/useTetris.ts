@@ -304,6 +304,7 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
     drop,
     holdStats,
     setHoldStats,
+    setHold,
     COLS,
     ROWS,
   };
