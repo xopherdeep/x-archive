@@ -225,8 +225,8 @@ export default function Tetris() {
   }, [board, current, position]);
   
   return (
-    <div className="min-h-screen bg-gradient-to-r from-gray-900 to-black flex flex-col items-center justify-center p-4" tabIndex={0} onKeyDown={handleKeyDown}>
-      <h2 className="text-4xl font-bold mb-8 text-green-400 drop-shadow-lg">Tetris</h2>
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4" tabIndex={0} onKeyDown={handleKeyDown}>
+      <h2 className="text-4xl font-bold mb-4 text-gray-800">Tetris</h2>
       <div className="flex flex-col md:flex-row gap-8 items-center">
         <div className="relative grid grid-cols-10" style={{ width: COLS * 30, height: ROWS * 30, border: "4px solid #333" }}>
           {mergedBoard.map((cell, index) => (
@@ -248,29 +248,32 @@ export default function Tetris() {
           )}
         </div>
         <div className="flex flex-col items-center gap-4">
-          <div>
-            <h3 className="text-xl font-bold mb-2">Next Piece</h3>
-            <div className="relative grid" style={{ gridTemplateColumns: `repeat(${next.tetromino.shape[0].length}, 30px)`, width: next.tetromino.shape[0].length * 30, height: next.tetromino.shape.length * 30, border: "4px solid #0f0" }}>
-              {next.tetromino.shape.flatMap((row, y) =>
-                row.map((cell, x) => (
-                  <div
-                    key={`${x}-${y}`}
-                    style={{
-                      width: 30,
-                      height: 30,
-                      backgroundColor: cell ? next.tetromino.color : "transparent",
-                      boxSizing: "border-box",
-                      border: "1px solid #999",
-                    }}
-                  />
-                ))
-              )}
-            </div>
-          </div>
+          <Card className="w-fit">
+            <CardHeader>
+              <CardTitle className="text-lg">Next Piece</CardTitle>
+            </CardHeader>
+            <CardContent className="p-2">
+              <div className="relative grid" style={{ gridTemplateColumns: `repeat(${next.tetromino.shape[0].length}, 30px)`, width: next.tetromino.shape[0].length * 30, height: next.tetromino.shape.length * 30, border: "2px solid #ccc" }}>
+                {next.tetromino.shape.flatMap((row, y) =>
+                  row.map((cell, x) => (
+                    <div
+                      key={`${x}-${y}`}
+                      style={{
+                        width: 30,
+                        height: 30,
+                        backgroundColor: cell ? next.tetromino.color : "transparent",
+                        boxSizing: "border-box",
+                        border: "1px solid #999",
+                      }}
+                    />
+                  ))
+                )}
+              </div>
+            </CardContent>
+          </Card>
           <div className="text-2xl tracking-widest text-green-400 drop-shadow-lg">Score: {score}</div>
           <div className="flex gap-4">
-            <button
-              className="px-6 py-3 bg-green-700 hover:bg-green-800 text-white rounded-lg"
+            <Button
               onClick={() => {
                 setBoard(Array.from({ length: ROWS }, () => new Array(COLS).fill(0)));
                 setCurrent(randomTetromino());
@@ -281,9 +284,8 @@ export default function Tetris() {
               }}
             >
               Restart
-            </button>
-            <button
-              className="px-6 py-3 bg-green-700 hover:bg-green-800 text-white rounded-lg"
+            </Button>
+            <Button
               onClick={() => {
                 if (!document.fullscreenElement) {
                   document.documentElement.requestFullscreen();
@@ -293,7 +295,7 @@ export default function Tetris() {
               }}
             >
               Fullscreen
-            </button>
+            </Button>
           </div>
         </div>
       </div>
