@@ -66,7 +66,7 @@ const TETROMINOES = {
   },
 };
 
-export default function useTetris(initialTheme: "light" | "dark") {
+export default function useTetris(initialTheme: "light" | "dark", bindings = { holdKey: "c" }) {
   const [board, setBoard] = useState<Array<Array<0 | string>>>(Array.from({ length: ROWS }, () => new Array(COLS).fill(0)));
   const [theme, setTheme] = useState<"light" | "dark">(initialTheme);
   const [current, setCurrent] = useState(() => randomTetromino(theme, 1));
@@ -246,7 +246,7 @@ export default function useTetris(initialTheme: "light" | "dark") {
       case " ":
         quickDrop();
         break;
-      case "c":
+      case holdKey:
         holdPiece();
         break;
       default:
