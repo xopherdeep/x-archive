@@ -155,7 +155,11 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
     } else {
       newCurrent = hold;
     }
-    setHoldStats((prev) => ({ ...prev, [pieceToHold.key]: (prev[pieceToHold.key] || 0) + 1 }));
+    setHoldStats((prev) => {
+      const newCount = (prev[pieceToHold.key] || 0) + 1;
+      console.log("HoldStats update for", pieceToHold.key, ":", newCount);
+      return { ...prev, [pieceToHold.key]: newCount };
+    });
     setHold(pieceToHold);
     setCurrent(newCurrent);
     setPosition({
