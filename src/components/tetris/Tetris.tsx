@@ -247,7 +247,7 @@ export default function Tetris() {
         <div className="flex flex-col items-center gap-4">
           <div>
             <h3 className="text-xl font-bold mb-2">Next Piece</h3>
-            <div className="relative grid" style={{ width: next.tetromino.shape[0].length * 30, height: next.tetromino.shape.length * 30, border: "4px solid #333" }}>
+            <div className="relative grid" style={{ gridTemplateColumns: `repeat(${next.tetromino.shape[0].length}, 30px)`, width: next.tetromino.shape[0].length * 30, height: next.tetromino.shape.length * 30, border: "4px solid #333" }}>
               {next.tetromino.shape.flatMap((row, y) =>
                 row.map((cell, x) => (
                   <div
