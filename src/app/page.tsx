@@ -1,9 +1,10 @@
 import Image from "next/image";
-import { Sidebar } from "../components/ui/sidebar";
+import { Sidebar, SidebarProvider } from "../components/ui/sidebar";
 
 export default function Home() {
   return (
-    <div className="flex">
+    <SidebarProvider>
+      <div className="flex">
       <Sidebar />
       <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <header className="w-full text-center py-4">
