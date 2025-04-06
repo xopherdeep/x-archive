@@ -254,6 +254,22 @@ export default function Tetris() {
 
   const [mounted, setMounted] = React.useState(false);
   const [activeTab, setActiveTab] = React.useState("game");
+  const [topScore, setTopScore] = React.useState<number>(0);
+
+  React.useEffect(() => {
+    const storedTop = localStorage.getItem("tetris-topscore");
+    if (storedTop) {
+      setTopScore(Number(storedTop));
+    }
+  }, []);
+
+  React.useEffect(() => {
+    if (gameOver && score > topScore) {
+      setTopScore(score);
+      localStorage.setItem("tetris-topscore", String(score));
+    }
+  }, [gameOver, score, topScore]);
+
   React.useEffect(() => {
     setMounted(true);
   }, []);
@@ -267,6 +283,7 @@ export default function Tetris() {
       <h1 className="text-5xl font-extrabold mb-4 text-red-500 drop-shadow-[0_2px_3px_rgba(0,0,0,0.5)] tracking-[0.25em]">
         TETRIS
       </h1>
+      <div className="mb-4 text-2xl text-white">Top Score: {topScore}</div>
 
       <div className="flex space-x-4 mb-4">
         <Button
