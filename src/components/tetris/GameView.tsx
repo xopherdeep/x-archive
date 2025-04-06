@@ -195,20 +195,20 @@ export default function GameView(props: GameViewProps) {
             level={level}
           />
           {(!started || gameOver) && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center z-10 bg-black bg-opacity-70">
+            <div className="absolute inset-0 flex flex-col items-center justify-center z-10">
               {gameOver && (
                 <>
-                  <div className="mb-2 text-4xl font-bold">
+                  <div className="mb-2 text-4xl font-bold text-white drop-shadow-lg">
                     💀 Game Over
                   </div>
-                  <div className="mb-4 text-xl text-white">
+                  <div className="mb-4 text-xl text-white drop-shadow-lg">
                     Final Score: {score}
                   </div>
                 </>
               )}
               <div className="flex gap-6">
-                <Button className="px-6" onClick={() => { resetGame(); setStarted(true); }}>Start</Button>
                 <Button className="px-6" onClick={() => { resetGame(); setStarted(true); }}>{`Restart @ level ${level}`}</Button>
+                <Button className="px-6" onClick={() => { resetGame(); setStarted(true); }}>Start</Button>
               </div>
             </div>
           )}
