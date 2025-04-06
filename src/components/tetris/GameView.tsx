@@ -265,9 +265,9 @@ export default function GameView(props: GameViewProps) {
         </Card>
         <Card className="w-40">
           <CardHeader>
-            <CardTitle className="text-lg m-0 p-0">nexr.</CardTitle>
+            <CardTitle className="text-lg m-0 p-0">Next</CardTitle>
           </CardHeader>
-          <CardContent className="p-2 text-center">
+          <CardContent className="p-1 text-center">
             <div
               className="relative grid justify-center"
               style={{
