@@ -3,6 +3,28 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
+const LIGHT_THEME = {
+  I: "cyan",
+  O: "yellow",
+  T: "purple",
+  S: "green",
+  Z: "red",
+  J: "blue",
+  L: "orange",
+};
+
+const DARK_THEME = {
+  I: "#00ffff",
+  O: "#ffff00",
+  T: "#dda0dd",
+  S: "#7fff00",
+  Z: "#ff4500",
+  J: "#1e90ff",
+  L: "#ff8c00",
+};
+
+type Theme = "light" | "dark";
+
 type Cell = 0 | string;
 const COLS = 10;
 const ROWS = 20;
@@ -76,10 +98,12 @@ type Position = {
   y: number;
 };
 
-function randomTetromino(): { key: string; tetromino: Tetromino } {
+function randomTetromino(theme: Theme): { key: string; tetromino: Tetromino } {
   const keys = Object.keys(TETROMINOES);
   const randKey = keys[Math.floor(Math.random() * keys.length)];
-  return { key: randKey, tetromino: TETROMINOES[randKey] };
+  const tetromino = TETROMINOES[randKey];
+  const themeMapping = theme === "light" ? LIGHT_THEME : DARK_THEME;
+  return { key: randKey, tetromino: { ...tetromino, color: themeMapping[randKey] || tetromino.color } };
 }
 
 function rotate(matrix: number[][]): number[][] {
@@ -134,8 +158,9 @@ export default function Tetris() {
   const [board, setBoard] = useState<Cell[][]>(
     Array.from({ length: ROWS }, () => new Array(COLS).fill(0))
   );
-  const [current, setCurrent] = useState<{ key: string; tetromino: Tetromino }>(() => randomTetromino());
-  const [next, setNext] = useState<{ key: string; tetromino: Tetromino }>(() => randomTetromino());
+  const [theme, setTheme] = useState<Theme>("light");
+  const [current, setCurrent] = useState<{ key: string; tetromino: Tetromino }>(() => randomTetromino("light"));
+  const [next, setNext] = useState<{ key: string; tetromino: Tetromino }>(() => randomTetromino("light"));
   const [position, setPosition] = useState<Position>({ x: Math.floor(COLS / 2) - 1, y: -1 });
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
@@ -278,8 +303,8 @@ export default function Tetris() {
             <Button
               onClick={() => {
                 setBoard(Array.from({ length: ROWS }, () => new Array(COLS).fill(0)));
-                setCurrent(randomTetromino());
-                setNext(randomTetromino());
+                setCurrent(randomTetromino(theme));
+                setNext(randomTetromino(theme));
                 setPosition({ x: Math.floor(COLS / 2) - 1, y: -1 });
                 setScore(0);
                 setGameOver(false);
