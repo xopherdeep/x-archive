@@ -68,6 +68,8 @@ export default function GameView(props: GameViewProps) {
     setDropStats,
     setHold,
     setTheme,
+    bindings,
+    setBindings,
   } = props;
   const [started, setStarted] = React.useState(false);
   const resetGame = () => {
