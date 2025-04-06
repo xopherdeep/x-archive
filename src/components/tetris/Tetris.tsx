@@ -522,34 +522,7 @@ export default function Tetris() {
       onKeyDown={handleKeyDown}
     >
       <h1 className="text-5xl font-extrabold mb-4 text-red-500 drop-shadow-[0_2px_3px_rgba(0,0,0,0.5)] tracking-[0.25em]">TETRIS</h1>
-      <div className="flex space-x-4 mb-4">
-        {Object.entries(TETROMINOES).map(([key, tetromino]) => {
-          const previewShape = getPreviewShape(key, tetromino.shape);
-          return (
-            <div key={key} className="flex flex-col items-center">
-              <div className="mb-1 font-bold">{key}</div>
-              <div
-                className="grid gap-0.5 p-1"
-                style={{
-                  gridTemplateColumns: `repeat(${previewShape[0].length}, 20px)`,
-                }}
-              >
-                {previewShape.flat().map((cell, index) => (
-                  <div
-                    key={index}
-                    style={{
-                      width: 20,
-                      height: 20,
-                      backgroundColor: cell ? tetromino.color : "transparent",
-                      border: "1px solid #ccc",
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      
       <div className="flex space-x-4 mb-4">
         <Button
           variant={activeTab === "game" ? "default" : "outline"}
