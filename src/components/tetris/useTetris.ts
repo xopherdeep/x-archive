@@ -77,6 +77,7 @@ export default function useTetris(initialTheme: "light" | "dark") {
   const [level, setLevel] = useState(1);
   const initialStats = Object.keys(TETROMINOES).reduce((acc, key) => ({ ...acc, [key]: 0 }), {});
   const [dropStats, setDropStats] = useState<Record<string, number>>(initialStats);
+  const [linesCleared, setLinesCleared] = useState(0);
   const [hold, setHold] = useState<null | { key: string; tetromino: { shape: number[][]; color: string } }>(null);
   const [quickDropping, setQuickDropping] = useState(false);
   const dropInterval = useRef<number>(1000);
@@ -88,6 +89,7 @@ export default function useTetris(initialTheme: "light" | "dark") {
         const merged = mergeBoard(board, current.tetromino, prev);
         const { board: clearedBoard, cleared } = clearLines(merged);
         setBoard(clearedBoard);
+        setLinesCleared((prev) => prev + cleared);
         if (cleared > 0) {
           toast(`Cleared ${cleared} lines!`);
           if (cleared === 4) {
@@ -164,6 +166,7 @@ export default function useTetris(initialTheme: "light" | "dark") {
     const merged = mergeBoard(board, current.tetromino, posCopy);
     const { board: clearedBoard, cleared } = clearLines(merged);
     setBoard(clearedBoard);
+    setLinesCleared((prev) => prev + cleared);
     if (cleared > 0) {
       toast(`Cleared ${cleared} lines!`);
       if (cleared === 4) {
@@ -255,6 +258,7 @@ export default function useTetris(initialTheme: "light" | "dark") {
     score,
     level,
     dropStats,
+    linesCleared,
     hold,
     quickDropping,
     mergedBoard,

@@ -236,6 +236,7 @@ export default function Tetris() {
     level,
     gameOver,
     dropStats,
+    linesCleared,
     current,
     next,
     hold,
@@ -388,6 +389,7 @@ export default function Tetris() {
               COLS={COLS}
               ROWS={ROWS}
             />
+            <div className="mt-4 text-xl font-bold text-center">Lines Cleared: {linesCleared}</div>
           </div>
           <div className="flex flex-col items-start gap-4">
             <Card className="w-40">
