@@ -385,7 +385,7 @@ export default function Tetris() {
   }, [board, current.tetromino, position]);
   
   return mounted ? (
-    <div className="h-screen w-screen bg-gray-50 flex flex-col items-center justify-center overflow-hidden" tabIndex={0} onKeyDown={handleKeyDown}>
+    <div className="h-screen w-full bg-gray-50 flex flex-col items-center justify-center overflow-hidden" tabIndex={0} onKeyDown={handleKeyDown}>
       <h2 className="text-4xl font-bold mb-4 text-gray-800">Tetris</h2>
       <div className="flex space-x-4 mb-4">
         {Object.entries(TETROMINOES).map(([key, tetromino]) => {
