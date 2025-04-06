@@ -312,7 +312,7 @@ export default function Tetris() {
       </div>
       {activeTab === "game" ? (
       <div className="flex flex-col md:flex-row gap-8 items-center">
-        <div className="relative grid grid-cols-10" style={{ width: COLS * 30, height: ROWS * 30, backgroundImage: "linear-gradient(90deg, #333 1px, transparent 1px), linear-gradient(180deg, #333 1px, transparent 1px)", backgroundSize: "30px 30px" }}>
+        <div className="relative grid grid-cols-10" style={{ width: COLS * 30, height: ROWS * 30, background: "url('/assets/retro-bg.png') repeat", backgroundSize: "auto" }}>
           {mergedBoard.map((cell, index) => (
             <div
               key={index}
