@@ -243,6 +243,8 @@ export default function Tetris() {
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
   const [level, setLevel] = useState(1);
+  const initialStats = Object.keys(TETROMINOES).reduce((acc, key) => ({ ...acc, [key]: 0 }), {});
+  const [dropStats, setDropStats] = useState<Record<string, number>>(initialStats);
   const [activeTab, setActiveTab] = useState("game");
   const [hold, setHold] = useState<{
     key: string;
@@ -344,6 +346,7 @@ export default function Tetris() {
           return newScore;
         });
         const newPiece = next;
+        setDropStats(prev => ({ ...prev, [newPiece.key]: (prev[newPiece.key] || 0) + 1 }));
         setCurrent(newPiece);
         setNext(randomTetromino(theme, level));
         return {
@@ -443,6 +446,7 @@ export default function Tetris() {
       return newScore;
     });
     const newPiece = next;
+    setDropStats(prev => ({ ...prev, [newPiece.key]: (prev[newPiece.key] || 0) + 1 }));
     setCurrent(newPiece);
     setNext(randomTetromino(theme, level));
     setPosition({
@@ -561,69 +565,87 @@ export default function Tetris() {
         </Button>
       </div>
       {activeTab === "game" ? (
-        <div className="flex flex-col md:flex-row gap-8 items-center">
-          <div className="text-3xl font-bold tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)] mb-4" style={{ fontFamily: '"VT323", monospace' }}>
-             SCORE: {score}
+        <div className="flex flex-col md:flex-row gap-8 items-start">
+          <div className="flex flex-col gap-2">
+            {Object.entries(TETROMINOES).map(([key, tetromino]) => {
+              const cropped = cropShape(tetromino.shape);
+              return (
+                <div key={key} className="flex items-center gap-2">
+                  <div className="w-8 text-center font-bold">{key}</div>
+                  <div className="grid gap-0.5" style={{ gridTemplateColumns: `repeat(${cropped[0].length}, 20px)` }}>
+                    {cropped.flat().map((cell, index) => (
+                      <div key={index} style={{ width: 20, height: 20, backgroundColor: cell ? tetromino.color : "transparent", border: "1px solid #ccc" }}/>
+                    ))}
+                  </div>
+                  <div className="ml-2 text-sm">{dropStats[key] || 0}</div>
+                </div>
+              );
+            })}
           </div>
           <div>
-            <div
-              className={`relative grid grid-cols-10 ${
-                quickDropping
-                  ? "transition-transform duration-300 transform translate-y-2"
-                  : ""
-              }`}
-              style={{
-                width: COLS * 30 + "px",
-                height: ROWS * 30 + "px",
-                background: "url('/assets/retro-bg.png') repeat",
-                backgroundSize: "auto",
-              }}
-            >
-              {mergedBoard.map((cell, index) => (
-                <div
-                  key={index}
-                  className="transition-all duration-300"
-                  style={{
-                    width: "30px",
-                    height: "30px",
-                    backgroundColor: cell === 0 ? "transparent" : cell,
-                    boxSizing: "border-box",
-                    border: "1px solid #999",
-                  }}
-                />
-              ))}
-              {current.tetromino.shape.map((row, py) =>
-                row.map((v, px) => {
-                  if (v) {
-                    const ghostX = ghostPosition.x + px;
-                    const ghostY = ghostPosition.y + py;
-                    return (
-                      <div
-                        key={`ghost-${py}-${px}`}
-                        className="absolute pointer-events-none opacity-50"
-                        style={{
-                          width: "30px",
-                          height: "30px",
-                          left: ghostX * 30 + "px",
-                          top: ghostY * 30 + "px",
-                          backgroundColor: current.tetromino.color,
-                          boxSizing: "border-box",
-                          border: "1px solid #999",
-                        }}
-                      />
-                    );
-                  }
-                  return null;
-                })
-              )}
-              {gameOver && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                  <span className="text-white text-3xl font-bold">Game Over</span>
-                </div>
-              )}
+            <div className="text-3xl font-bold tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)] mb-4" style={{ fontFamily: '"VT323", monospace' }}>
+              SCORE: {score}
             </div>
-            <div className="mt-2 text-3xl font-bold tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]" style={{ fontFamily: '"VT323", monospace' }}>
-              LEVEL: {level}
+            <div>
+              <div
+                className={`relative grid grid-cols-10 ${
+                  quickDropping
+                    ? "transition-transform duration-300 transform translate-y-2"
+                    : ""
+                }`}
+                style={{
+                  width: COLS * 30 + "px",
+                  height: ROWS * 30 + "px",
+                  background: "url('/assets/retro-bg.png') repeat",
+                  backgroundSize: "auto",
+                }}
+              >
+                {mergedBoard.map((cell, index) => (
+                  <div
+                    key={index}
+                    className="transition-all duration-300"
+                    style={{
+                      width: "30px",
+                      height: "30px",
+                      backgroundColor: cell === 0 ? "transparent" : cell,
+                      boxSizing: "border-box",
+                      border: "1px solid #999",
+                    }}
+                  />
+                ))}
+                {current.tetromino.shape.map((row, py) =>
+                  row.map((v, px) => {
+                    if (v) {
+                      const ghostX = ghostPosition.x + px;
+                      const ghostY = ghostPosition.y + py;
+                      return (
+                        <div
+                          key={`ghost-${py}-${px}`}
+                          className="absolute pointer-events-none opacity-50"
+                          style={{
+                            width: "30px",
+                            height: "30px",
+                            left: ghostX * 30 + "px",
+                            top: ghostY * 30 + "px",
+                            backgroundColor: current.tetromino.color,
+                            boxSizing: "border-box",
+                            border: "1px solid #999",
+                          }}
+                        />
+                      );
+                    }
+                    return null;
+                  })
+                )}
+                {gameOver && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    <span className="text-white text-3xl font-bold">Game Over</span>
+                  </div>
+                )}
+              </div>
+              <div className="mt-2 text-3xl font-bold tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]" style={{ fontFamily: '"VT323", monospace' }}>
+                LEVEL: {level}
+              </div>
             </div>
           </div>
           <div className="flex flex-col items-center gap-4">
@@ -738,6 +760,9 @@ export default function Tetris() {
             </div>
           </div>
         </div>
+      ) : activeTab === "controls" ? (
+        <Controls />
+      ) : null}
       ) : activeTab === "controls" ? (
         <Controls />
       ) : null}
