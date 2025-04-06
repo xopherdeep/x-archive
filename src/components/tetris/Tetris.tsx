@@ -736,9 +736,6 @@ export default function Tetris() {
       ) : activeTab === "controls" ? (
         <Controls />
       ) : null}
-      ) : activeTab === "controls" ? (
-        <Controls />
-      ) : null}
     </div>
   ) : (
     <div />
