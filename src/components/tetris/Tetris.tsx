@@ -379,12 +379,6 @@ export default function Tetris() {
             </CardContent>
           </Card>
           <div>
-            <div
-              className="text-3xl font-bold tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)] mb-4"
-              style={{ fontFamily: '"VT323", monospace' }}
-            >
-              SCORE: {score}
-            </div>
             <Board
               mergedBoard={mergedBoard}
               current={current}
@@ -394,14 +388,27 @@ export default function Tetris() {
               COLS={COLS}
               ROWS={ROWS}
             />
-            <div
-              className="mt-2 text-3xl font-bold tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]"
-              style={{ fontFamily: '"VT323", monospace' }}
-            >
-              LEVEL: {level}
-            </div>
           </div>
-          <div className="flex flex-row items-center gap-4">
+          <div className="flex flex-col items-start gap-4">
+            <Card className="w-40">
+              <CardHeader>
+                <CardTitle className="text-lg m-0 p-0">Score</CardTitle>
+              </CardHeader>
+              <CardContent className="p-2">
+                <div
+                  className="text-3xl font-bold tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]"
+                  style={{ fontFamily: '"VT323", monospace' }}
+                >
+                  {score}
+                </div>
+                <div
+                  className="mt-1 text-xl tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]"
+                  style={{ fontFamily: '"VT323", monospace' }}
+                >
+                  Level: {level}
+                </div>
+              </CardContent>
+            </Card>
             <Card className="w-40">
               <CardHeader>
                 <CardTitle className="text-lg m-0 p-0">Hold Piece</CardTitle>
