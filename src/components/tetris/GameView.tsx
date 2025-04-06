@@ -101,7 +101,12 @@ export default function GameView(props: GameViewProps) {
           )
         }
         TETROMINOES={{
-          I: { shape: [[0, 0, 0, 0]], color: "cyan" },
+          I: { shape: [
+                    [0, 0, 0, 0],
+                    [1, 1, 1, 1],
+                    [0, 0, 0, 0],
+                    [0, 0, 0, 0],
+                  ], color: "cyan" },
           O: {
             shape: [
               [1, 1],
