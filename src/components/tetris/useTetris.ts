@@ -156,7 +156,7 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
       newCurrent = hold;
       newHold = current;
     }
-    setHoldStats((prev) => ({ ...prev, [current.key]: (prev[current.key] || 0) + 1 }));
+    setHoldStats((prev) => ({ ...prev, [newHold.key]: (prev[newHold.key] || 0) + 1 }));
     setHold(newHold);
     setCurrent(newCurrent);
     setPosition({ x: Math.floor(COLS / 2) - Math.floor(newCurrent.tetromino.shape[0].length / 2), y: -1 });
