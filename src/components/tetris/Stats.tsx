@@ -2,6 +2,13 @@
 import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface StatsProps {
   dropStats: Record<string, number>;
@@ -9,12 +16,23 @@ interface StatsProps {
   TETROMINOES: { [key: string]: { shape: number[][]; color: string } };
   cropShape: (shape: number[][]) => number[][];
   hold?: { key: string; tetromino: { shape: number[][]; color: string } };
+  theme: "light" | "dark";
+  setTheme: (value: "light" | "dark") => void;
 }
 
 export default function Stats({ dropStats, onReset, TETROMINOES, cropShape, hold }: StatsProps) {
   return (
     <Card className="w-40">
       <CardHeader>
+        <Select value={theme} onValueChange={(val) => setTheme(val as "light" | "dark")}>
+          <SelectTrigger>
+            <SelectValue placeholder="Theme" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="light">Light</SelectItem>
+            <SelectItem value="dark">Dark</SelectItem>
+          </SelectContent>
+        </Select>
         <CardTitle className="text-lg m-0 p-0">Stats</CardTitle>
       </CardHeader>
       <CardContent className="p-2">

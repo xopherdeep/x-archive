@@ -63,6 +63,15 @@ export default function GameView(props: GameViewProps) {
     setDropStats,
     setTheme,
   } = props;
+  const [started, setStarted] = React.useState(false);
+  const resetGame = () => {
+    setBoard(Array.from({ length: ROWS }, () => new Array(COLS).fill(0)));
+    setCurrent(randomTetromino(theme, level));
+    setNext(randomTetromino(theme, level));
+    setPosition({ x: Math.floor(COLS / 2) - 1, y: -1 });
+    setScore(0);
+    setGameOver(false);
+  };
 
   const cropShape = (shape: number[][]) => {
     const croppedRows = shape.filter((row) => row.some((cell) => cell));
@@ -157,23 +166,11 @@ export default function GameView(props: GameViewProps) {
         }}
         cropShape={cropShape}
         hold={hold}
+        theme={theme}
+        setTheme={setTheme}
       />
       <div>
         <div className="flex gap-4 mb-4 justify-between w-full">
-          <Button
-            onClick={() => {
-              setBoard(
-                Array.from({ length: ROWS }, () => new Array(COLS).fill(0))
-              );
-              setCurrent(randomTetromino(theme, level));
-              setNext(randomTetromino(theme, level));
-              setPosition({ x: Math.floor(COLS / 2) - 1, y: -1 });
-              setScore(0);
-              setGameOver(false);
-            }}
-          >
-            Restart
-          </Button>
           <Button
             onClick={() => {
               if (!document.fullscreenElement) {
@@ -198,16 +195,23 @@ export default function GameView(props: GameViewProps) {
             </SelectContent>
           </Select>
         </div>
-        <Board
-          mergedBoard={mergedBoard}
-          current={current}
-          quickDropping={quickDropping}
-          ghostPosition={ghostPosition}
-          gameOver={gameOver}
-          COLS={COLS}
-          ROWS={ROWS}
-          level={level}
-        />
+        <div className="relative">
+          <Board
+            mergedBoard={mergedBoard}
+            current={current}
+            quickDropping={quickDropping}
+            ghostPosition={ghostPosition}
+            gameOver={gameOver}
+            COLS={COLS}
+            ROWS={ROWS}
+            level={level}
+          />
+          {!started && !gameOver && (
+            <div className="absolute inset-0 flex items-center justify-center z-10">
+              <Button onClick={() => { resetGame(); setStarted(true); }}>Start Game</Button>
+            </div>
+          )}
+        </div>
         <div className="mt-4">
           <StyleBoxes />
         </div>
@@ -233,6 +237,7 @@ export default function GameView(props: GameViewProps) {
             >
               Level: {level}
             </div>
+            <Button variant="outline" size="sm" className="mt-2" onClick={resetGame}>Restart</Button>
           </CardContent>
         </Card>
         <Card className="w-40">
