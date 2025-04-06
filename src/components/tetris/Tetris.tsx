@@ -165,6 +165,7 @@ export default function Tetris() {
   const [position, setPosition] = useState<Position>({ x: Math.floor(COLS / 2) - 1, y: -1 });
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
+  const [level, setLevel] = useState(1);
   const dropInterval = useRef<number>(1000);
 
   React.useEffect(() => {
@@ -189,15 +190,22 @@ export default function Tetris() {
           setGameOver(true);
           return prev;
         }
-        setScore(prevScore => prevScore + cleared * 10);
+        setScore(prevScore => {
+          const newScore = prevScore + cleared * 10;
+          if (newScore >= level * 50) {
+            setLevel(prevLevel => prevLevel + 1);
+            dropInterval.current = Math.max(100, dropInterval.current - 100);
+          }
+          return newScore;
+        });
         const newPiece = next;
         setCurrent(newPiece);
-        setNext(randomTetromino());
+        setNext(randomTetromino(theme));
         return { x: Math.floor(COLS / 2) - Math.floor(newPiece.tetromino.shape[0].length / 2), y: -1 };
       }
       return newPos;
     });
-  }, [board, current.tetromino]);
+  }, [board, current.tetromino, next, theme, level]);
 
   useEffect(() => {
     if (gameOver) return;
@@ -310,7 +318,7 @@ export default function Tetris() {
               </div>
             </CardContent>
           </Card>
-          <div className="text-2xl tracking-widest text-green-400 drop-shadow-lg">Score: {score}</div>
+          <div className="text-2xl tracking-widest text-green-400 drop-shadow-lg">Score: {score} | Level: {level}</div>
           <div className="flex gap-4">
             <Button
               onClick={() => {
