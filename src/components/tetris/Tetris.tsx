@@ -541,7 +541,7 @@ export default function Tetris() {
         <div className="flex flex-col md:flex-row gap-8 items-start">
           <Card className="w-40">
             <CardHeader>
-              <CardTitle className="text-lg">Stats</CardTitle>
+              <CardTitle className="text-lg m-0 p-0">Stats</CardTitle>
             </CardHeader>
             <CardContent className="p-2">
               <div className="flex flex-col gap-2">
@@ -631,7 +631,7 @@ export default function Tetris() {
           <div className="flex flex-row items-center gap-4">
             <Card className="w-40">
               <CardHeader>
-                <CardTitle className="text-lg">Hold Piece</CardTitle>
+                <CardTitle className="text-lg m-0 p-0">Hold Piece</CardTitle>
               </CardHeader>
               <CardContent className="p-2">
                 {hold ? (
@@ -668,7 +668,7 @@ export default function Tetris() {
             </Card>
             <Card className="w-40">
               <CardHeader>
-                <CardTitle className="text-lg">Next Piece</CardTitle>
+                <CardTitle className="text-lg m-0 p-0">Next Piece</CardTitle>
               </CardHeader>
               <CardContent className="p-2">
                 <div
