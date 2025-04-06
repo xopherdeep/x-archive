@@ -621,7 +621,7 @@ export default function Tetris() {
               </div>
             </div>
           </div>
-          <div className="flex flex-col items-center gap-4">
+          <div className="flex flex-row items-center gap-4">
             <Card className="w-40">
               <CardHeader>
                 <CardTitle className="text-lg">Hold Piece</CardTitle>
