@@ -20,6 +20,7 @@ import {
   TooltipContent,
 } from "@/components/ui/tooltip";
 import { GameControlsDialog } from "@/components/tetris/GameControlsDialog";
+import GameCard from "./GameCard";
 
 interface StatsProps {
   dropStats: Record<string, number>;
@@ -50,27 +51,9 @@ export default function Stats({
     (a, b) => (holdStats[b] || 0) - (holdStats[a] || 0)
   );
   return (
-    <Card className="w-50 gap-2">
-      <CardHeader>
-        <CardTitle className="text-lg m-0 p-0">Tetrominoes</CardTitle>
-      </CardHeader>
-
-      <CardContent className="p-2 m-0">
-        <div className="flex justify-between mb-4">
-          <GameControlsDialog bindings={bindings} setBindings={setBindings} />
-          <Select
-            value={theme}
-            onValueChange={(val) => setTheme(val as "light" | "dark")}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Theme" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="light">Light</SelectItem>
-              <SelectItem value="dark">Dark</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+    <div className="flex flex-col gap-4">
+      <GameCard title="Tetrominoes">
+        <hr className="my-2" />
         <div className="flex justify-between">
           <div className="text-xs">Hold</div>
           {/* <div className="text-xs text-muted">Piece</div> */}
@@ -172,19 +155,35 @@ export default function Stats({
             ) : (
               <div className="text-sm text-gray-500 text-center">Empty</div>
             )}
+            <hr className="my-2" />
           </>
         )}
-      </CardContent>
-      <CardFooter>
-        <Button
-          // variant="ghost"
-          size="sm"
-          onClick={onReset}
-          className="w-full"
-        >
-          Reset
-        </Button>
-      </CardFooter>
-    </Card>
+      </GameCard>
+      <GameCard>
+        <div className="flex flex-col gap-2 my-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onReset}
+            className="w-full"
+          >
+            Reset
+          </Button>
+          <GameControlsDialog bindings={bindings} setBindings={setBindings} />
+          <Select
+            value={theme}
+            onValueChange={(val) => setTheme(val as "light" | "dark")}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Theme" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="light">Light</SelectItem>
+              <SelectItem value="dark">Dark</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </GameCard>
+    </div>
   );
 }

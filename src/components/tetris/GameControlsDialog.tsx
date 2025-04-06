@@ -13,7 +13,7 @@ function GameControlsDialog({ bindings, setBindings }: { bindings: { holdKey: st
 
   return (
     <Dialog>
-      <Button variant="outline" size="sm">
+      <Button variant="ghost" size="sm">
         <DialogTrigger asChild>
           <span>Controls</span>
         </DialogTrigger>

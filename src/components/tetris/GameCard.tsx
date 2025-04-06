@@ -9,16 +9,17 @@ interface GameCardProps {
 
 export default function GameCard({ title, children }: GameCardProps) {
   return (
-    <Card className="w-full">
-      <CardHeader>
+    <Card className="w-full gap-0 py-2">
+      {/* <CardHeader>
         <CardTitle className="text-lg m-0 p-0">{title}</CardTitle>
-      </CardHeader>
-      <CardContent className="p-2 text-center bg-gray-800">
+      </CardHeader> */}
+      <CardContent className="p-2 text-left bg-gray-900 rounded-sm mx-2 space-y-2">
         <div
-          className="text-3xl font-bold tracking-[0.15em] text-lime-400 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]"
-          style={{ fontFamily: '"Player 2", cursive' }}
+          className="flex flex-col text-sm tracking-[0.15em] text-white font-bold"
+          style={{ fontFamily: '"Press Start 2P", cursive' }}
         >
-          {children}
+          <p>{title}</p>
+          <p>{children}</p>
         </div>
       </CardContent>
     </Card>

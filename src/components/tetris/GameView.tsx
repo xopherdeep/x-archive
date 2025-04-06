@@ -205,34 +205,61 @@ export default function GameView(props: GameViewProps) {
         setBindings={setBindings}
       />
       <div>
-        <div className="relative">
-          <Board
-            mergedBoard={mergedBoard}
-            current={current}
-            quickDropping={quickDropping}
-            ghostPosition={ghostPosition}
-            gameOver={gameOver}
-            COLS={COLS}
-            ROWS={ROWS}
-            level={level}
-          />
-          {(!started || gameOver) && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center z-10 bg-black bg-opacity-75 p-4">
-              {gameOver ? (
-                <>
-                  <div className="mb-4 flex flex-col items-center">
-                    <span className="text-5xl font-extrabold text-white">
-                      🧱
-                    </span>
-                    <span className="mt-2 text-4xl font-bold text-white">
-                      GAME OVER
-                    </span>
-                  </div>
-                  <div className="mb-2 text-2xl text-white">Score: {score}</div>
-                  <div className="mb-4 text-2xl text-white">
-                    Lines Cleared: {linesCleared}
-                  </div>
-                  <div className="flex flex-col gap-2">
+        <GameCard>
+          <div className="relative">
+            <Board
+              mergedBoard={mergedBoard}
+              current={current}
+              quickDropping={quickDropping}
+              ghostPosition={ghostPosition}
+              gameOver={gameOver}
+              COLS={COLS}
+              ROWS={ROWS}
+              level={level}
+            />
+            {(!started || gameOver) && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center z-10 bg-black bg-opacity-75 p-4">
+                {gameOver ? (
+                  <>
+                    <div className="mb-4 flex flex-col items-center gap-2">
+                      <span className="text-5xl font-extrabold text-white">
+                        🧱
+                      </span>
+                      <span className="mt-2 text-3xl font-bold text-white text-center">
+                        GAME OVER
+                      </span>
+                    </div>
+                    <div className="mb-2 text-2xl text-white">
+                      Score: {score}
+                    </div>
+                    <div className="mb-4 text-2xl text-white">
+                      Lines: {linesCleared}
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <Button
+                        className="px-6"
+                        onClick={() => {
+                          resetGame();
+                          setStarted(true);
+                        }}
+                      >
+                        Start Over
+                      </Button>
+                      <Button
+                        className="px-6"
+                        onClick={() => {
+                          restartLevel();
+                        }}
+                      >
+                        Restart Level
+                      </Button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="mb-4 text-4xl font-bold text-white">
+                      Welcome to Tetris!
+                    </div>
                     <Button
                       className="px-6"
                       onClick={() => {
@@ -240,47 +267,21 @@ export default function GameView(props: GameViewProps) {
                         setStarted(true);
                       }}
                     >
-                      Start Over
+                      Start Game
                     </Button>
-                    <Button
-                      className="px-6"
-                      onClick={() => {
-                        restartLevel();
-                      }}
-                    >
-                      Restart Level
-                    </Button>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="mb-4 text-4xl font-bold text-white">
-                    Welcome to Tetris!
-                  </div>
-                  <Button
-                    className="px-6"
-                    onClick={() => {
-                      resetGame();
-                      setStarted(true);
-                    }}
-                  >
-                    Start Game
-                  </Button>
-                </>
-              )}
-            </div>
-          )}
-        </div>
-        <div className="mt-4 text-xl font-bold text-center">
-          Lines Cleared: {linesCleared}
-        </div>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+          <div className="mt-4 text-xl font-bold text-center">
+            Lines: {linesCleared}
+          </div>
+        </GameCard>
       </div>
       <div className="flex flex-col items-start gap-4 w-40">
-        <Card className="w-full">
-          <CardHeader>
-            <CardTitle className="text-lg m-0 p-0">Next</CardTitle>
-          </CardHeader>
-          <CardContent className="p-1 text-center">
+        <GameCard title="Next">
+          <div className="py-4">
             <div
               className="relative grid mx-auto"
               style={{
@@ -307,11 +308,9 @@ export default function GameView(props: GameViewProps) {
                 ))
               )}
             </div>
-          </CardContent>
-        </Card>
-        <GameCard title="Level">
-          {level}
+          </div>
         </GameCard>
+        <GameCard title="Level">{level}</GameCard>
         <Card className="w-full gap-0">
           <CardContent className="p-2 text-left bg-gray-900 rounded-sm mx-2 space-y-2">
             <div
