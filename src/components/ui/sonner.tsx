@@ -18,8 +18,8 @@ const Toaster = ({ ...props }: ToasterProps) => {
       style={{
         position: "fixed",
         top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
+        right: "20px",
+        transform: "translateY(-50%)",
         "--normal-bg": "var(--popover)",
         "--normal-text": "var(--popover-foreground)",
         "--normal-border": "var(--border)",
