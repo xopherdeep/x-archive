@@ -338,6 +338,14 @@ export default function Tetris() {
     });
     return newBoard.flat();
   }, [board, current, position]);
+
+  const ghostPosition = React.useMemo(() => {
+    let ghost = { ...position };
+    while (!checkCollision(board, current.tetromino, { x: ghost.x, y: ghost.y + 1 })) {
+      ghost.y++;
+    }
+    return ghost;
+  }, [board, current.tetromino, position]);
   
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4" tabIndex={0} onKeyDown={handleKeyDown}>
