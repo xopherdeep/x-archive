@@ -42,31 +42,33 @@ export default function Stats({ dropStats, holdStats = {}, onReset, TETROMINOES,
           {Object.entries(TETROMINOES)
             .sort((a, b) => (dropStats[b[0]] || 0) - (dropStats[a[0]] || 0))
             .map(([key, tetromino]) => {
-            const cropped = cropShape(tetromino.shape);
-            return (
-              <div key={key} className="flex items-center gap-2 transition-all duration-500">
-                <div className="w-8 text-center font-bold">{key}</div>
-                <div
-                  className="grid gap-0.5"
-                  style={{ gridTemplateColumns: `repeat(${cropped[0]?.length || 0}, 20px)` }}
-                >
-                  {cropped.flat().map((cell, index) => (
+              const cropped = cropShape(tetromino.shape);
+              return (
+                <div key={key} className="transition-all duration-500">
+                  <div className="text-center font-bold">{key}</div>
+                  <div className="flex items-center gap-2">
                     <div
-                      key={index}
-                      style={{
-                        width: 20,
-                        height: 20,
-                        backgroundColor: cell ? tetromino.color : "transparent",
-                        border: "1px solid #ccc",
-                      }}
-                    />
-                  ))}
+                      className="grid gap-0.5"
+                      style={{ gridTemplateColumns: `repeat(${cropped[0]?.length || 0}, 20px)` }}
+                    >
+                      {cropped.flat().map((cell, index) => (
+                        <div
+                          key={index}
+                          style={{
+                            width: 20,
+                            height: 20,
+                            backgroundColor: cell ? tetromino.color : "transparent",
+                            border: "1px solid #ccc",
+                          }}
+                        />
+                      ))}
+                    </div>
+                    <div className="ml-auto text-sm">{dropStats[key] || 0}</div>
+                    <div className="ml-auto text-sm">{holdStats[key] || 0}</div>
+                  </div>
                 </div>
-                <div className="ml-auto text-sm">{dropStats[key] || 0}</div>
-                <div className="ml-auto text-sm">{holdStats[key] || 0}</div>
-              </div>
-            );
-          })}
+              );
+            })}
         </div>
         <Button variant="outline" size="sm" onClick={onReset}>
           Reset
