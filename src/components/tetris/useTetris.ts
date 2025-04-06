@@ -246,7 +246,7 @@ export default function useTetris(initialTheme: "light" | "dark") {
       case " ":
         quickDrop();
         break;
-      case "x":
+      case "c":
         holdPiece();
         break;
       default:
