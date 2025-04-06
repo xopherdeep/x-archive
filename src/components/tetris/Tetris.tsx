@@ -237,7 +237,7 @@ export default function Tetris() {
               style={{
                 width: 30,
                 height: 30,
-                backgroundColor: cell === 0 ? "transparent" : cell,
+                backgroundColor: cell === 0 || cell === "white" || cell === "#ffffff" ? "transparent" : cell,
                 boxSizing: "border-box",
                 border: "1px solid #999",
               }}
