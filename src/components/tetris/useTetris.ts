@@ -69,6 +69,7 @@ const TETROMINOES = {
 export default function useTetris(initialTheme: "light" | "dark", bindings = { holdKey: "c" }) {
   const [board, setBoard] = useState<Array<Array<0 | string>>>(Array.from({ length: ROWS }, () => new Array(COLS).fill(0)));
   const [theme, setTheme] = useState<"light" | "dark">(initialTheme);
+  const { holdKey } = bindings;
   const [current, setCurrent] = useState(() => randomTetromino(theme, 1));
   const [next, setNext] = useState(() => randomTetromino(theme, 1));
   const [position, setPosition] = useState({ x: Math.floor(COLS / 2) - 1, y: -1 });
