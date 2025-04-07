@@ -288,9 +288,7 @@ export default function Tetris() {
   }, []);
 
   return mounted ? (
-    <>
-      <Toaster position="top-center" />
-      <GameCard>
+    <GameCard>
       <div
         className="h-screen w-full flex flex-col items-center justify-center overflow-hidden"
         tabIndex={0}
@@ -326,7 +324,6 @@ export default function Tetris() {
         />
       </div>
     </GameCard>
-    </>
   ) : (
     <div />
   );
