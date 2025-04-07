@@ -220,6 +220,15 @@ function clearLines(board: Cell[][]): { board: Cell[][]; cleared: number } {
 
 export default function Tetris() {
   const [bindings, setBindings] = React.useState({ holdKey: "x" });
+  const [isFullscreen, setIsFullscreen] = React.useState(false);
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  React.useEffect(() => {
+    if (isFullscreen) {
+      containerRef.current?.requestFullscreen();
+    } else if (document.fullscreenElement) {
+      document.exitFullscreen();
+    }
+  }, [isFullscreen]);
   const {
     mergedBoard,
     ghostPosition,
@@ -290,41 +299,49 @@ export default function Tetris() {
   return mounted ? (
     <>
       <GameCard>
-      <div
-        className="h-screen w-full flex flex-col items-center justify-center overflow-hidden"
-        tabIndex={0}
-        onKeyDown={handleKeyDown}
-      >
-        <Background theme={theme} />
+        <div ref={containerRef} className="relative">
+          <Button
+            onClick={() => setIsFullscreen(!isFullscreen)}
+            className="absolute top-4 right-4 z-50"
+          >
+            {isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+          </Button>
+          <div
+            className="h-screen w-full flex flex-col items-center justify-center overflow-hidden"
+            tabIndex={0}
+            onKeyDown={handleKeyDown}
+          >
+            <Background theme={theme} />
 
-        <GameView
-          mergedBoard={mergedBoard}
-          current={current}
-          quickDropping={quickDropping}
-          ghostPosition={ghostPosition}
-          gameOver={gameOver}
-          COLS={COLS}
-          ROWS={ROWS}
-          dropStats={dropStats}
-          linesCleared={linesCleared}
-          score={score}
-          level={level}
-          next={next}
-          hold={hold}
-          topScore={topScore}
-          theme={theme}
-          setBoard={setBoard}
-          setCurrent={setCurrent}
-          setNext={setNext}
-          setPosition={setPosition}
-          setScore={setScore}
-          setGameOver={setGameOver}
-          setDropStats={setDropStats}
-          setHold={setHold}
-          setTheme={setTheme}
-        />
-      </div>
-    </GameCard>
+            <GameView
+              mergedBoard={mergedBoard}
+              current={current}
+              quickDropping={quickDropping}
+              ghostPosition={ghostPosition}
+              gameOver={gameOver}
+              COLS={COLS}
+              ROWS={ROWS}
+              dropStats={dropStats}
+              linesCleared={linesCleared}
+              score={score}
+              level={level}
+              next={next}
+              hold={hold}
+              topScore={topScore}
+              theme={theme}
+              setBoard={setBoard}
+              setCurrent={setCurrent}
+              setNext={setNext}
+              setPosition={setPosition}
+              setScore={setScore}
+              setGameOver={setGameOver}
+              setDropStats={setDropStats}
+              setHold={setHold}
+              setTheme={setTheme}
+            />
+          </div>
+        </div>
+      </GameCard>
     </>
   ) : (
     <div />
