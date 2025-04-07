@@ -261,23 +261,72 @@ export default function Tetris() {
   }, [gameOver, score, topScore]);
 
   if (!mounted) {
+    // Create tetromino shapes for the loading animation
+    const loadingTetrominos = [
+      { shape: TETROMINOES.I.shape, color: "#00ffff", rotation: 0 },    // I - Cyan
+      { shape: TETROMINOES.L.shape, color: "#ff8c00", rotation: 90 },   // L - Orange
+      { shape: TETROMINOES.T.shape, color: "#9370db", rotation: 180 },  // T - Purple
+      { shape: TETROMINOES.Z.shape, color: "#ff4500", rotation: 270 },  // Z - Red
+    ];
+    
     return (
-      <div className="h-screen w-full flex flex-col items-center justify-center">
+      <div className="h-screen w-full flex flex-col items-center justify-center bg-black bg-opacity-90">
         <div className="animate-pulse text-5xl font-extrabold text-red-500 drop-shadow-[0_2px_3px_rgba(0,0,0,0.5)] tracking-[0.25em] text-center mb-8"
              style={{ fontFamily: "'Press Start 2P', cursive" }}>
           TETRIS
         </div>
         {loading && (
           <div className="flex flex-col items-center">
-            <div className="relative w-20 h-20 animate-spin">
-              <div className="absolute w-5 h-5 bg-red-500 top-0 left-0"></div>
-              <div className="absolute w-5 h-5 bg-blue-500 top-0 right-0"></div>
-              <div className="absolute w-5 h-5 bg-green-500 bottom-0 left-0"></div>
-              <div className="absolute w-5 h-5 bg-yellow-500 bottom-0 right-0"></div>
+            <div className="relative w-32 h-32 animate-spin">
+              {loadingTetrominos.map((tetromino, index) => (
+                <div 
+                  key={index}
+                  className="absolute"
+                  style={{
+                    transform: `rotate(${tetromino.rotation}deg)`,
+                    transformOrigin: 'center',
+                    left: index === 0 ? '-30px' : index === 1 ? '60px' : index === 2 ? '60px' : '-30px',
+                    top: index === 0 ? '30px' : index === 1 ? '-30px' : index === 2 ? '60px' : '60px',
+                  }}
+                >
+                  {tetromino.shape.map((row, rowIndex) => (
+                    <div key={rowIndex} style={{ display: "flex" }}>
+                      {row.map((cell, cellIndex) => (
+                        <div
+                          key={cellIndex}
+                          style={{
+                            width: "20px",
+                            height: "20px",
+                            backgroundColor: cell ? tetromino.color : "transparent",
+                            border: cell ? `2px solid ${tetromino.color}` : "none",
+                            boxShadow: cell ? `0 0 5px ${tetromino.color}` : "none",
+                          }}
+                        />
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              ))}
             </div>
-            <p className="mt-4 text-lg">Loading game...</p>
+            <p className="mt-8 text-lg text-white">Loading game...</p>
+            <div className="mt-4 w-48 h-2 bg-gray-800 rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-red-500 transition-all duration-300"
+                style={{ 
+                  width: `${loading ? '100%' : '0%'}`,
+                  animation: 'loadingProgress 1.5s ease-in-out'
+                }}
+              ></div>
+            </div>
           </div>
         )}
+        
+        <style jsx>{`
+          @keyframes loadingProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+          }
+        `}</style>
       </div>
     );
   }
