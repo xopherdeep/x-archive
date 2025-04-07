@@ -49,6 +49,9 @@ export default function RootLayout({
                   <NavigationMenuLink href="/games">Games</NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
+                  <NavigationMenuLink href="/education">Learning Hub</NavigationMenuLink>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
                   <NavigationMenuLink href="/components">
                     Components
                   </NavigationMenuLink>

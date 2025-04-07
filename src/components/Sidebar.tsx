@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 export default function Sidebar() {
   return (
@@ -7,28 +8,28 @@ export default function Sidebar() {
       <nav>
         <ul>
           <li className="mb-2">
-            <a href="#" className="text-gray-700 hover:text-gray-900">Home</a>
+            <Link href="/" className="text-gray-700 hover:text-gray-900">Home</Link>
           </li>
           <li className="mb-2">
-            <a href="#" className="text-gray-700 hover:text-gray-900">Components</a>
+            <Link href="/components" className="text-gray-700 hover:text-gray-900">Components</Link>
           </li>
           <li className="mb-2">
-            <a href="#" className="text-gray-700 hover:text-gray-900">Docs</a>
+            <Link href="/docs" className="text-gray-700 hover:text-gray-900">Docs</Link>
           </li>
           <li className="mb-2">
-            <a href="#" className="text-gray-700 hover:text-gray-900">About</a>
+            <Link href="/about" className="text-gray-700 hover:text-gray-900">About</Link>
           </li>
           <li className="mb-2">
-            <a href="/education" className="text-gray-700 hover:text-gray-900">Learning Hub</a>
+            <Link href="/education" className="text-gray-700 hover:text-gray-900">Learning Hub</Link>
             <ul className="ml-4 mt-1">
               <li className="mb-1">
-                <a href="/education/grade-3-5" className="text-sm text-gray-600 hover:text-gray-900">Grades 3-5</a>
+                <Link href="/education/grade-3-5" className="text-sm text-gray-600 hover:text-gray-900">Grades 3-5</Link>
               </li>
               <li className="mb-1">
-                <a href="/education/grade-6-8" className="text-sm text-gray-600 hover:text-gray-900">Grades 6-8</a>
+                <Link href="/education/grade-6-8" className="text-sm text-gray-600 hover:text-gray-900">Grades 6-8</Link>
               </li>
               <li className="mb-1">
-                <a href="/education/grade-9-12" className="text-sm text-gray-600 hover:text-gray-900">Grades 9-12</a>
+                <Link href="/education/grade-9-12" className="text-sm text-gray-600 hover:text-gray-900">Grades 9-12</Link>
               </li>
             </ul>
           </li>
