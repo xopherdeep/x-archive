@@ -351,8 +351,8 @@ export default function Tetris() {
             aria-label="Tetris Game"
             aria-live="polite"
           >
-            {/* Re-render Background when fullscreen changes */}
-            <Background theme={theme} level={level} key={`bg-${isFullscreen}-${level}`} />
+            {/* Background should always be visible */}
+            <Background theme={theme} level={level} />
 
             <GameView
               mergedBoard={mergedBoard}
