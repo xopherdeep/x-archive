@@ -234,6 +234,25 @@ export default function GameView(props: GameViewProps) {
         >
           TETRIS
         </h1>
+        <div className="flex justify-center gap-2 mt-2 mb-4">
+          {Array.from({ length: 10 }, (_, i) => i + 1).map((lvl) => (
+            <div
+              key={lvl}
+              className="w-8 h-8 flex items-center justify-center rounded-full transition-all duration-300"
+              style={{
+                backgroundColor: 'rgba(0,0,0,0.3)',
+                color: getLevelColorTheme(lvl).I,
+                opacity: level === lvl ? 1 : 0.4,
+                fontWeight: 'bold',
+                border: level === lvl ? `2px solid ${getLevelColorTheme(lvl).I}` : '1px solid rgba(255,255,255,0.2)',
+                boxShadow: level === lvl ? `0 0 8px ${getLevelColorTheme(lvl).I}` : 'none',
+                transform: level === lvl ? 'scale(1.1)' : 'scale(1)',
+              }}
+            >
+              {lvl}
+            </div>
+          ))}
+        </div>
         <GameCard>
           <div className="relative">
             <Board
