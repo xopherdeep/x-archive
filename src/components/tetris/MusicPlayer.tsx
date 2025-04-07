@@ -161,27 +161,8 @@ const MusicPlayer = memo(function MusicPlayer({ inGameHUD = false }: MusicPlayer
   if (inGameHUD) {
     return (
       <GameCard title="Music">
-        <div className="flex flex-col gap-2 py-2">
+        <div className="flex flex-col gap-2 py-1">
           <div className="flex items-center justify-between">
-            <div className="text-xs truncate max-w-[120px]">
-              {isPlaying ? currentTrack.name : "Not playing"}
-            </div>
-            <div className="flex gap-1">
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="h-6 w-6"
-                onClick={toggleMusic}
-                aria-label={isPlaying ? "Pause music" : "Play music"}
-              >
-                <VolumeIcon className="h-3 w-3" />
-              </Button>
-            </div>
-          </div>
-          
-          {/* Track selection */}
-          <div className="flex items-center justify-between mt-1">
-            <div className="text-xs">Track:</div>
             <select 
               className="text-xs bg-gray-800 border border-gray-700 rounded px-1 py-0.5 max-w-[120px]"
               value={currentTrackIndex}
@@ -201,16 +182,33 @@ const MusicPlayer = memo(function MusicPlayer({ inGameHUD = false }: MusicPlayer
                 const actualIndex = MUSIC_TRACKS.findIndex(t => t.id === track.id);
                 return (
                   <option key={track.id} value={actualIndex}>
-                    {track.name}
+                    {track.id === "music1" ? "Theme A" : 
+                     track.id === "music2" ? "Theme B" : 
+                     track.id === "music3" ? "Theme C" : 
+                     track.id === "victory" ? "Victory" : 
+                     track.id === "high_score" ? "High Score" : 
+                     track.id === "unknown" ? "Unused" : track.id}
                   </option>
                 );
               })}
             </select>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="h-6 w-6"
+              onClick={toggleMusic}
+              aria-label={isPlaying ? "Mute music" : "Play music"}
+            >
+              {isPlaying ? (
+                volume === 0 ? <VolumeX className="h-3 w-3" /> : <VolumeIcon className="h-3 w-3" />
+              ) : (
+                <VolumeX className="h-3 w-3" />
+              )}
+            </Button>
           </div>
           
           {/* Volume slider */}
-          <div className="flex items-center justify-between mt-1">
-            <div className="text-xs">Volume:</div>
+          <div className="flex items-center gap-1">
             <input
               type="range"
               min="0"
@@ -218,28 +216,8 @@ const MusicPlayer = memo(function MusicPlayer({ inGameHUD = false }: MusicPlayer
               step="0.01"
               value={volume}
               onChange={(e) => adjustVolume(parseFloat(e.target.value))}
-              className="w-[120px] h-2"
+              className="w-full h-2"
             />
-          </div>
-          
-          <div className="w-full bg-gray-700 h-1 rounded-full overflow-hidden mt-1">
-            <div 
-              className="bg-red-500 h-full transition-all duration-300 ease-in-out"
-              style={{ width: `${volume * 100}%` }}
-            ></div>
-          </div>
-          
-          <div className="flex justify-between mt-1">
-            <div className="text-xs text-muted-foreground">
-              {currentTrack.composer !== currentTrack.arranger ? (
-                <>By {currentTrack.composer}</>
-              ) : (
-                <>By {currentTrack.composer}</>
-              )}
-            </div>
-            <div className="text-xs text-muted-foreground text-right">
-              NES (1989)
-            </div>
           </div>
           
           <audio ref={audioRef} />
@@ -289,7 +267,14 @@ const MusicPlayer = memo(function MusicPlayer({ inGameHUD = false }: MusicPlayer
                         }
                       }}
                     >
-                      <span className="truncate">{track.name}</span>
+                      <span className="truncate">
+                        {track.id === "music1" ? "Theme A" : 
+                         track.id === "music2" ? "Theme B" : 
+                         track.id === "music3" ? "Theme C" : 
+                         track.id === "victory" ? "Victory" : 
+                         track.id === "high_score" ? "High Score" : 
+                         track.id === "unknown" ? "Unused" : track.id}
+                      </span>
                     </Button>
                   );
                 })}
@@ -307,6 +292,19 @@ const MusicPlayer = memo(function MusicPlayer({ inGameHUD = false }: MusicPlayer
                   From Nintendo's<br/>Tetris (NES, 1989)
                 </div>
               </div>
+              
+              <div className="flex items-center gap-2">
+                <span className="text-xs">Volume:</span>
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value={volume}
+                  onChange={(e) => adjustVolume(parseFloat(e.target.value))}
+                  className="flex-1 h-2"
+                />
+              </div>
             </div>
           </PopoverContent>
         </Popover>
@@ -318,13 +316,22 @@ const MusicPlayer = memo(function MusicPlayer({ inGameHUD = false }: MusicPlayer
               size="icon" 
               onClick={toggleMusic}
               onDoubleClick={toggleVolume}
-              aria-label={isPlaying ? "Pause music" : "Play music"}
+              aria-label={isPlaying ? "Mute music" : "Play music"}
             >
-              <VolumeIcon className="h-4 w-4" />
+              {isPlaying ? (
+                volume === 0 ? <VolumeX className="h-4 w-4" /> : <VolumeIcon className="h-4 w-4" />
+              ) : (
+                <VolumeX className="h-4 w-4" />
+              )}
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            {isPlaying ? `Playing: ${currentTrack.name}` : "Play music"}
+            {isPlaying ? `Playing: ${currentTrack.id === "music1" ? "Theme A" : 
+                                    currentTrack.id === "music2" ? "Theme B" : 
+                                    currentTrack.id === "music3" ? "Theme C" : 
+                                    currentTrack.id === "victory" ? "Victory" : 
+                                    currentTrack.id === "high_score" ? "High Score" : 
+                                    currentTrack.id === "unknown" ? "Unused" : currentTrack.id}` : "Play music"}
             <div className="text-xs">Double-click to adjust volume</div>
           </TooltipContent>
         </Tooltip>
