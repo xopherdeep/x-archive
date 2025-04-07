@@ -60,7 +60,7 @@ export default function RootLayout({
             <aside className="hidden md:block">
               <Sidebar />
             </aside>
-            <main className="flex-1 p-4">{children}</main>
+            <main className="flex-1 p-4 bg-gray-300">{children}</main>
           </div>
           <footer className="bg-gray-100 text-center p-4 text-sm">
             © {new Date().getFullYear()} X's Archive. All rights reserved.

@@ -1,7 +1,14 @@
 "use client";
 
 import React from "react";
-import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardDescription,
+  CardFooter,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -19,7 +26,8 @@ export default function GamesPage() {
           <CardHeader>
             <CardTitle>Snake</CardTitle>
             <CardDescription>
-              The classic Snake game. Eat food, grow longer, and avoid hitting walls or yourself!
+              The classic Snake game. Eat food, grow longer, and avoid hitting
+              walls or yourself!
             </CardDescription>
           </CardHeader>
           <CardContent className="p-4">
@@ -37,7 +45,8 @@ export default function GamesPage() {
           <CardHeader>
             <CardTitle>Tetris</CardTitle>
             <CardDescription>
-              The classic block-stacking puzzle game. Arrange falling blocks to create complete lines.
+              The classic block-stacking puzzle game. Arrange falling blocks to
+              create complete lines.
             </CardDescription>
           </CardHeader>
           <CardContent className="p-4">
@@ -55,7 +64,8 @@ export default function GamesPage() {
           <CardHeader>
             <CardTitle>Memory Match</CardTitle>
             <CardDescription>
-              Test your memory by matching pairs of cards. Find all matches to win!
+              Test your memory by matching pairs of cards. Find all matches to
+              win!
             </CardDescription>
           </CardHeader>
           <CardContent className="p-4">
@@ -73,7 +83,8 @@ export default function GamesPage() {
           <CardHeader>
             <CardTitle>2048</CardTitle>
             <CardDescription>
-              Combine numbered tiles to reach 2048. A simple but addictive puzzle game!
+              Combine numbered tiles to reach 2048. A simple but addictive
+              puzzle game!
             </CardDescription>
           </CardHeader>
           <CardContent className="p-4">
@@ -109,7 +120,8 @@ export default function GamesPage() {
           <CardHeader>
             <CardTitle>Minesweeper</CardTitle>
             <CardDescription>
-              Clear the board without detonating any mines. Use logic to identify safe squares!
+              Clear the board without detonating any mines. Use logic to
+              identify safe squares!
             </CardDescription>
           </CardHeader>
           <CardContent className="p-4">
@@ -127,7 +139,8 @@ export default function GamesPage() {
           <CardHeader>
             <CardTitle>Hangman</CardTitle>
             <CardDescription>
-              Guess the word one letter at a time before the hangman is complete!
+              Guess the word one letter at a time before the hangman is
+              complete!
             </CardDescription>
           </CardHeader>
           <CardContent className="p-4">
@@ -145,7 +158,8 @@ export default function GamesPage() {
           <CardHeader>
             <CardTitle>Pong</CardTitle>
             <CardDescription>
-              The classic arcade game. Bounce the ball back and forth to score points!
+              The classic arcade game. Bounce the ball back and forth to score
+              points!
             </CardDescription>
           </CardHeader>
           <CardContent className="p-4">
@@ -199,7 +213,8 @@ export default function GamesPage() {
           <CardHeader>
             <CardTitle>Sudoku</CardTitle>
             <CardDescription>
-              Fill the 9×9 grid with digits so each column, row, and box contains 1-9.
+              Fill the 9×9 grid with digits so each column, row, and box
+              contains 1-9.
             </CardDescription>
           </CardHeader>
           <CardContent className="p-4">
