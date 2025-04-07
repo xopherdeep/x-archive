@@ -333,7 +333,6 @@ export default function Tetris() {
 
   return (
     <>
-      <MusicPlayer />
       <GameCard>
         <div ref={containerRef} className="relative">
           <Button

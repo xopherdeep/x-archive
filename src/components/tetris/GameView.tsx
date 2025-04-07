@@ -1,6 +1,7 @@
 import React from "react";
 import Stats from "./Stats";
 import Board from "./Board";
+import MusicPlayer from "./MusicPlayer";
 import {
   Card,
   CardHeader,
@@ -332,6 +333,7 @@ export default function GameView(props: GameViewProps) {
         </GameCard>
       </div>
       <div className="flex flex-col items-start gap-4 w-40">
+        <MusicPlayer inGameHUD={true} />
         <GameCard title="Next">
           <div className="py-4">
             <div
