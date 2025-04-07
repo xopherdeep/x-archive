@@ -7,26 +7,24 @@ import {
   Card, 
   CardContent 
 } from "@/components/ui/card";
+
+// Import components
+import { GameControls } from "@/components/games/memory/GameControls";
+import { GameBoard } from "@/components/games/memory/GameBoard";
+import { ScoreBoard } from "@/components/games/memory/ScoreBoard";
+import { GameOverMessage } from "@/components/games/memory/GameOverMessage";
+
+// Import types and utilities
 import { 
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  CardType, 
+  Difficulty, 
+  EMOJIS, 
+  GRID_SIZES, 
+  formatTime, 
+  shuffleCards 
+} from "@/components/games/memory/utils";
 
-// Card types
-type CardType = {
-  id: number;
-  emoji: string;
-  isFlipped: boolean;
-  isMatched: boolean;
-};
-
-// Difficulty levels
-type Difficulty = "easy" | "medium" | "hard";
-
-// Game stats
+// Game stats type
 type GameStats = {
   moves: number;
   matches: number;
@@ -37,20 +35,6 @@ type GameStats = {
     medium: number | null;
     hard: number | null;
   };
-};
-
-// Emoji sets for different difficulties
-const EMOJIS = {
-  easy: ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼"],
-  medium: ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐨", "🐯", "🦁", "🐮"],
-  hard: ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐨", "🐯", "🦁", "🐮", "🐷", "🐸", "🐵", "🐔"],
-};
-
-// Grid sizes for different difficulties
-const GRID_SIZES = {
-  easy: { cols: 4, rows: 4 },
-  medium: { cols: 6, rows: 4 },
-  hard: { cols: 8, rows: 4 },
 };
 
 export default function MemoryGamePage() {
@@ -70,6 +54,7 @@ export default function MemoryGamePage() {
     },
   });
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
+  const [isNewBestTime, setIsNewBestTime] = useState<boolean>(false);
 
   // Initialize game
   useEffect(() => {
@@ -105,6 +90,9 @@ export default function MemoryGamePage() {
         }));
         
         localStorage.setItem("memoryGameBestScores", JSON.stringify(newBestScores));
+        setIsNewBestTime(true);
+      } else {
+        setIsNewBestTime(false);
       }
     }
   }, [isGameOver, gameStats.endTime]);
@@ -139,6 +127,7 @@ export default function MemoryGamePage() {
     setCards(cardPairs);
     setFlippedCards([]);
     setIsGameOver(false);
+    setIsNewBestTime(false);
     setGameStats({
       ...gameStats,
       moves: 0,
@@ -146,16 +135,6 @@ export default function MemoryGamePage() {
       startTime: null,
       endTime: null,
     });
-  };
-
-  // Shuffle cards using Fisher-Yates algorithm
-  const shuffleCards = (cards: CardType[]): CardType[] => {
-    const shuffled = [...cards];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
   };
 
   // Handle card click
@@ -236,15 +215,6 @@ export default function MemoryGamePage() {
     }
   };
 
-  // Format time in seconds to mm:ss
-  const formatTime = (timeInMs: number | null): string => {
-    if (timeInMs === null) return "00:00";
-    const totalSeconds = Math.floor(timeInMs / 1000);
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-  };
-
   // Get elapsed time
   const getElapsedTime = (): string => {
     if (!gameStats.startTime) return "00:00";
@@ -252,14 +222,9 @@ export default function MemoryGamePage() {
     return formatTime(endTime - gameStats.startTime);
   };
 
-  // Get grid columns class based on difficulty
-  const getGridColumnsClass = (): string => {
-    switch (difficulty) {
-      case "easy": return "grid-cols-4";
-      case "medium": return "grid-cols-6";
-      case "hard": return "grid-cols-8";
-      default: return "grid-cols-4";
-    }
+  // Handle difficulty change
+  const handleDifficultyChange = (newDifficulty: Difficulty) => {
+    setDifficulty(newDifficulty);
   };
 
   return (
@@ -275,113 +240,37 @@ export default function MemoryGamePage() {
         <Card className="w-full max-w-4xl">
           <CardContent className="p-6">
             {/* Game controls */}
-            <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
-              <div className="flex items-center gap-2">
-                <span className="font-medium">Difficulty:</span>
-                <Select
-                  value={difficulty}
-                  onValueChange={(value: string) => setDifficulty(value as Difficulty)}
-                  disabled={gameStats.moves > 0 && !isGameOver}
-                >
-                  <SelectTrigger className="w-32">
-                    <SelectValue placeholder="Select difficulty" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="easy">Easy</SelectItem>
-                    <SelectItem value="medium">Medium</SelectItem>
-                    <SelectItem value="hard">Hard</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="flex gap-4">
-                <div className="text-center">
-                  <div className="text-sm font-medium text-gray-500 dark:text-gray-400">Moves</div>
-                  <div className="text-xl font-bold">{gameStats.moves}</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-sm font-medium text-gray-500 dark:text-gray-400">Matches</div>
-                  <div className="text-xl font-bold">{gameStats.matches}/{cards.length / 2}</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-sm font-medium text-gray-500 dark:text-gray-400">Time</div>
-                  <div className="text-xl font-bold">{getElapsedTime()}</div>
-                </div>
-              </div>
-              
-              <Button onClick={initializeGame}>
-                New Game
-              </Button>
-            </div>
+            <GameControls 
+              difficulty={difficulty}
+              onDifficultyChange={handleDifficultyChange}
+              onNewGame={initializeGame}
+              moves={gameStats.moves}
+              matches={gameStats.matches}
+              totalPairs={cards.length / 2}
+              elapsedTime={getElapsedTime()}
+              isGameInProgress={gameStats.moves > 0 && !isGameOver}
+            />
 
             {/* Game board */}
-            <div className={`grid ${getGridColumnsClass()} gap-2 mb-6`}>
-              {cards.map(card => (
-                <div
-                  key={card.id}
-                  className={`aspect-square rounded-md cursor-pointer transition-all duration-300 transform ${
-                    card.isFlipped || card.isMatched
-                      ? "rotate-y-180"
-                      : ""
-                  }`}
-                  onClick={() => handleCardClick(card.id)}
-                >
-                  <div className={`relative w-full h-full transition-all duration-300 transform-style-3d`}>
-                    {/* Card back */}
-                    <div
-                      className={`absolute w-full h-full flex items-center justify-center bg-blue-500 dark:bg-blue-700 rounded-md backface-hidden ${
-                        card.isFlipped || card.isMatched ? "opacity-0" : "opacity-100"
-                      }`}
-                    >
-                      <span className="text-white text-2xl">?</span>
-                    </div>
-                    
-                    {/* Card front */}
-                    <div
-                      className={`absolute w-full h-full flex items-center justify-center bg-white dark:bg-gray-800 rounded-md backface-hidden rotate-y-180 ${
-                        card.isMatched ? "bg-green-100 dark:bg-green-900" : ""
-                      } ${
-                        card.isFlipped || card.isMatched ? "opacity-100" : "opacity-0"
-                      }`}
-                    >
-                      <span className="text-4xl">{card.emoji}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
+            <div className="memory-game-board">
+              <GameBoard 
+                cards={cards}
+                difficulty={difficulty}
+                onCardClick={handleCardClick}
+              />
             </div>
 
             {/* Game over message */}
-            {isGameOver && (
-              <div className="text-center mb-6 p-4 bg-green-100 dark:bg-green-900 rounded-md">
-                <h2 className="text-2xl font-bold mb-2">Congratulations!</h2>
-                <p className="mb-2">
-                  You completed the game in {gameStats.moves} moves and {getElapsedTime()}.
-                </p>
-                {gameStats.endTime && gameStats.startTime && 
-                  gameStats.bestScores[difficulty] === (gameStats.endTime - gameStats.startTime) && (
-                  <p className="font-bold text-green-600 dark:text-green-400">
-                    New best time for {difficulty} difficulty!
-                  </p>
-                )}
-              </div>
-            )}
+            <GameOverMessage 
+              isGameOver={isGameOver}
+              moves={gameStats.moves}
+              elapsedTime={getElapsedTime()}
+              isNewBestTime={isNewBestTime}
+              difficulty={difficulty}
+            />
 
             {/* Best scores */}
-            <div className="grid grid-cols-3 gap-2 mb-6">
-              <div className="text-center p-2 bg-gray-100 dark:bg-gray-800 rounded-md">
-                <div className="font-medium">Easy Best</div>
-                <div>{formatTime(gameStats.bestScores.easy)}</div>
-              </div>
-              <div className="text-center p-2 bg-gray-100 dark:bg-gray-800 rounded-md">
-                <div className="font-medium">Medium Best</div>
-                <div>{formatTime(gameStats.bestScores.medium)}</div>
-              </div>
-              <div className="text-center p-2 bg-gray-100 dark:bg-gray-800 rounded-md">
-                <div className="font-medium">Hard Best</div>
-                <div>{formatTime(gameStats.bestScores.hard)}</div>
-              </div>
-            </div>
+            <ScoreBoard bestScores={gameStats.bestScores} />
 
             {/* Back button */}
             <div className="flex justify-center">
