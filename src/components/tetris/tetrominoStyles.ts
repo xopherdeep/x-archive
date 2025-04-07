@@ -88,8 +88,8 @@ export function getTetrominoBlockStyle(key: string, color: string, size: number 
       return {
         backgroundColor: color,
         border: `2px solid ${borderColor}`,
-        boxShadow: `inset 3px 3px 3px rgba(255,255,255,0.6), inset -2px -2px 2px rgba(0,0,0,0.1)`,
-        backgroundImage: `linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 100%)`,
+        boxShadow: `inset 4px 4px 5px rgba(255,255,255,0.8), inset -1px -1px 2px rgba(0,0,0,0.05)`,
+        backgroundImage: `linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.1) 100%)`,
       };
       
     default:
