@@ -355,7 +355,7 @@ export default function GameView(props: GameViewProps) {
                       width: "30px",
                       height: "30px",
                       ...(cell 
-                        ? getTetrominoBlockStyle(next.key, next.tetromino.color, 30) 
+                        ? getTetrominoBlockStyle(next.key || "I", next.tetromino.color, 30) 
                         : { backgroundColor: "transparent" }),
                       boxSizing: "border-box",
                     }}

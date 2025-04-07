@@ -51,8 +51,8 @@ const BackgroundCanvas = React.memo(function BackgroundCanvas({
           const x = col * (BG_CELL_SIZE * 4);
           const y = row * (BG_CELL_SIZE * 4);
           
-          // Vary opacity slightly for depth effect
-          const opacity = 0.05 + Math.random() * 0.05;
+          // Slightly higher opacity for better visibility
+          const opacity = 0.08 + Math.random() * 0.07;
           
           items.push({ key, tetromino, x, y, opacity });
         }
