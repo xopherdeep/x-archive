@@ -265,6 +265,7 @@ export default function Tetris() {
         fontWeight: "bold",
         borderRadius: "8px",
       },
+      position: "top-center",
     });
   }, []);
 

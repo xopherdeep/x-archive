@@ -102,6 +102,7 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
               fontWeight: "bold",
               borderRadius: "8px",
             },
+            position: "top-center",
           });
           const base = 30;
           let particleCount = base * cleared;
@@ -199,6 +200,7 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
           fontWeight: "bold",
           borderRadius: "8px",
         },
+        position: "top-center",
       });
       const base = 30;
       let particleCount = base * cleared;
