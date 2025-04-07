@@ -4,8 +4,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { 
   tetrominoStyleMap, 
   BlockStyle, 
-  generateColorVariations, 
-  getLevelColorTheme 
+  getLevelColorTheme,
+  getTetrominoBlockStyle
 } from "./tetrominoStyles";
 
 interface BoardProps {
@@ -108,8 +108,6 @@ export default function Board({
                 
                 // Get the style for the ghost piece
                 const ghostCellInfo = { color: current.tetromino.color, key: current.key };
-                const variations = generateColorVariations(ghostCellInfo.color);
-                const style = tetrominoStyleMap[ghostCellInfo.key];
                 
                 let ghostStyle: React.CSSProperties = {
                   width: "30px",

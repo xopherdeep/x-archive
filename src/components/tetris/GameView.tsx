@@ -23,8 +23,8 @@ import { randomTetromino } from "./helpers";
 import { 
   tetrominoStyleMap, 
   BlockStyle, 
-  generateColorVariations,
-  getLevelColorTheme 
+  getLevelColorTheme,
+  getTetrominoBlockStyle
 } from "./tetrominoStyles";
 
 type GameViewProps = {

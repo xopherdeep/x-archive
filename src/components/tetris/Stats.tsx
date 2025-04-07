@@ -24,8 +24,8 @@ import GameCard from "./GameCard";
 import { 
   tetrominoStyleMap, 
   BlockStyle, 
-  generateColorVariations,
-  getLevelColorTheme 
+  getLevelColorTheme,
+  getTetrominoBlockStyle
 } from "./tetrominoStyles";
 
 interface StatsProps {
