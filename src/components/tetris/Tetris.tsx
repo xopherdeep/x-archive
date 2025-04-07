@@ -333,10 +333,9 @@ export default function Tetris() {
 
   return (
     <>
-      {/* Background should always be visible */}
-      <Background theme={theme} level={level} />
-      
       <GameCard>
+        {/* Background should always be visible */}
+        <Background theme={theme} level={level} />
         <div ref={containerRef} className="relative z-10">
           <Button
             variant="ghost"

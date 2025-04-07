@@ -248,7 +248,7 @@ export default function GameView(props: GameViewProps) {
               level={level}
             />
             {(!started || gameOver) && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center z-10 bg-black bg-opacity-75 p-4">
+              <div className="absolute inset-0 flex flex-col items-center justify-center z-50 bg-black bg-opacity-75 p-4">
                 {gameOver ? (
                   <>
                     <div className="mb-4 flex flex-col items-center gap-2">

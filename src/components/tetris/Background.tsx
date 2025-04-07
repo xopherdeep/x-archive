@@ -51,8 +51,8 @@ const BackgroundCanvas = React.memo(function BackgroundCanvas({
           const x = col * (BG_CELL_SIZE * 4);
           const y = row * (BG_CELL_SIZE * 4);
           
-          // Slightly higher opacity for better visibility
-          const opacity = 0.08 + Math.random() * 0.07;
+          // Much higher opacity for better visibility
+          const opacity = 0.15 + Math.random() * 0.1;
           
           items.push({ key, tetromino, x, y, opacity });
         }
@@ -155,7 +155,7 @@ const BackgroundCanvas = React.memo(function BackgroundCanvas({
         width: "100%",
         height: "100%",
         pointerEvents: "none",
-        zIndex: -10, // Lower z-index to ensure it stays behind everything
+        zIndex: -1, // Changed from -10 to -1 to ensure visibility
       }}
     />
   );
