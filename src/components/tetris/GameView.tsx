@@ -265,6 +265,7 @@ export default function GameView(props: GameViewProps) {
                     </div>
                     <div className="flex flex-col gap-2">
                       <Button
+                        variant="ghost"
                         className="px-6"
                         onClick={() => {
                           resetGame();
@@ -274,6 +275,7 @@ export default function GameView(props: GameViewProps) {
                         Start Over
                       </Button>
                       <Button
+                        variant="ghost"
                         className="px-6"
                         onClick={() => {
                           restartLevel();
@@ -290,6 +292,7 @@ export default function GameView(props: GameViewProps) {
                       <span className="text-red-500">TETRIS</span>
                     </div>
                     <Button
+                      variant="ghost"
                       className="px-6"
                       onClick={() => {
                         resetGame();
@@ -366,6 +369,7 @@ export default function GameView(props: GameViewProps) {
           <CardFooter>
             <div className="flex flex-col gap-2">
               <Button
+                variant="ghost"
                 className="mt-2 w-full"
                 onClick={resetGame}
               >
