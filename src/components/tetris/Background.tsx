@@ -49,11 +49,44 @@ export default function Background({
     };
   }, []);
 
+  // Helper function to check if two tetrominos overlap
+  const checkOverlap = (
+    tetromino1: TetrominoData,
+    tetromino2: TetrominoData,
+    buffer: number = 5 // Extra buffer space between tetrominos
+  ): boolean => {
+    // Calculate bounding boxes for each tetromino
+    const t1Width = tetromino1.tetromino.shape[0].length * CELL_SIZE;
+    const t1Height = tetromino1.tetromino.shape.length * CELL_SIZE;
+    const t2Width = tetromino2.tetromino.shape[0].length * CELL_SIZE;
+    const t2Height = tetromino2.tetromino.shape.length * CELL_SIZE;
+
+    // Add buffer to dimensions
+    const t1Right = tetromino1.x + t1Width + buffer;
+    const t1Bottom = tetromino1.y + t1Height + buffer;
+    const t2Right = tetromino2.x + t2Width + buffer;
+    const t2Bottom = tetromino2.y + t2Height + buffer;
+
+    // Check if bounding boxes overlap
+    return !(
+      tetromino1.x > t2Right ||
+      t1Right < tetromino2.x ||
+      tetromino1.y > t2Bottom ||
+      t1Bottom < tetromino2.y
+    );
+  };
+
   const tetrominos = useMemo(() => {
     const items: TetrominoData[] = [];
     // Only calculate this on client-side
     if (typeof window !== 'undefined') {
-      for (let i = 0; i < NUM_TETROMINOS; i++) {
+      // Try to place tetrominos without overlaps
+      let attempts = 0;
+      const maxAttempts = NUM_TETROMINOS * 10; // Limit attempts to prevent infinite loops
+      
+      while (items.length < NUM_TETROMINOS && attempts < maxAttempts) {
+        attempts++;
+        
         const { key, tetromino } = randomTetromino(theme, level);
         const shapeWidth = tetromino.shape[0].length;
         const shapeHeight = tetromino.shape.length;
@@ -63,7 +96,41 @@ export default function Background({
         const y = Math.random() * maxY;
         const rotation = Math.floor(Math.random() * 4) * 90; // Random rotation: 0, 90, 180, or 270 degrees
         const opacity = 0.05 + Math.random() * 0.1; // Random opacity between 0.05 and 0.15
-        items.push({ key, tetromino, x, y, rotation, opacity });
+        
+        const newTetromino = { key, tetromino, x, y, rotation, opacity };
+        
+        // Check if this tetromino overlaps with any existing ones
+        let overlaps = false;
+        for (const existingTetromino of items) {
+          if (checkOverlap(newTetromino, existingTetromino)) {
+            overlaps = true;
+            break;
+          }
+        }
+        
+        // Only add if it doesn't overlap
+        if (!overlaps) {
+          items.push(newTetromino);
+        }
+      }
+      
+      // If we couldn't place all tetrominos without overlap, fill the remaining
+      // with reduced opacity to make overlaps less noticeable
+      if (items.length < NUM_TETROMINOS) {
+        const remaining = NUM_TETROMINOS - items.length;
+        for (let i = 0; i < remaining; i++) {
+          const { key, tetromino } = randomTetromino(theme, level);
+          const shapeWidth = tetromino.shape[0].length;
+          const shapeHeight = tetromino.shape.length;
+          const maxX = dimensions.width - shapeWidth * CELL_SIZE;
+          const maxY = dimensions.height - shapeHeight * CELL_SIZE;
+          const x = Math.random() * maxX;
+          const y = Math.random() * maxY;
+          const rotation = Math.floor(Math.random() * 4) * 90;
+          // Lower opacity for potentially overlapping pieces
+          const opacity = 0.03 + Math.random() * 0.05;
+          items.push({ key, tetromino, x, y, rotation, opacity });
+        }
       }
     }
     return items;
