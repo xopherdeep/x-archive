@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/select";
 import StyleBoxes from "./StyleBoxes";
 import GameCard from "./GameCard";
+import { toast } from "sonner";
 import { randomTetromino } from "./helpers";
 
 type GameViewProps = {
@@ -273,6 +274,15 @@ export default function GameView(props: GameViewProps) {
                       onClick={() => {
                         resetGame();
                         setStarted(true);
+                        toast("Game Started! Good luck!", {
+                          style: {
+                            background: "linear-gradient(45deg, #ff6ec4, #7873f5)",
+                            color: "#fff",
+                            fontWeight: "bold",
+                            borderRadius: "8px",
+                          },
+                          position: "top-center",
+                        });
                       }}
                     >
                       Start Game
