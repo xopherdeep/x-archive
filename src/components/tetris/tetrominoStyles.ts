@@ -80,14 +80,16 @@ export function getTetrominoBlockStyle(key: string, color: string, size: number 
       return {
         backgroundColor: color,
         border: `2px solid ${borderColor}`,
-        boxShadow: `inset 2px 2px 2px rgba(255,255,255,0.3), inset -2px -2px 2px rgba(0,0,0,0.3)`,
+        boxShadow: `inset 3px 3px 3px rgba(255,255,255,0.2), inset -3px -3px 4px rgba(0,0,0,0.5)`,
+        backgroundImage: `linear-gradient(135deg, transparent 0%, rgba(0,0,0,0.2) 100%)`,
       };
       
     case BlockStyle.LIGHT: // Z, L
       return {
         backgroundColor: color,
         border: `2px solid ${borderColor}`,
-        boxShadow: `inset 2px 2px 2px rgba(255,255,255,0.5), inset -2px -2px 2px rgba(0,0,0,0.2)`,
+        boxShadow: `inset 3px 3px 3px rgba(255,255,255,0.6), inset -2px -2px 2px rgba(0,0,0,0.1)`,
+        backgroundImage: `linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 100%)`,
       };
       
     default:
