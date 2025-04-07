@@ -21,11 +21,11 @@ import StyleBoxes from "./StyleBoxes";
 import GameCard from "./GameCard";
 import { toast } from "sonner";
 import { randomTetromino } from "./helpers";
-import { 
-  tetrominoStyleMap, 
-  BlockStyle, 
+import {
+  tetrominoStyleMap,
+  BlockStyle,
   getLevelColorTheme,
-  getTetrominoBlockStyle
+  getTetrominoBlockStyle,
 } from "./tetrominoStyles";
 import { ScoreInfoDialog } from "./ScoreInfoDialog";
 
@@ -300,23 +300,29 @@ export default function GameView(props: GameViewProps) {
                       onClick={() => {
                         resetGame();
                         setStarted(true);
-                        
+
                         // Start the music when game starts
-                        const audioElement = document.querySelector('audio');
+                        const audioElement = document.querySelector("audio");
                         if (audioElement) {
                           // Ensure volume is set to a reasonable level
                           audioElement.volume = 0.5;
-                          audioElement.play().catch(err => console.error(err));
-                          
+                          audioElement
+                            .play()
+                            .catch((err) => console.error(err));
+
                           // Update any music player state in the DOM
-                          const musicPlayerComponent = document.querySelector('[data-music-player]');
+                          const musicPlayerComponent = document.querySelector(
+                            "[data-music-player]"
+                          );
                           if (musicPlayerComponent) {
                             // Dispatch a custom event to notify the music player
-                            const event = new CustomEvent('musicStarted', { detail: { volume: 0.5 } });
+                            const event = new CustomEvent("musicStarted", {
+                              detail: { volume: 0.5 },
+                            });
                             musicPlayerComponent.dispatchEvent(event);
                           }
                         }
-                        
+
                         toast("Game Started! Good luck!", {
                           style: {
                             background:
@@ -340,7 +346,7 @@ export default function GameView(props: GameViewProps) {
             Lines: {linesCleared}
           </div>
         </GameCard>
-        
+
         <div className="flex flex-col items-center mt-4">
           <div className="flex justify-center gap-2 mb-2">
             {Array.from({ length: 10 }, (_, i) => i + 1).map((lvl) => (
@@ -348,13 +354,19 @@ export default function GameView(props: GameViewProps) {
                 key={lvl}
                 className="w-8 h-8 flex items-center justify-center rounded-full transition-all duration-300"
                 style={{
-                  backgroundColor: 'rgba(0,0,0,0.3)',
+                  backgroundColor: "rgba(0,0,0,0.3)",
                   color: getLevelColorTheme(lvl).I,
                   opacity: level === lvl ? 1 : 0.4,
-                  fontWeight: 'bold',
-                  border: level === lvl ? `2px solid ${getLevelColorTheme(lvl).I}` : '1px solid rgba(255,255,255,0.2)',
-                  boxShadow: level === lvl ? `0 0 8px ${getLevelColorTheme(lvl).I}` : 'none',
-                  transform: level === lvl ? 'scale(1.1)' : 'scale(1)',
+                  fontWeight: "bold",
+                  border:
+                    level === lvl
+                      ? `2px solid ${getLevelColorTheme(lvl).I}`
+                      : "1px solid rgba(255,255,255,0.2)",
+                  boxShadow:
+                    level === lvl
+                      ? `0 0 8px ${getLevelColorTheme(lvl).I}`
+                      : "none",
+                  transform: level === lvl ? "scale(1.1)" : "scale(1)",
                 }}
               >
                 {lvl}
@@ -362,13 +374,15 @@ export default function GameView(props: GameViewProps) {
             ))}
           </div>
           <div className="w-full max-w-xs bg-gray-700 h-2 rounded-full overflow-hidden">
-            <div 
+            <div
               className="bg-green-500 h-full transition-all duration-300 ease-in-out"
-              style={{ 
+              style={{
                 width: `${(linesCleared % 10) * 10}%`,
-                backgroundColor: getLevelColorTheme(level).I
+                backgroundColor: getLevelColorTheme(level).I,
               }}
-              aria-label={`Progress to next level: ${linesCleared % 10} of 10 lines`}
+              aria-label={`Progress to next level: ${
+                linesCleared % 10
+              } of 10 lines`}
             ></div>
           </div>
           <div className="text-xs text-center mt-1">
@@ -395,8 +409,12 @@ export default function GameView(props: GameViewProps) {
                     style={{
                       width: "30px",
                       height: "30px",
-                      ...(cell 
-                        ? getTetrominoBlockStyle(next.key || "I", next.tetromino.color, 30) 
+                      ...(cell
+                        ? getTetrominoBlockStyle(
+                            next.key || "I",
+                            next.tetromino.color,
+                            30
+                          )
                         : { backgroundColor: "transparent" }),
                       boxSizing: "border-box",
                     }}
@@ -408,11 +426,11 @@ export default function GameView(props: GameViewProps) {
         </GameCard>
         <GameCard title="Level">
           <div className="flex items-center justify-center my-2">
-            <div 
-              className="text-3xl font-bold" 
-              style={{ 
-                color: getLevelColorTheme(level).I, 
-                textShadow: "0 0 5px rgba(0,0,0,0.5)" 
+            <div
+              className="text-3xl font-bold"
+              style={{
+                color: getLevelColorTheme(level).I,
+                textShadow: "0 0 5px rgba(0,0,0,0.5)",
               }}
             >
               {level}
@@ -430,29 +448,16 @@ export default function GameView(props: GameViewProps) {
             </Button>
           </div>
         </GameCard>
-        <Card className="w-full gap-0">
-          <CardContent className="p-2 text-left bg-gray-900 rounded-sm mx-2 space-y-2">
-            <div
-              className="flex flex-col text-sm tracking-[0.15em] text-white font-bold"
-              style={{ fontFamily: '"Press Start 2P", cursive' }}
-            >
-              <p>Top</p>
-              <p>{topScore.toString().padStart(8, "0")}</p>
-            </div>
-            <div
-              className="text-sm font-bold tracking-[0.15em] text-white"
-              style={{ fontFamily: '"Press Start 2P", cursive' }}
-            >
+        <GameCard title="Top">
+          <div className="space-y-2">
+            <p>{topScore.toString().padStart(8, "0")}</p>
+            <span>
               <p>Score</p>
               <p>{score.toString().padStart(8, "0")}</p>
-            </div>
-            <div className="mt-2 flex justify-center">
-              <ScoreInfoDialog topScore={topScore} currentScore={score} />
-            </div>
-          </CardContent>
-        </Card>
-        
-        
+            </span>
+          </div>
+          <ScoreInfoDialog topScore={topScore} currentScore={score} />
+        </GameCard>
       </div>
     </div>
   );

@@ -1,33 +1,62 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { Trophy, Info } from "lucide-react"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { SCORE_MAP } from "./constants"
+import * as React from "react";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Trophy, Info } from "lucide-react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { SCORE_MAP } from "./constants";
 
 interface ScoreInfoDialogProps {
   topScore: number;
   currentScore: number;
 }
 
-export function ScoreInfoDialog({ topScore, currentScore }: ScoreInfoDialogProps) {
+export function ScoreInfoDialog({
+  topScore,
+  currentScore,
+}: ScoreInfoDialogProps) {
   // Mock high scores for demonstration
-  const highScores = React.useMemo(() => [
-    { name: "YOU", score: currentScore, date: new Date().toLocaleDateString() },
-    { name: "TOP", score: topScore, date: "All-time" },
-    { name: "NES", score: 999999, date: "Classic" },
-    { name: "CPU", score: 500000, date: "AI Player" },
-    { name: "PRO", score: 750000, date: "Champion" },
-  ].sort((a, b) => b.score - a.score).slice(0, 5), [topScore, currentScore]);
+  const highScores = React.useMemo(
+    () =>
+      [
+        {
+          name: "YOU",
+          score: currentScore,
+          date: new Date().toLocaleDateString(),
+        },
+        { name: "TOP", score: topScore, date: "All-time" },
+        // { name: "NES", score: 999999, date: "Classic" },
+        // { name: "CPU", score: 500000, date: "AI Player" },
+        // { name: "PRO", score: 750000, date: "Champion" },
+      ]
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 5),
+    [topScore, currentScore]
+  );
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="ghost" size="sm" className="flex items-center gap-1">
           <Trophy className="h-4 w-4" />
-          <span>Scores</span>
+          <span>Points</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
@@ -37,7 +66,7 @@ export function ScoreInfoDialog({ topScore, currentScore }: ScoreInfoDialogProps
             The top Tetris players of all time
           </DialogDescription>
         </DialogHeader>
-        
+
         <div className="flex flex-col gap-4">
           <Table>
             <TableHeader>
@@ -50,16 +79,23 @@ export function ScoreInfoDialog({ topScore, currentScore }: ScoreInfoDialogProps
             </TableHeader>
             <TableBody>
               {highScores.map((score, index) => (
-                <TableRow key={index} className={score.name === "YOU" ? "font-bold bg-muted/50" : ""}>
+                <TableRow
+                  key={index}
+                  className={
+                    score.name === "YOU" ? "font-bold bg-muted/50" : ""
+                  }
+                >
                   <TableCell>{index + 1}</TableCell>
                   <TableCell>{score.name}</TableCell>
-                  <TableCell className="text-right">{score.score.toLocaleString()}</TableCell>
+                  <TableCell className="text-right">
+                    {score.score.toLocaleString()}
+                  </TableCell>
                   <TableCell className="text-right">{score.date}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-          
+
           <div className="border rounded-md p-4">
             <h3 className="font-bold mb-2 flex items-center gap-2">
               <Info className="h-4 w-4" />
@@ -91,16 +127,17 @@ export function ScoreInfoDialog({ topScore, currentScore }: ScoreInfoDialogProps
                 </TableRow>
                 <TableRow>
                   <TableCell>Level multiplier</TableCell>
-                  <TableCell className="text-right">×{" "}Level</TableCell>
+                  <TableCell className="text-right">× Level</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
             <p className="text-sm text-muted-foreground mt-2">
-              The higher your level, the faster pieces fall and the more points you earn!
+              The higher your level, the faster pieces fall and the more points
+              you earn!
             </p>
           </div>
         </div>
-        
+
         <DialogFooter className="sm:justify-start">
           <DialogClose asChild>
             <Button type="button" variant="secondary">
@@ -110,5 +147,5 @@ export function ScoreInfoDialog({ topScore, currentScore }: ScoreInfoDialogProps
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
