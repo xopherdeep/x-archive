@@ -48,6 +48,78 @@ export default function GamesPage() {
             </Button>
           </CardFooter>
         </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Memory Match</CardTitle>
+            <CardDescription>
+              Test your memory by matching pairs of cards. Find all matches to win!
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="aspect-square bg-gray-100 dark:bg-gray-800 rounded-md flex items-center justify-center">
+              <div className="text-4xl">🃏</div>
+            </div>
+          </CardContent>
+          <CardFooter>
+            <Button asChild className="w-full">
+              <Link href="/games/memory">Play Memory Match</Link>
+            </Button>
+          </CardFooter>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>2048</CardTitle>
+            <CardDescription>
+              Combine numbered tiles to reach 2048. A simple but addictive puzzle game!
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="aspect-square bg-gray-100 dark:bg-gray-800 rounded-md flex items-center justify-center">
+              <div className="text-4xl">🔢</div>
+            </div>
+          </CardContent>
+          <CardFooter>
+            <Button asChild className="w-full">
+              <Link href="/games/2048">Play 2048</Link>
+            </Button>
+          </CardFooter>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Tic Tac Toe</CardTitle>
+            <CardDescription>
+              The classic game of X's and O's. Get three in a row to win!
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="aspect-square bg-gray-100 dark:bg-gray-800 rounded-md flex items-center justify-center">
+              <div className="text-4xl">⭕❌</div>
+            </div>
+          </CardContent>
+          <CardFooter>
+            <Button asChild className="w-full">
+              <Link href="/games/tictactoe">Play Tic Tac Toe</Link>
+            </Button>
+          </CardFooter>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Minesweeper</CardTitle>
+            <CardDescription>
+              Clear the board without detonating any mines. Use logic to identify safe squares!
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="aspect-square bg-gray-100 dark:bg-gray-800 rounded-md flex items-center justify-center">
+              <div className="text-4xl">💣</div>
+            </div>
+          </CardContent>
+          <CardFooter>
+            <Button asChild className="w-full">
+              <Link href="/games/minesweeper">Play Minesweeper</Link>
+            </Button>
+          </CardFooter>
+        </Card>
       </section>
     </div>
   );
