@@ -133,7 +133,7 @@ export default function GameView(props: GameViewProps) {
   };
 
   return (
-    <div ref={containerRef} className={`${isFullscreen ? "fixed inset-0 z-50 bg-gray-900" : ""} relative flex flex-col md:flex-row gap-8 items-center`}>
+    <div ref={containerRef} className={`${isFullscreen ? "fixed inset-0 z-50 bg-gray-900 flex items-center justify-center" : "relative flex flex-col md:flex-row gap-8 items-center"}`}>
       <Button
         onClick={() => setFullscreen(!isFullscreen)}
         className="absolute top-4 right-4 z-50"
