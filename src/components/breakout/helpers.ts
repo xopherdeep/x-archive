@@ -152,7 +152,7 @@ export function handleBrickCollision(
 ): { ball: Ball; bricks: Brick[]; score: number } {
   let newBall = { ...ball };
   let score = 0;
-  let collisionDetected = false;
+  let hasCollision = false;
   
   const newBricks = bricks.map(brick => {
     // Skip already broken bricks
@@ -162,8 +162,6 @@ export function handleBrickCollision(
     
     // Check for collision
     if (checkBallCollision(ball, brick)) {
-      collisionDetected = true;
-      
       // Reduce brick health
       const newBrick = { ...brick, health: brick.health - 1 };
       
@@ -173,9 +171,11 @@ export function handleBrickCollision(
         score += brick.points;
       }
       
-      // Determine collision side and adjust ball velocity
-      // Only change ball direction if we haven't already detected a collision
-      if (!collisionDetected) {
+      // Only change ball direction on the first collision
+      if (!hasCollision) {
+        hasCollision = true;
+        
+        // Determine collision side and adjust ball velocity
         const ballCenterX = ball.position.x;
         const ballCenterY = ball.position.y;
         const brickCenterX = brick.position.x + brick.size.width / 2;
