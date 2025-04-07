@@ -125,7 +125,6 @@ export default function GameView(props: GameViewProps) {
 
   return (
     <div className="relative flex flex-col md:flex-row gap-8 items-center justify-center">
-      
       <div>
         <Stats
           dropStats={dropStats}
@@ -267,8 +266,9 @@ export default function GameView(props: GameViewProps) {
                   </>
                 ) : (
                   <>
-                    <div className="mb-4 text-4xl font-bold text-white">
-                      Welcome to Tetris!
+                    <div className="mb-4 text-4xl font-bold text-white text-center flex-col flex">
+                      Welcome to
+                      <span className="text-red-500">TETRIS</span>
                     </div>
                     <Button
                       className="px-6"
@@ -277,7 +277,8 @@ export default function GameView(props: GameViewProps) {
                         setStarted(true);
                         toast("Game Started! Good luck!", {
                           style: {
-                            background: "linear-gradient(45deg, #ff6ec4, #7873f5)",
+                            background:
+                              "linear-gradient(45deg, #ff6ec4, #7873f5)",
                             color: "#fff",
                             fontWeight: "bold",
                             borderRadius: "8px",
@@ -329,7 +330,19 @@ export default function GameView(props: GameViewProps) {
             </div>
           </div>
         </GameCard>
-        <GameCard title="Level">{level}</GameCard>
+        <GameCard title="Level">
+          {level}
+
+          <CardFooter>
+            <Button
+              // variant="outline"
+              className="mt-2 w-full"
+              onClick={resetGame}
+            >
+              Restart
+            </Button>
+          </CardFooter>
+        </GameCard>
         <Card className="w-full gap-0">
           <CardContent className="p-2 text-left bg-gray-900 rounded-sm mx-2 space-y-2">
             <div
@@ -347,15 +360,6 @@ export default function GameView(props: GameViewProps) {
               <p>{score.toString().padStart(8, "0")}</p>
             </div>
           </CardContent>
-          <CardFooter>
-            <Button
-              // variant="outline"
-              className="mt-2 w-full"
-              onClick={resetGame}
-            >
-              Restart
-            </Button>
-          </CardFooter>
         </Card>
       </div>
     </div>

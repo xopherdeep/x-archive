@@ -120,10 +120,20 @@ export default function Stats({
               );
             })}
         </div>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onReset}
+          className="w-full mt-2"
+        >
+          Reset
+        </Button>
 
+        <hr className="my-2" />
+        <GameControlsDialog bindings={bindings} setBindings={setBindings} />
+        <hr className="my-2" />
         {hold !== undefined && (
           <>
-            <hr className="my-2" />
             <div className="text-center font-bold">Hold Piece</div>
             {hold ? (
               <div
@@ -155,21 +165,11 @@ export default function Stats({
             ) : (
               <div className="text-sm text-gray-500 text-center">Empty</div>
             )}
-            <hr className="my-2" />
           </>
         )}
       </GameCard>
       <GameCard>
         <div className="flex flex-col gap-2 my-4">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onReset}
-            className="w-full"
-          >
-            Reset
-          </Button>
-          <GameControlsDialog bindings={bindings} setBindings={setBindings} />
           <Select
             value={theme}
             onValueChange={(val) => setTheme(val as "light" | "dark")}
