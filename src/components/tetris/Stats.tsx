@@ -21,11 +21,11 @@ import {
 } from "@/components/ui/tooltip";
 import { GameControlsDialog } from "@/components/tetris/GameControlsDialog";
 import GameCard from "./GameCard";
-import { 
-  tetrominoStyleMap, 
-  BlockStyle, 
+import {
+  tetrominoStyleMap,
+  BlockStyle,
   getLevelColorTheme,
-  getTetrominoBlockStyle
+  getTetrominoBlockStyle,
 } from "./tetrominoStyles";
 
 interface StatsProps {
@@ -63,17 +63,66 @@ export default function Stats({
     (a, b) => (holdStats[b] || 0) - (holdStats[a] || 0)
   );
   console.log("Hold stats in Stats component:", holdStats);
-  
+
   // We'll use the imported getTetrominoBlockStyle function instead of defining it here
   return (
     <div className="flex flex-col gap-4 w-auto">
       <GameCard title="Tetrominoes">
+        {setPaused && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setPaused((prev) => !prev)}
+          >
+            {paused ? "Resume" : "Pause"}
+          </Button>
+        )}
+        <hr className="my-2" />
+        {hold !== undefined && (
+          <>
+            <div className="text-center font-bold">Hold </div>
+            {hold ? (
+              <div
+                className="relative grid mx-auto"
+                style={{
+                  gridTemplateColumns: `repeat(${hold.tetromino.shape[0].length}, 30px)`,
+                  width: hold.tetromino.shape[0].length * 30 + "px",
+                  height: hold.tetromino.shape.length * 30 + "px",
+                  border: "2px solid #ccc",
+                }}
+              >
+                {hold.tetromino.shape.flatMap((row, y) =>
+                  row.map((cell, x) => (
+                    <div
+                      key={`${x}-${y}`}
+                      style={{
+                        width: "30px",
+                        height: "30px",
+                        ...(cell
+                          ? getTetrominoBlockStyle(
+                              hold.key,
+                              getLevelColorTheme(level)[hold.key],
+                              30
+                            )
+                          : { backgroundColor: "transparent" }),
+                        boxSizing: "border-box",
+                      }}
+                    />
+                  ))
+                )}
+              </div>
+            ) : (
+              <div className="text-sm text-gray-500 text-center">Empty</div>
+            )}
+          </>
+        )}
         <hr className="my-2" />
         <div className="flex justify-between">
           <div className="text-xs">Hold</div>
           {/* <div className="text-xs text-muted">Piece</div> */}
           <div className="text-xs">Drop</div>
         </div>
+        <hr className="my-1" />
         <div className="flex flex-col gap-2">
           {Object.entries(TETROMINOES)
             .sort((a, b) => (dropStats[b[0]] || 0) - (dropStats[a[0]] || 0))
@@ -100,7 +149,13 @@ export default function Stats({
                                 style={{
                                   width: 20,
                                   height: 20,
-                                  ...(cell ? getTetrominoBlockStyle(key, getLevelColorTheme(level)[key], 20) : { backgroundColor: "transparent" }),
+                                  ...(cell
+                                    ? getTetrominoBlockStyle(
+                                        key,
+                                        getLevelColorTheme(level)[key],
+                                        20
+                                      )
+                                    : { backgroundColor: "transparent" }),
                                   boxSizing: "border-box",
                                 }}
                               />
@@ -134,61 +189,13 @@ export default function Stats({
             })}
         </div>
         <div className="flex flex-col gap-2 mt-2">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onReset}
-          >
+          <Button variant="ghost" size="sm" onClick={onReset}>
             Reset
           </Button>
-          {setPaused && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setPaused(prev => !prev)}
-            >
-              {paused ? "Resume" : "Pause"}
-            </Button>
-          )}
         </div>
 
         <hr className="my-2" />
         <GameControlsDialog bindings={bindings} setBindings={setBindings} />
-        <hr className="my-2" />
-        {hold !== undefined && (
-          <>
-            <div className="text-center font-bold">Hold Piece</div>
-            {hold ? (
-              <div
-                className="relative grid mx-auto"
-                style={{
-                  gridTemplateColumns: `repeat(${hold.tetromino.shape[0].length}, 30px)`,
-                  width: hold.tetromino.shape[0].length * 30 + "px",
-                  height: hold.tetromino.shape.length * 30 + "px",
-                  border: "2px solid #ccc",
-                }}
-              >
-                {hold.tetromino.shape.flatMap((row, y) =>
-                  row.map((cell, x) => (
-                    <div
-                      key={`${x}-${y}`}
-                      style={{
-                        width: "30px",
-                        height: "30px",
-                        ...(cell 
-                          ? getTetrominoBlockStyle(hold.key, getLevelColorTheme(level)[hold.key], 30) 
-                          : { backgroundColor: "transparent" }),
-                        boxSizing: "border-box",
-                      }}
-                    />
-                  ))
-                )}
-              </div>
-            ) : (
-              <div className="text-sm text-gray-500 text-center">Empty</div>
-            )}
-          </>
-        )}
       </GameCard>
       <GameCard>
         <div className="flex flex-col gap-2 my-4">
