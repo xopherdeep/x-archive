@@ -134,12 +134,7 @@ export default function GameView(props: GameViewProps) {
 
   return (
     <div ref={containerRef} className={`${isFullscreen ? "fixed inset-0 z-50 bg-gray-900" : "relative"} flex flex-col md:flex-row gap-8 items-center justify-center`}>
-      <Button
-        onClick={() => setIsFullscreen(!isFullscreen)}
-        className="absolute top-4 right-4 z-50"
-      >
-        {isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
-      </Button>
+      
       <div>
         <Stats
           dropStats={dropStats}
@@ -231,6 +226,12 @@ export default function GameView(props: GameViewProps) {
         </h1>
         <GameCard>
           <div className="relative">
+            <Button
+              onClick={() => setIsFullscreen(!isFullscreen)}
+              className="absolute top-4 right-4 z-50"
+            >
+              {isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+            </Button>
             <Board
               mergedBoard={mergedBoard}
               current={current}
