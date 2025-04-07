@@ -313,6 +313,16 @@ export default function GameView(props: GameViewProps) {
           </div>
           <div className="mt-4 text-xl font-bold text-center">
             Lines: {linesCleared}
+            <div className="w-full bg-gray-700 h-2 rounded-full overflow-hidden mt-2">
+              <div 
+                className="bg-green-500 h-full transition-all duration-300 ease-in-out"
+                style={{ width: `${(linesCleared % 10) * 10}%` }}
+                aria-label={`Progress to next level: ${linesCleared % 10} of 10 lines`}
+              ></div>
+            </div>
+            <div className="text-xs text-center mt-1">
+              {10 - (linesCleared % 10)} lines to next level
+            </div>
           </div>
         </GameCard>
       </div>
@@ -349,17 +359,6 @@ export default function GameView(props: GameViewProps) {
         <GameCard title="Level">
           <div className="flex items-center justify-center my-2">
             <div className="text-3xl font-bold">{level}</div>
-          </div>
-          
-          <div className="w-full bg-gray-700 h-2 rounded-full overflow-hidden">
-            <div 
-              className="bg-green-500 h-full transition-all duration-300 ease-in-out"
-              style={{ width: `${(linesCleared % 10) * 10}%` }}
-              aria-label={`Progress to next level: ${linesCleared % 10} of 10 lines`}
-            ></div>
-          </div>
-          <div className="text-xs text-center mt-1">
-            {10 - (linesCleared % 10)} lines to next level
           </div>
 
           <CardFooter>
