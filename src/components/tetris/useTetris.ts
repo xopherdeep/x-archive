@@ -105,7 +105,8 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
           setGameOver(true);
           return prev;
         }
-        setScore((prevScore) => prevScore + cleared * 10);
+        const scoreMap = { 1: 10, 2: 25, 3: 40, 4: 50 };
+        setScore((prevScore) => prevScore + (scoreMap[cleared] || 0));
         setDropStats((prevStats) => ({
           ...prevStats,
           [current.key]: (prevStats[current.key] || 0) + 1,
@@ -192,7 +193,8 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
       setGameOver(true);
       return;
     }
-    setScore((prevScore) => prevScore + cleared * 10);
+    const scoreMap = { 1: 10, 2: 25, 3: 40, 4: 50 };
+    setScore((prevScore) => prevScore + (scoreMap[cleared] || 0));
     setDropStats((prevStats) => ({
       ...prevStats,
       [current.key]: (prevStats[current.key] || 0) + 1,
