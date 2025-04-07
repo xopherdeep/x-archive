@@ -152,6 +152,7 @@ export function handleBrickCollision(
 ): { ball: Ball; bricks: Brick[]; score: number } {
   let newBall = { ...ball };
   let score = 0;
+  let collisionDetected = false;
   
   const newBricks = bricks.map(brick => {
     // Skip already broken bricks
@@ -161,6 +162,8 @@ export function handleBrickCollision(
     
     // Check for collision
     if (checkBallCollision(ball, brick)) {
+      collisionDetected = true;
+      
       // Reduce brick health
       const newBrick = { ...brick, health: brick.health - 1 };
       
@@ -171,22 +174,25 @@ export function handleBrickCollision(
       }
       
       // Determine collision side and adjust ball velocity
-      const ballCenterX = ball.position.x;
-      const ballCenterY = ball.position.y;
-      const brickCenterX = brick.position.x + brick.size.width / 2;
-      const brickCenterY = brick.position.y + brick.size.height / 2;
-      
-      // Calculate differences
-      const dx = ballCenterX - brickCenterX;
-      const dy = ballCenterY - brickCenterY;
-      
-      // Determine if collision is more horizontal or vertical
-      if (Math.abs(dx) > Math.abs(dy)) {
-        // Horizontal collision
-        newBall.velocity.dx = Math.sign(dx) * Math.abs(newBall.velocity.dx);
-      } else {
-        // Vertical collision
-        newBall.velocity.dy = Math.sign(dy) * Math.abs(newBall.velocity.dy);
+      // Only change ball direction if we haven't already detected a collision
+      if (!collisionDetected) {
+        const ballCenterX = ball.position.x;
+        const ballCenterY = ball.position.y;
+        const brickCenterX = brick.position.x + brick.size.width / 2;
+        const brickCenterY = brick.position.y + brick.size.height / 2;
+        
+        // Calculate differences
+        const dx = ballCenterX - brickCenterX;
+        const dy = ballCenterY - brickCenterY;
+        
+        // Determine if collision is more horizontal or vertical
+        if (Math.abs(dx) > Math.abs(dy)) {
+          // Horizontal collision
+          newBall.velocity.dx = Math.sign(dx) * Math.abs(newBall.velocity.dx);
+        } else {
+          // Vertical collision
+          newBall.velocity.dy = Math.sign(dy) * Math.abs(newBall.velocity.dy);
+        }
       }
       
       return newBrick;
