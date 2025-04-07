@@ -84,6 +84,7 @@ export default function GameView(props: GameViewProps) {
     bindings,
     setBindings,
   } = props;
+  const [isFullscreen, setIsFullscreen] = React.useState(false);
   const [started, setStarted] = React.useState(false);
   const resetGame = () => {
     setBoard(Array.from({ length: ROWS }, () => new Array(COLS).fill(0)));
@@ -124,7 +125,13 @@ export default function GameView(props: GameViewProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-gray-900 flex items-center justify-center">
+    <div className={`${isFullscreen ? "fixed inset-0 z-50 bg-gray-900" : "relative"} flex flex-col md:flex-row gap-8 items-center justify-center`}>
+      <Button
+        onClick={() => setIsFullscreen(!isFullscreen)}
+        className="absolute top-4 right-4 z-50"
+      >
+        {isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+      </Button>
       <div>
         <Stats
           dropStats={dropStats}
