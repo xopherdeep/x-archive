@@ -1,7 +1,9 @@
 "use client";
 
 import React from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function GamesPage() {
   return (
@@ -12,35 +14,39 @@ export default function GamesPage() {
       <section className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader>
-            <CardTitle>Game 1</CardTitle>
+            <CardTitle>Snake</CardTitle>
+            <CardDescription>
+              The classic Snake game. Eat food, grow longer, and avoid hitting walls or yourself!
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <p>This is a description of Game 1.</p>
+            <div className="aspect-square bg-gray-100 dark:bg-gray-800 rounded-md flex items-center justify-center">
+              <div className="text-4xl">🐍</div>
+            </div>
           </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Game 2</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p>This is a description of Game 2.</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Game 3</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p>This is a description of Game 3.</p>
-          </CardContent>
+          <CardFooter>
+            <Button asChild className="w-full">
+              <Link href="/games/snake">Play Snake</Link>
+            </Button>
+          </CardFooter>
         </Card>
         <Card>
           <CardHeader>
             <CardTitle>Tetris</CardTitle>
+            <CardDescription>
+              The classic block-stacking puzzle game. Arrange falling blocks to create complete lines.
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <a href="/games/tetris" className="text-gray-700 hover:text-gray-900">Play Tetris</a>
+            <div className="aspect-square bg-gray-100 dark:bg-gray-800 rounded-md flex items-center justify-center">
+              <div className="text-4xl">🧩</div>
+            </div>
           </CardContent>
+          <CardFooter>
+            <Button asChild className="w-full">
+              <Link href="/games/tetris">Play Tetris</Link>
+            </Button>
+          </CardFooter>
         </Card>
       </section>
     </div>
