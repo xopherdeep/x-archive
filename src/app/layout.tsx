@@ -22,7 +22,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "X's Archive",
-  description: "Archive of various React components, games, and educational resources",
+  description:
+    "Archive of various React components, games, and educational resources",
 };
 
 export default function RootLayout({
@@ -48,7 +49,9 @@ export default function RootLayout({
                   <NavigationMenuLink href="/games">Games</NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <NavigationMenuLink href="/education">Learning Hub</NavigationMenuLink>
+                  <NavigationMenuLink href="/education">
+                    Learning Hub
+                  </NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <NavigationMenuLink href="/components">
@@ -58,7 +61,7 @@ export default function RootLayout({
               </NavigationMenuList>
             </NavigationMenu>
           </header>
-          <main className="flex-1 p-4 bg-gray-300">{children}</main>
+          <main className="flex-1 p-0 bg-gray-300">{children}</main>
           <footer className="bg-gray-100 text-center p-4 text-sm">
             © {new Date().getFullYear()} X's Archive. All rights reserved.
           </footer>
