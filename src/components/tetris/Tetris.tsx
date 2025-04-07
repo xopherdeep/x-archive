@@ -361,7 +361,5 @@ export default function Tetris() {
         </div>
       </GameCard>
     </>
-  ) : (
-    <div />
   );
 }
