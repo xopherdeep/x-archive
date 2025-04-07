@@ -55,8 +55,8 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
           return prev;
         }
         
-        // Update score
-        setScore((prevScore) => prevScore + (SCORE_MAP[cleared] || 0));
+        // Update score with level multiplier
+        setScore((prevScore) => prevScore + (SCORE_MAP[cleared] || 0) * level);
         
         // Update drop stats
         setDropStats((prevStats) => ({

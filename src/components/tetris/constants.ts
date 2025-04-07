@@ -64,7 +64,7 @@ export const TETROMINOES = {
 };
 
 // Scoring system
-export const SCORE_MAP = { 1: 10, 2: 25, 3: 40, 4: 50 };
+export const SCORE_MAP = { 1: 100, 2: 300, 3: 500, 4: 800 };
 
 // Confetti configurations
 export const CONFETTI_CONFIG = {

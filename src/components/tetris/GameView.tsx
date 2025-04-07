@@ -27,6 +27,7 @@ import {
   getLevelColorTheme,
   getTetrominoBlockStyle
 } from "./tetrominoStyles";
+import { ScoreInfoDialog } from "./ScoreInfoDialog";
 
 type GameViewProps = {
   mergedBoard: (0 | string)[];
@@ -444,6 +445,9 @@ export default function GameView(props: GameViewProps) {
             >
               <p>Score</p>
               <p>{score.toString().padStart(8, "0")}</p>
+            </div>
+            <div className="mt-2 flex justify-center">
+              <ScoreInfoDialog topScore={topScore} currentScore={score} />
             </div>
           </CardContent>
         </Card>
