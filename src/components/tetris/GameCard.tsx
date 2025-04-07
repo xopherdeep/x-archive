@@ -9,7 +9,7 @@ interface GameCardProps {
 
 export default function GameCard({ title, children }: GameCardProps) {
   return (
-    <Card className="w-full gap-0 py-2">
+    <Card className="w-full gap-0 py-2 m-0">
       {/* <CardHeader>
         <CardTitle className="text-lg m-0 p-0">{title}</CardTitle>
       </CardHeader> */}
