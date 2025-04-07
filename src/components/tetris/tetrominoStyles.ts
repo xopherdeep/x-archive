@@ -73,7 +73,7 @@ export function getTetrominoBlockStyle(key: string, color: string, size: number 
       return {
         backgroundColor: color,
         border: `3px solid ${borderColor}`,
-        boxShadow: `inset 0 0 0 2px rgba(255,255,255,0.4)`,
+        backgroundImage: `radial-gradient(circle at center, white 30%, transparent 70%)`,
       };
       
     case BlockStyle.DARK: // J, S
