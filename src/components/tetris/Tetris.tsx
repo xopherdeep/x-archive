@@ -3,7 +3,7 @@ import React from "react";
 import useTetris from "./useTetris";
 import GameView from "./GameView";
 import { Button } from "../ui/button";
-import { toast } from "sonner";
+import { toast, Toaster } from "sonner";
 import GameCard from "./GameCard";
 import Background from "./Background";
 
