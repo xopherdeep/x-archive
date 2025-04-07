@@ -9,8 +9,6 @@ import {
   NavigationMenuItem,
   NavigationMenuLink,
 } from "@/components/ui/navigation-menu";
-import { Sidebar } from "@/components/ui/sidebar";
-import SidebarComponent from "@/components/Sidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -60,12 +58,7 @@ export default function RootLayout({
               </NavigationMenuList>
             </NavigationMenu>
           </header>
-          <div className="flex flex-1">
-            <aside className="hidden md:block">
-              <SidebarComponent />
-            </aside>
-            <main className="flex-1 p-4 bg-gray-300">{children}</main>
-          </div>
+          <main className="flex-1 p-4 bg-gray-300">{children}</main>
           <footer className="bg-gray-100 text-center p-4 text-sm">
             © {new Date().getFullYear()} X's Archive. All rights reserved.
           </footer>
