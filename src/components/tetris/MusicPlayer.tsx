@@ -1,38 +1,59 @@
 "use client";
 import React, { useEffect, useRef, useState, memo } from "react";
 import { Button } from "@/components/ui/button";
-import { Volume2, VolumeX, Volume1 } from "lucide-react";
+import { Volume2, VolumeX, Volume1, Music, Info } from "lucide-react";
 import { MUSIC_TRACKS } from "./constants";
+import { 
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { toast } from "sonner";
+
+// Track type definition
+type MusicTrack = {
+  id: string;
+  name: string;
+  src: string;
+  composer: string;
+  arranger: string;
+  loop?: boolean;
+};
 
 // Memoize the component to prevent unnecessary re-renders
 const MusicPlayer = memo(function MusicPlayer() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.5);
-  const [currentTrack, setCurrentTrack] = useState("");
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+  const [showControls, setShowControls] = useState(false);
+
+  // Get current track
+  const currentTrack = MUSIC_TRACKS[currentTrackIndex];
 
   // Initialize audio on mount
   useEffect(() => {
-    // Select a random track
-    const track = MUSIC_TRACKS[Math.floor(Math.random() * MUSIC_TRACKS.length)];
-    setCurrentTrack(track);
+    // Select Music 1 as default track (most recognizable Tetris theme)
+    setCurrentTrackIndex(0);
     
     // Set up audio element
     if (audioRef.current) {
-      audioRef.current.src = track;
-      audioRef.current.loop = true;
+      audioRef.current.src = currentTrack.src;
+      audioRef.current.loop = currentTrack.loop !== false; // Loop by default
       audioRef.current.volume = volume;
       
       // Handle track end
       const handleEnded = () => {
-        // Play next track when current one ends
-        const nextTrack = MUSIC_TRACKS.filter(t => t !== currentTrack)[
-          Math.floor(Math.random() * (MUSIC_TRACKS.length - 1))
-        ];
-        setCurrentTrack(nextTrack);
-        if (audioRef.current) {
-          audioRef.current.src = nextTrack;
-          audioRef.current.play().catch(err => console.error(err));
+        if (currentTrack.loop === false) {
+          // For non-looping tracks like victory, go to next track
+          const nextIndex = (currentTrackIndex + 1) % MUSIC_TRACKS.length;
+          setCurrentTrackIndex(nextIndex);
         }
       };
       
@@ -50,12 +71,20 @@ const MusicPlayer = memo(function MusicPlayer() {
   // Update audio when track changes
   useEffect(() => {
     if (audioRef.current && currentTrack) {
-      audioRef.current.src = currentTrack;
+      audioRef.current.src = currentTrack.src;
+      audioRef.current.loop = currentTrack.loop !== false;
+      
       if (isPlaying) {
         audioRef.current.play().catch(err => console.error(err));
+        
+        // Show toast with track info
+        toast(`🎵 Now playing: ${currentTrack.name}`, {
+          description: `Composed by ${currentTrack.composer}, arranged by ${currentTrack.arranger}`,
+          duration: 3000,
+        });
       }
     }
-  }, [currentTrack, isPlaying]);
+  }, [currentTrackIndex, currentTrack]);
 
   // Toggle music playback
   const toggleMusic = () => {
@@ -64,9 +93,27 @@ const MusicPlayer = memo(function MusicPlayer() {
         audioRef.current.pause();
       } else {
         audioRef.current.play().catch(err => console.error(err));
+        
+        // Show toast with track info when starting playback
+        toast(`🎵 Now playing: ${currentTrack.name}`, {
+          description: `Composed by ${currentTrack.composer}, arranged by ${currentTrack.arranger}`,
+          duration: 3000,
+        });
       }
       setIsPlaying(!isPlaying);
     }
+  };
+  
+  // Change to next track
+  const nextTrack = () => {
+    const nextIndex = (currentTrackIndex + 1) % MUSIC_TRACKS.length;
+    setCurrentTrackIndex(nextIndex);
+  };
+  
+  // Change to previous track
+  const prevTrack = () => {
+    const prevIndex = (currentTrackIndex - 1 + MUSIC_TRACKS.length) % MUSIC_TRACKS.length;
+    setCurrentTrackIndex(prevIndex);
   };
   
   // Adjust volume
@@ -92,19 +139,80 @@ const MusicPlayer = memo(function MusicPlayer() {
   const VolumeIcon = volume === 0 ? VolumeX : volume < 0.5 ? Volume1 : Volume2;
 
   return (
-    <div className="fixed top-4 right-4 z-50">
-      <Button 
-        variant="outline" 
-        size="icon" 
-        onClick={toggleMusic}
-        onDoubleClick={adjustVolume}
-        aria-label={isPlaying ? "Mute music" : "Play music"}
-        title={isPlaying ? `Volume: ${Math.round(volume * 100)}%` : "Play music"}
-      >
-        <VolumeIcon className="h-4 w-4" />
-      </Button>
-      <audio ref={audioRef} />
-    </div>
+    <TooltipProvider>
+      <div className="fixed top-4 right-4 z-50 flex gap-2">
+        <Popover open={showControls} onOpenChange={setShowControls}>
+          <PopoverTrigger asChild>
+            <Button 
+              variant="outline" 
+              size="icon"
+              aria-label="Music controls"
+            >
+              <Music className="h-4 w-4" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-80 p-4" side="bottom">
+            <div className="space-y-4">
+              <h3 className="font-medium text-center">NES Tetris Music</h3>
+              <div className="text-sm text-center mb-2">
+                Original music by Hirokazu Tanaka (1989)
+              </div>
+              
+              <div className="space-y-2">
+                {MUSIC_TRACKS.map((track, index) => (
+                  <Button 
+                    key={track.id}
+                    variant={currentTrackIndex === index ? "default" : "outline"}
+                    className="w-full justify-start"
+                    onClick={() => {
+                      setCurrentTrackIndex(index);
+                      if (!isPlaying) {
+                        setIsPlaying(true);
+                      }
+                    }}
+                  >
+                    <span className="truncate">{track.name}</span>
+                  </Button>
+                ))}
+              </div>
+              
+              <div className="flex justify-between">
+                <div className="text-xs text-muted-foreground">
+                  {currentTrack.composer !== currentTrack.arranger ? (
+                    <>Composed by {currentTrack.composer}<br/>Arranged by {currentTrack.arranger}</>
+                  ) : (
+                    <>By {currentTrack.composer}</>
+                  )}
+                </div>
+                <div className="text-xs text-muted-foreground text-right">
+                  From Nintendo's<br/>Tetris (NES, 1989)
+                </div>
+              </div>
+            </div>
+          </PopoverContent>
+        </Popover>
+        
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button 
+              variant="outline" 
+              size="icon" 
+              onClick={toggleMusic}
+              onDoubleClick={adjustVolume}
+              aria-label={isPlaying ? "Pause music" : "Play music"}
+            >
+              <VolumeIcon className="h-4 w-4" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            {isPlaying ? `Playing: ${currentTrack.name}` : "Play music"}
+            <div className="text-xs">Double-click to adjust volume</div>
+          </TooltipContent>
+        </Tooltip>
+        
+        <audio ref={audioRef} />
+      </div>
+    </TooltipProvider>
   );
 });
 

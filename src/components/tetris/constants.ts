@@ -74,11 +74,37 @@ export const CONFETTI_CONFIG = {
   4: { particleCount: 250, spread: 120, origin: { y: 0.8 }, colors: ['#ff4500', '#ff0000', '#ffd700'] }
 };
 
-// Music tracks
+// Music tracks - Original NES Tetris music by Hirokazu Tanaka
 export const MUSIC_TRACKS = [
-  "/assets/music/track1.mp3",
-  "/assets/music/track2.mp3",
-  "/assets/music/track3.mp3",
+  {
+    id: "music1",
+    name: "Music 1 (Dance of the Sugar Plum Fairy)",
+    src: "/assets/music/tetris-nes-music1.mp3",
+    composer: "Pyotr Ilyich Tchaikovsky",
+    arranger: "Hirokazu Tanaka"
+  },
+  {
+    id: "music2",
+    name: "Music 2 (Russian Folk Song)",
+    src: "/assets/music/tetris-nes-music2.mp3",
+    composer: "Hirokazu Tanaka",
+    arranger: "Hirokazu Tanaka"
+  },
+  {
+    id: "music3",
+    name: "Music 3 (Nintendo Call Hold Music)",
+    src: "/assets/music/tetris-nes-music3.mp3",
+    composer: "Hirokazu Tanaka",
+    arranger: "Hirokazu Tanaka"
+  },
+  {
+    id: "victory",
+    name: "Victory (Toréador Song from Carmen)",
+    src: "/assets/music/tetris-nes-victory.mp3",
+    composer: "Georges Bizet",
+    arranger: "Hirokazu Tanaka",
+    loop: false
+  }
 ];
 
 // Initial stats

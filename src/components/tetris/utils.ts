@@ -66,6 +66,9 @@ export function celebrateLevelUp(newLevel: number): void {
       duration: 5000,
       position: "top-center",
     });
+    
+    // Play victory music
+    playVictoryMusic();
   } else {
     // Regular level up
     confetti({
@@ -90,6 +93,54 @@ export function celebrateLevelUp(newLevel: number): void {
         borderRadius: "8px"
       },
       position: "top-center",
+    });
+  }
+}
+
+// Play victory music (Toréador Song from Carmen)
+export function playVictoryMusic(): void {
+  // Find any existing audio player
+  const existingAudio = document.querySelector('audio');
+  
+  if (existingAudio) {
+    // Store current track info to resume after victory
+    const currentSrc = existingAudio.src;
+    const wasPlaying = !existingAudio.paused;
+    const currentTime = existingAudio.currentTime;
+    const currentVolume = existingAudio.volume;
+    
+    // Import music tracks to find victory music
+    import('./constants').then(({ MUSIC_TRACKS }) => {
+      const victoryTrack = MUSIC_TRACKS.find(track => track.id === 'victory');
+      
+      if (victoryTrack) {
+        // Play victory music
+        existingAudio.src = victoryTrack.src;
+        existingAudio.loop = false;
+        existingAudio.volume = currentVolume;
+        existingAudio.play().catch(err => console.error(err));
+        
+        // Show toast with track info
+        toast(`🎵 Now playing: ${victoryTrack.name}`, {
+          description: `Composed by ${victoryTrack.composer}, arranged by ${victoryTrack.arranger}`,
+          duration: 3000,
+        });
+        
+        // Listen for end of victory music to resume previous track
+        const handleVictoryEnd = () => {
+          existingAudio.src = currentSrc;
+          existingAudio.currentTime = currentTime;
+          existingAudio.loop = true;
+          
+          if (wasPlaying) {
+            existingAudio.play().catch(err => console.error(err));
+          }
+          
+          existingAudio.removeEventListener('ended', handleVictoryEnd);
+        };
+        
+        existingAudio.addEventListener('ended', handleVictoryEnd);
+      }
     });
   }
 }
