@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { daysData } from "./DayData";
+import { daysData, activityQuestions } from "./DayData";
 import { SurveyResults, DayName, ActivityType } from "./types";
 
 interface DayAnalysisProps {
@@ -165,7 +165,7 @@ export default function DayAnalysis({ results, onReset }: DayAnalysisProps) {
                     <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4">
                       <div
                         className={`${getActivityColor(type)} h-4 rounded-full`}
-                        style={{ width: `${(score / activityQuestions.filter(q => q.activityType === type).length) * 100}%` }}
+                        style={{ width: `${(score / (activityQuestions.filter(q => q.activityType === type).length || 1)) * 100}%` }}
                       ></div>
                     </div>
                   </div>
