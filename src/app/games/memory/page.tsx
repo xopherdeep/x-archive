@@ -9,10 +9,10 @@ import {
 } from "@/components/ui/card";
 
 // Import components
-import { GameControls } from "@/components/games/memory/GameControls";
-import { GameBoard } from "@/components/games/memory/GameBoard";
-import { ScoreBoard } from "@/components/games/memory/ScoreBoard";
-import { GameOverMessage } from "@/components/games/memory/GameOverMessage";
+import { GameControls } from "./GameControls";
+import { GameBoard } from "./GameBoard";
+import { ScoreBoard } from "./ScoreBoard";
+import { GameOverMessage } from "./GameOverMessage";
 
 // Import types and utilities
 import { 
@@ -22,7 +22,7 @@ import {
   GRID_SIZES, 
   formatTime, 
   shuffleCards 
-} from "@/components/games/memory/utils";
+} from "./utils";
 
 // Game stats type
 type GameStats = {
