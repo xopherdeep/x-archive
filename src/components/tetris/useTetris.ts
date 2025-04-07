@@ -1,73 +1,14 @@
 "use client";
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { randomTetromino, mergeBoard, checkCollision, clearLines, cropShape, rotate } from "./helpers";
-import { toast } from "sonner";
-import confetti from "canvas-confetti";
-
-const COLS = 10;
-const ROWS = 20;
-
-const TETROMINOES = {
-  I: {
-    shape: [
-      [0, 0, 0, 0],
-      [1, 1, 1, 1],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-    ],
-    color: "cyan",
-  },
-  O: {
-    shape: [
-      [1, 1],
-      [1, 1],
-    ],
-    color: "yellow",
-  },
-  T: {
-    shape: [
-      [0, 1, 0],
-      [1, 1, 1],
-      [0, 0, 0],
-    ],
-    color: "purple",
-  },
-  S: {
-    shape: [
-      [0, 1, 1],
-      [1, 1, 0],
-      [0, 0, 0],
-    ],
-    color: "green",
-  },
-  Z: {
-    shape: [
-      [1, 1, 0],
-      [0, 1, 1],
-      [0, 0, 0],
-    ],
-    color: "red",
-  },
-  J: {
-    shape: [
-      [1, 0, 0],
-      [1, 1, 1],
-      [0, 0, 0],
-    ],
-    color: "blue",
-  },
-  L: {
-    shape: [
-      [0, 0, 1],
-      [1, 1, 1],
-      [0, 0, 0],
-    ],
-    color: "orange",
-  },
-};
+import { celebrateLineClear, celebrateLevelUp, storage } from "./utils";
+import { COLS, ROWS, TETROMINOES, INITIAL_STATS, SCORE_MAP } from "./constants";
 
 export default function useTetris(initialTheme: "light" | "dark", bindings = { holdKey: "c" }) {
-  const [board, setBoard] = useState<Array<Array<0 | string>>>(Array.from({ length: ROWS }, () => new Array(COLS).fill(0)));
+  // Game state
+  const [board, setBoard] = useState<Array<Array<0 | string>>>(
+    Array.from({ length: ROWS }, () => new Array(COLS).fill(0))
+  );
   const [theme, setTheme] = useState<"light" | "dark">(initialTheme);
   const { holdKey } = bindings;
   const [current, setCurrent] = useState(() => randomTetromino(theme, 1));
@@ -77,70 +18,71 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
   const [paused, setPaused] = useState(false);
   const [score, setScore] = useState(0);
   const [level, setLevel] = useState(1);
-  const initialStats = Object.keys(TETROMINOES).reduce((acc, key) => ({ ...acc, [key]: 0 }), {});
-  const [dropStats, setDropStats] = useState<Record<string, number>>(initialStats);
-  const [holdStats, setHoldStats] = useState<Record<string, number>>(initialStats);
+  const [dropStats, setDropStats] = useState<Record<string, number>>(INITIAL_STATS);
+  const [holdStats, setHoldStats] = useState<Record<string, number>>(INITIAL_STATS);
   const [linesCleared, setLinesCleared] = useState(0);
   const [hold, setHold] = useState<null | { key: string; tetromino: { shape: number[][]; color: string } }>(null);
   const [quickDropping, setQuickDropping] = useState(false);
+  
+  // Refs
   const dropInterval = useRef<number>(1000);
+  const canHold = useRef<boolean>(true); // Prevent multiple holds per piece
 
   const drop = useCallback(() => {
+    if (gameOver || paused) return;
+    
     setPosition((prev) => {
       const newPos = { x: prev.x, y: prev.y + 1 };
+      
+      // Check if the piece would collide in the new position
       if (checkCollision(board, current.tetromino, newPos)) {
+        // Lock the piece in place
         const merged = mergeBoard(board, current.tetromino, prev, current.key);
         const { board: clearedBoard, cleared } = clearLines(merged);
+        
+        // Update the board and stats
         setBoard(clearedBoard);
         setLinesCleared((prev) => prev + cleared);
+        
+        // Celebrate line clears
         if (cleared > 0) {
-          const scoreMap = { 1: 10, 2: 25, 3: 40, 4: 50 };
-          const points = scoreMap[cleared] || 0;
-          toast(`💥 Cleared ${cleared} lines +${points} points!`, {
-            style: {
-              background: "linear-gradient(45deg, #42e695, #3bb2b8)",
-              color: "#fff",
-              fontWeight: "bold",
-              borderRadius: "8px",
-            },
-            position: "top-center",
-          });
-        
-          // Enhanced confetti effects based on lines cleared
-          const confettiConfig = {
-            1: { particleCount: 50, spread: 50, origin: { y: 0.8 }, colors: ['#1e90ff', '#00ffff'] },
-            2: { particleCount: 100, spread: 70, origin: { y: 0.8 }, colors: ['#7fff00', '#00ff00'] },
-            3: { particleCount: 150, spread: 90, origin: { y: 0.8 }, colors: ['#ff8c00', '#ffa500'] },
-            4: { particleCount: 250, spread: 120, origin: { y: 0.8 }, colors: ['#ff4500', '#ff0000', '#ffd700'] }
-          };
-        
-          const config = confettiConfig[cleared] || confettiConfig[1];
-        
-          // Fire confetti from both sides for more impressive effect
-          confetti({
-            ...config,
-            origin: { x: 0.2, y: 0.8 }
-          });
-          confetti({
-            ...config,
-            origin: { x: 0.8, y: 0.8 }
-          });
+          celebrateLineClear(cleared);
         }
+        
+        // Check for game over
         if (prev.y < 0) {
           setGameOver(true);
           return prev;
         }
-        const scoreMap = { 1: 10, 2: 25, 3: 40, 4: 50 };
-        setScore((prevScore) => prevScore + (scoreMap[cleared] || 0));
-        // Drop stats are updated in quickDrop, so we don't need to update them here
+        
+        // Update score
+        setScore((prevScore) => prevScore + (SCORE_MAP[cleared] || 0));
+        
+        // Update drop stats
+        setDropStats((prevStats) => ({
+          ...prevStats,
+          [current.key]: (prevStats[current.key] || 0) + 1,
+        }));
+        
+        // Get the next piece
         const newPiece = next;
         setCurrent(newPiece);
         setNext(randomTetromino(theme, level));
-        return { x: Math.floor(COLS / 2) - Math.floor(newPiece.tetromino.shape[0].length / 2), y: -1 };
+        
+        // Reset hold ability
+        canHold.current = true;
+        
+        // Reset position for the new piece
+        return { 
+          x: Math.floor(COLS / 2) - Math.floor(newPiece.tetromino.shape[0].length / 2), 
+          y: -1 
+        };
       }
+      
+      // Move down if no collision
       return newPos;
     });
-  }, [board, current.tetromino, next, theme, level]);
+  }, [board, current, next, theme, level, gameOver, paused]);
 
   useEffect(() => {
     if (gameOver || paused) return;
@@ -169,88 +111,99 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
     });
   };
 
-  const holdPiece = () => {
+  const holdPiece = useCallback(() => {
+    if (gameOver || paused || !canHold.current) return;
+    
+    // Prevent multiple holds per piece
+    canHold.current = false;
+    
     const pieceToHold = current;
     let newCurrent;
+    
+    // If no piece is being held, use the next piece
     if (!hold) {
       newCurrent = next;
       setNext(randomTetromino(theme, level));
     } else {
       newCurrent = hold;
     }
+    
+    // Update hold stats
     setHoldStats((prev) => {
       const newCount = (prev[pieceToHold.key] || 0) + 1;
-      console.log("HoldStats update for", pieceToHold.key, ":", newCount);
       return { ...prev, [pieceToHold.key]: newCount };
     });
+    
+    // Update hold and current pieces
     setHold(pieceToHold);
     setCurrent(newCurrent);
+    
+    // Reset position for the new piece
     setPosition({
       x: Math.floor(COLS / 2) - Math.floor(newCurrent.tetromino.shape[0].length / 2),
       y: -1,
     });
-  };
+  }, [current, hold, next, theme, level, gameOver, paused]);
 
-  const quickDrop = () => {
+  const quickDrop = useCallback(() => {
+    if (gameOver || paused) return;
+    
     setQuickDropping(true);
-    let posCopy = position;
+    
+    // Find the lowest valid position
+    let posCopy = { ...position };
     while (!checkCollision(board, current.tetromino, { x: posCopy.x, y: posCopy.y + 1 })) {
       posCopy = { x: posCopy.x, y: posCopy.y + 1 };
     }
+    
+    // Update position
     setPosition(posCopy);
+    
+    // Lock the piece in place
     const merged = mergeBoard(board, current.tetromino, posCopy, current.key);
     const { board: clearedBoard, cleared } = clearLines(merged);
+    
+    // Update board and stats
     setBoard(clearedBoard);
     setLinesCleared((prev) => prev + cleared);
+    
+    // Celebrate line clears
     if (cleared > 0) {
-      const scoreMap = { 1: 10, 2: 25, 3: 40, 4: 50 };
-      const points = scoreMap[cleared] || 0;
-      toast(`💥 Cleared ${cleared} lines +${points} points!`, {
-          style: {
-            background: "linear-gradient(45deg, #42e695, #3bb2b8)",
-            color: "#fff",
-            fontWeight: "bold",
-            borderRadius: "8px",
-          },
-          position: "top-center",
-      });
-      
-      // Enhanced confetti effects based on lines cleared
-      const confettiConfig = {
-        1: { particleCount: 50, spread: 50, origin: { y: 0.8 }, colors: ['#1e90ff', '#00ffff'] },
-        2: { particleCount: 100, spread: 70, origin: { y: 0.8 }, colors: ['#7fff00', '#00ff00'] },
-        3: { particleCount: 150, spread: 90, origin: { y: 0.8 }, colors: ['#ff8c00', '#ffa500'] },
-        4: { particleCount: 250, spread: 120, origin: { y: 0.8 }, colors: ['#ff4500', '#ff0000', '#ffd700'] }
-      };
-      
-      const config = confettiConfig[cleared] || confettiConfig[1];
-      
-      // Fire confetti from both sides for more impressive effect
-      confetti({
-        ...config,
-        origin: { x: 0.2, y: 0.8 }
-      });
-      confetti({
-        ...config,
-        origin: { x: 0.8, y: 0.8 }
-      });
+      celebrateLineClear(cleared);
     }
+    
+    // Check for game over
     if (posCopy.y < 0) {
       setGameOver(true);
       return;
     }
-    const scoreMap = { 1: 10, 2: 25, 3: 40, 4: 50 };
-    setScore((prevScore) => prevScore + (scoreMap[cleared] || 0));
+    
+    // Update score
+    setScore((prevScore) => prevScore + (SCORE_MAP[cleared] || 0));
+    
+    // Update drop stats
     setDropStats((prevStats) => ({
       ...prevStats,
       [current.key]: (prevStats[current.key] || 0) + 1,
     }));
+    
+    // Get the next piece
     const newPiece = next;
     setCurrent(newPiece);
     setNext(randomTetromino(theme, level));
-    setPosition({ x: Math.floor(COLS / 2) - Math.floor(newPiece.tetromino.shape[0].length / 2), y: -1 });
+    
+    // Reset hold ability
+    canHold.current = true;
+    
+    // Reset position for the new piece
+    setPosition({ 
+      x: Math.floor(COLS / 2) - Math.floor(newPiece.tetromino.shape[0].length / 2), 
+      y: -1 
+    });
+    
+    // Reset quickDropping state after a short delay
     setTimeout(() => setQuickDropping(false), 300);
-  };
+  }, [board, current, next, position, theme, level, gameOver, paused]);
 
   const mergedBoard = useMemo(() => {
     const newBoard = board.map((row) => row.slice());
@@ -275,73 +228,17 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
     return ghost;
   }, [board, current.tetromino, position]);
 
+  // Level up effect
   useEffect(() => {
     const newLevel = 1 + Math.floor(linesCleared / 10);
     if (newLevel !== level) {
       setLevel(newLevel);
+      
+      // Adjust drop speed based on level
       dropInterval.current = Math.max(100, 1000 - 100 * (newLevel - 1));
       
-      // Celebrate level up with confetti
-      if (newLevel % 10 === 0) {
-        // Major level milestone (every 10 levels)
-        // Create a spectacular confetti explosion
-        const colors = ['#ff0000', '#ffd700', '#00ff00', '#1e90ff', '#ff00ff', '#00ffff'];
-        
-        // Multiple bursts of confetti from different angles
-        for (let i = 0; i < 5; i++) {
-          setTimeout(() => {
-            confetti({
-              particleCount: 200,
-              spread: 160,
-              origin: { x: 0.1 + (i * 0.2), y: 0.5 },
-              colors: colors,
-              startVelocity: 40,
-              gravity: 1.2,
-              scalar: 1.2
-            });
-          }, i * 300);
-        }
-        
-        // Add a special toast notification
-        toast(`🎉 LEVEL ${newLevel} ACHIEVED! AMAZING! 🎉`, {
-          style: {
-            background: "linear-gradient(45deg, #ff4500, #ffd700)",
-            color: "#fff",
-            fontWeight: "bold",
-            borderRadius: "8px",
-            fontSize: "18px"
-          },
-          duration: 5000,
-          position: "top-center",
-        });
-      } else {
-        // Regular level up
-        // Fire confetti from multiple positions
-        confetti({
-          particleCount: 150,
-          spread: 100,
-          origin: { x: 0.3, y: 0.5 },
-          colors: ['#ffd700', '#1e90ff', '#00ff00']
-        });
-        
-        confetti({
-          particleCount: 150,
-          spread: 100,
-          origin: { x: 0.7, y: 0.5 },
-          colors: ['#ffd700', '#1e90ff', '#00ff00']
-        });
-        
-        // Add a toast notification
-        toast(`🆙 Level Up! Now at Level ${newLevel}! 🆙`, {
-          style: {
-            background: "linear-gradient(45deg, #1e90ff, #00ff00)",
-            color: "#fff",
-            fontWeight: "bold",
-            borderRadius: "8px"
-          },
-          position: "top-center",
-        });
-      }
+      // Celebrate level up
+      celebrateLevelUp(newLevel);
     }
   }, [linesCleared, level]);
 

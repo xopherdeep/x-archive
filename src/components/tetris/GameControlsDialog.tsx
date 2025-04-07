@@ -5,24 +5,113 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, Dialog
 import { Button } from "@/components/ui/button"
 import { Keyboard } from "lucide-react"
 
-function GameControlsDialog({ bindings, setBindings }: { bindings: { holdKey: string }, setBindings: React.Dispatch<React.SetStateAction<{ holdKey: string }>> }) {
-  const [listening, setListening] = React.useState(false);
+// Control mapping type
+type ControlMapping = {
+  action: string;
+  key: string;
+  customizable?: boolean;
+};
+
+// Default controls
+const DEFAULT_CONTROLS: ControlMapping[] = [
+  { action: "Move left", key: "←" },
+  { action: "Move right", key: "→" },
+  { action: "Soft drop", key: "↓" },
+  { action: "Rotate piece", key: "↑" },
+  { action: "Rotate opposite", key: "Shift + ↑" },
+  { action: "Quick drop", key: "Space" },
+  { action: "Pause game", key: "P" },
+];
+
+// Memoized control key component
+const ControlKey = React.memo(function ControlKey({ 
+  keyName 
+}: { 
+  keyName: string 
+}) {
+  return (
+    <div className="px-2 py-1 bg-muted rounded text-center">
+      {keyName}
+    </div>
+  );
+});
+
+// Memoized customizable control component
+const CustomizableControl = React.memo(function CustomizableControl({
+  action,
+  currentKey,
+  onCustomize,
+  isListening,
+}: {
+  action: string;
+  currentKey: string;
+  onCustomize: () => void;
+  isListening: boolean;
+}) {
   const keyRef = React.useRef<HTMLButtonElement>(null);
   
-  const handleKeyBinding = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+  React.useEffect(() => {
+    if (isListening && keyRef.current) {
+      keyRef.current.focus();
+    }
+  }, [isListening]);
+  
+  return (
+    <>
+      <div className="font-medium">{action}</div>
+      <Button
+        ref={keyRef}
+        variant="outline"
+        size="sm"
+        className="w-full"
+        onClick={onCustomize}
+        aria-label={`Press a key to set the ${action.toLowerCase()} control`}
+      >
+        {isListening ? "Press any key..." : currentKey}
+      </Button>
+    </>
+  );
+});
+
+// Main dialog component
+function GameControlsDialog({ 
+  bindings, 
+  setBindings 
+}: { 
+  bindings: { holdKey: string }, 
+  setBindings: React.Dispatch<React.SetStateAction<{ holdKey: string }>> 
+}) {
+  const [listening, setListening] = React.useState(false);
+  
+  const handleKeyBinding = React.useCallback((event: React.KeyboardEvent<HTMLButtonElement>) => {
     event.preventDefault();
     // Prevent certain keys that might cause issues
     if (['Escape', 'Tab'].includes(event.key)) return;
     
     setBindings({ ...bindings, holdKey: event.key });
     setListening(false);
-  };
+  }, [bindings, setBindings]);
 
-  React.useEffect(() => {
-    if (listening && keyRef.current) {
-      keyRef.current.focus();
-    }
-  }, [listening]);
+  // Memoize the controls list to prevent unnecessary re-renders
+  const controlsList = React.useMemo(() => {
+    return (
+      <div className="grid grid-cols-2 gap-2 my-4">
+        {DEFAULT_CONTROLS.map((control) => (
+          <React.Fragment key={control.action}>
+            <div className="font-medium">{control.action}</div>
+            <ControlKey keyName={control.key} />
+          </React.Fragment>
+        ))}
+        
+        <CustomizableControl
+          action="Hold piece"
+          currentKey={bindings?.holdKey || "X"}
+          onCustomize={() => setListening(true)}
+          isListening={listening}
+        />
+      </div>
+    );
+  }, [bindings?.holdKey, listening]);
 
   return (
     <Dialog>
@@ -32,46 +121,12 @@ function GameControlsDialog({ bindings, setBindings }: { bindings: { holdKey: st
           <span>Controls</span>
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent onKeyDown={listening ? handleKeyBinding : undefined}>
         <DialogHeader>
           <DialogTitle>Game Controls</DialogTitle>
         </DialogHeader>
         <DialogDescription>
-          <div className="grid grid-cols-2 gap-2 my-4">
-            <div className="font-medium">Move left</div>
-            <div className="px-2 py-1 bg-muted rounded text-center">←</div>
-            
-            <div className="font-medium">Move right</div>
-            <div className="px-2 py-1 bg-muted rounded text-center">→</div>
-            
-            <div className="font-medium">Soft drop</div>
-            <div className="px-2 py-1 bg-muted rounded text-center">↓</div>
-            
-            <div className="font-medium">Rotate piece</div>
-            <div className="px-2 py-1 bg-muted rounded text-center">↑</div>
-            
-            <div className="font-medium">Rotate opposite</div>
-            <div className="px-2 py-1 bg-muted rounded text-center">Shift + ↑</div>
-            
-            <div className="font-medium">Quick drop</div>
-            <div className="px-2 py-1 bg-muted rounded text-center">Space</div>
-            
-            <div className="font-medium">Pause game</div>
-            <div className="px-2 py-1 bg-muted rounded text-center">P</div>
-            
-            <div className="font-medium">Hold piece</div>
-            <Button
-              ref={keyRef}
-              variant="outline"
-              size="sm"
-              className="w-full"
-              onClick={() => setListening(true)}
-              onKeyDown={handleKeyBinding}
-              aria-label="Press a key to set the hold piece control"
-            >
-              {listening ? "Press any key..." : bindings?.holdKey || "X"}
-            </Button>
-          </div>
+          {controlsList}
         </DialogDescription>
         <DialogFooter>
           <DialogClose asChild>
