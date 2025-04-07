@@ -19,7 +19,7 @@ export default function GameCard({ title, children }: GameCardProps) {
           style={{ fontFamily: '"Press Start 2P", cursive' }}
         >
           <p>{title}</p>
-          <p>{children}</p>
+          {children}
         </div>
       </CardContent>
     </Card>
