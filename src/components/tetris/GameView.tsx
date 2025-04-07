@@ -230,44 +230,10 @@ export default function GameView(props: GameViewProps) {
       <div>
         <h1
           style={{ fontFamily: "'Press Start 2P', cursive" }}
-          className="text-5xl font-extrabold  text-red-500 drop-shadow-[0_2px_3px_rgba(0,0,0,0.5)] tracking-[0.25em] text-center"
+          className="text-5xl font-extrabold  text-red-500 drop-shadow-[0_2px_3px_rgba(0,0,0,0.5)] tracking-[0.25em] text-center mb-4"
         >
           TETRIS
         </h1>
-        <div className="flex flex-col items-center mt-2 mb-4">
-          <div className="flex justify-center gap-2 mb-2">
-            {Array.from({ length: 10 }, (_, i) => i + 1).map((lvl) => (
-              <div
-                key={lvl}
-                className="w-8 h-8 flex items-center justify-center rounded-full transition-all duration-300"
-                style={{
-                  backgroundColor: 'rgba(0,0,0,0.3)',
-                  color: getLevelColorTheme(lvl).I,
-                  opacity: level === lvl ? 1 : 0.4,
-                  fontWeight: 'bold',
-                  border: level === lvl ? `2px solid ${getLevelColorTheme(lvl).I}` : '1px solid rgba(255,255,255,0.2)',
-                  boxShadow: level === lvl ? `0 0 8px ${getLevelColorTheme(lvl).I}` : 'none',
-                  transform: level === lvl ? 'scale(1.1)' : 'scale(1)',
-                }}
-              >
-                {lvl}
-              </div>
-            ))}
-          </div>
-          <div className="w-full max-w-xs bg-gray-700 h-2 rounded-full overflow-hidden">
-            <div 
-              className="bg-green-500 h-full transition-all duration-300 ease-in-out"
-              style={{ 
-                width: `${(linesCleared % 10) * 10}%`,
-                backgroundColor: getLevelColorTheme(level).I
-              }}
-              aria-label={`Progress to next level: ${linesCleared % 10} of 10 lines`}
-            ></div>
-          </div>
-          <div className="text-xs text-center mt-1">
-            {10 - (linesCleared % 10)} lines to next level
-          </div>
-        </div>
         <GameCard>
           <div className="relative">
             <Board
@@ -373,7 +339,40 @@ export default function GameView(props: GameViewProps) {
             Lines: {linesCleared}
           </div>
           
-          
+          <div className="flex flex-col items-center mt-4">
+            <div className="flex justify-center gap-2 mb-2">
+              {Array.from({ length: 10 }, (_, i) => i + 1).map((lvl) => (
+                <div
+                  key={lvl}
+                  className="w-8 h-8 flex items-center justify-center rounded-full transition-all duration-300"
+                  style={{
+                    backgroundColor: 'rgba(0,0,0,0.3)',
+                    color: getLevelColorTheme(lvl).I,
+                    opacity: level === lvl ? 1 : 0.4,
+                    fontWeight: 'bold',
+                    border: level === lvl ? `2px solid ${getLevelColorTheme(lvl).I}` : '1px solid rgba(255,255,255,0.2)',
+                    boxShadow: level === lvl ? `0 0 8px ${getLevelColorTheme(lvl).I}` : 'none',
+                    transform: level === lvl ? 'scale(1.1)' : 'scale(1)',
+                  }}
+                >
+                  {lvl}
+                </div>
+              ))}
+            </div>
+            <div className="w-full max-w-xs bg-gray-700 h-2 rounded-full overflow-hidden">
+              <div 
+                className="bg-green-500 h-full transition-all duration-300 ease-in-out"
+                style={{ 
+                  width: `${(linesCleared % 10) * 10}%`,
+                  backgroundColor: getLevelColorTheme(level).I
+                }}
+                aria-label={`Progress to next level: ${linesCleared % 10} of 10 lines`}
+              ></div>
+            </div>
+            <div className="text-xs text-center mt-1">
+              {10 - (linesCleared % 10)} lines to next level
+            </div>
+          </div>
         </GameCard>
       </div>
       <div className="flex flex-col items-start gap-4 w-40">
