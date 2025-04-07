@@ -133,6 +133,11 @@ export default function useSnake(initialTheme: "light" | "dark") {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (gameState === 'GAME_OVER') return;
       
+      // Prevent default behavior for arrow keys to avoid page scrolling
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)) {
+        e.preventDefault();
+      }
+      
       switch (e.key) {
         case 'ArrowUp':
         case 'w':
