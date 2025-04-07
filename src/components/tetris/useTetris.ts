@@ -93,7 +93,16 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
         setBoard(clearedBoard);
         setLinesCleared((prev) => prev + cleared);
         if (cleared > 0) {
-          toast(`Cleared ${cleared} lines!`);
+          const scoreMap = { 1: 10, 2: 25, 3: 40, 4: 50 };
+          const points = scoreMap[cleared] || 0;
+          toast(`💥 Cleared ${cleared} lines +${points} points!`, {
+            style: {
+              background: "linear-gradient(45deg, #42e695, #3bb2b8)",
+              color: "#fff",
+              fontWeight: "bold",
+              borderRadius: "8px",
+            },
+          });
           const base = 30;
           let particleCount = base * cleared;
           if (cleared === 4) {
@@ -181,7 +190,16 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
     setBoard(clearedBoard);
     setLinesCleared((prev) => prev + cleared);
     if (cleared > 0) {
-      toast(`Cleared ${cleared} lines!`);
+      const scoreMap = { 1: 10, 2: 25, 3: 40, 4: 50 };
+      const points = scoreMap[cleared] || 0;
+      toast(`💥 Cleared ${cleared} lines +${points} points!`, {
+        style: {
+          background: "linear-gradient(45deg, #42e695, #3bb2b8)",
+          color: "#fff",
+          fontWeight: "bold",
+          borderRadius: "8px",
+        },
+      });
       const base = 30;
       let particleCount = base * cleared;
       if (cleared === 4) {
