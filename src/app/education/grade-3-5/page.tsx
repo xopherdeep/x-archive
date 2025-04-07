@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import SubjectCard from "@/components/education/SubjectCard";
 
 export default function Grade3To5Page() {
   return (
@@ -12,89 +13,132 @@ export default function Grade3To5Page() {
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700">
-          <h2 className="text-xl font-bold mb-3 text-blue-600 dark:text-blue-400">Math Adventures</h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-4">
-            Build essential math skills through interactive games and activities.
-          </p>
-          <div className="space-y-4">
-            <div className="border-l-4 border-blue-500 pl-4 py-2">
-              <h3 className="font-semibold">Multiplication Tables</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Practice multiplication facts with fun games</p>
-            </div>
-            <div className="border-l-4 border-blue-500 pl-4 py-2">
-              <h3 className="font-semibold">Fractions and Decimals</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Visual learning tools for understanding fractions</p>
-            </div>
-            <div className="border-l-4 border-blue-500 pl-4 py-2">
-              <h3 className="font-semibold">Word Problems</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Real-world math applications</p>
-            </div>
-          </div>
-        </div>
+        <SubjectCard
+          title="Math Adventures"
+          description="Build essential math skills through interactive games and activities."
+          color="blue"
+          topics={[
+            {
+              title: "Multiplication Tables",
+              description: "Practice multiplication facts with fun games"
+            },
+            {
+              title: "Fractions and Decimals",
+              description: "Visual learning tools for understanding fractions"
+            },
+            {
+              title: "Word Problems",
+              description: "Real-world math applications"
+            }
+          ]}
+        />
 
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700">
-          <h2 className="text-xl font-bold mb-3 text-green-600 dark:text-green-400">Reading & Language Arts</h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-4">
-            Develop reading comprehension and writing skills.
-          </p>
-          <div className="space-y-4">
-            <div className="border-l-4 border-green-500 pl-4 py-2">
-              <h3 className="font-semibold">Vocabulary Building</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Fun word games to expand vocabulary</p>
-            </div>
-            <div className="border-l-4 border-green-500 pl-4 py-2">
-              <h3 className="font-semibold">Reading Comprehension</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Interactive stories with questions</p>
-            </div>
-            <div className="border-l-4 border-green-500 pl-4 py-2">
-              <h3 className="font-semibold">Creative Writing</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Story starters and writing prompts</p>
-            </div>
-          </div>
-        </div>
+        <SubjectCard
+          title="Reading & Language Arts"
+          description="Develop reading comprehension and writing skills."
+          color="green"
+          topics={[
+            {
+              title: "Vocabulary Building",
+              description: "Fun word games to expand vocabulary"
+            },
+            {
+              title: "Reading Comprehension",
+              description: "Interactive stories with questions"
+            },
+            {
+              title: "Creative Writing",
+              description: "Story starters and writing prompts"
+            }
+          ]}
+        />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700">
-          <h2 className="text-xl font-bold mb-3 text-purple-600 dark:text-purple-400">Science Explorers</h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-4">
-            Discover the wonders of science through hands-on experiments.
-          </p>
-          <div className="space-y-4">
-            <div className="border-l-4 border-purple-500 pl-4 py-2">
-              <h3 className="font-semibold">Animal Habitats</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Learn about different ecosystems</p>
-            </div>
-            <div className="border-l-4 border-purple-500 pl-4 py-2">
-              <h3 className="font-semibold">Simple Machines</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Explore physics with everyday objects</p>
-            </div>
-            <div className="border-l-4 border-purple-500 pl-4 py-2">
-              <h3 className="font-semibold">Weather Patterns</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Understand climate and weather systems</p>
-            </div>
-          </div>
-        </div>
+        <SubjectCard
+          title="Science Explorers"
+          description="Discover the wonders of science through hands-on experiments."
+          color="purple"
+          topics={[
+            {
+              title: "Animal Habitats",
+              description: "Learn about different ecosystems"
+            },
+            {
+              title: "Simple Machines",
+              description: "Explore physics with everyday objects"
+            },
+            {
+              title: "Weather Patterns",
+              description: "Understand climate and weather systems"
+            }
+          ]}
+        />
 
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700">
-          <h2 className="text-xl font-bold mb-3 text-amber-600 dark:text-amber-400">Social Studies</h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-4">
-            Learn about history, geography, and cultures around the world.
-          </p>
-          <div className="space-y-4">
-            <div className="border-l-4 border-amber-500 pl-4 py-2">
-              <h3 className="font-semibold">Map Skills</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Interactive maps and geography games</p>
+        <SubjectCard
+          title="Social Studies"
+          description="Learn about history, geography, and cultures around the world."
+          color="amber"
+          topics={[
+            {
+              title: "Map Skills",
+              description: "Interactive maps and geography games"
+            },
+            {
+              title: "Historical Figures",
+              description: "Biographies of important people in history"
+            },
+            {
+              title: "Cultural Celebrations",
+              description: "Traditions and holidays around the world"
+            }
+          ]}
+        />
+      </div>
+
+      <div className="mt-10">
+        <h2 className="text-2xl font-bold mb-6">Featured Activities</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <Link href="/education/grade-3-5/math/multiplication" className="block">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
+              <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mb-4">
+                <span className="text-blue-600 dark:text-blue-400 text-xl font-bold">×</span>
+              </div>
+              <h3 className="font-bold text-lg mb-2">Multiplication Tables</h3>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">
+                Interactive practice with times tables from 1-10
+              </p>
             </div>
-            <div className="border-l-4 border-amber-500 pl-4 py-2">
-              <h3 className="font-semibold">Historical Figures</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Biographies of important people in history</p>
+          </Link>
+          
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
+            <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mb-4">
+              <span className="text-green-600 dark:text-green-400 text-xl font-bold">A</span>
             </div>
-            <div className="border-l-4 border-amber-500 pl-4 py-2">
-              <h3 className="font-semibold">Cultural Celebrations</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Traditions and holidays around the world</p>
+            <h3 className="font-bold text-lg mb-2">Vocabulary Challenge</h3>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">
+              Expand your vocabulary with fun word games
+            </p>
+          </div>
+          
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
+            <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mb-4">
+              <span className="text-purple-600 dark:text-purple-400 text-xl font-bold">🔬</span>
             </div>
+            <h3 className="font-bold text-lg mb-2">Simple Experiments</h3>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">
+              Easy science experiments you can do at home
+            </p>
+          </div>
+          
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
+            <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900 rounded-full flex items-center justify-center mb-4">
+              <span className="text-amber-600 dark:text-amber-400 text-xl font-bold">🌎</span>
+            </div>
+            <h3 className="font-bold text-lg mb-2">World Explorer</h3>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">
+              Interactive maps and geography games
+            </p>
           </div>
         </div>
       </div>
