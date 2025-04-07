@@ -33,6 +33,7 @@ type GameViewProps = {
   quickDropping: boolean;
   ghostPosition: { x: number; y: number };
   gameOver: boolean;
+  paused: boolean;
   COLS: number;
   ROWS: number;
   dropStats: Record<string, number>;
@@ -68,6 +69,7 @@ export default function GameView(props: GameViewProps) {
     quickDropping,
     ghostPosition,
     gameOver,
+    paused,
     COLS,
     ROWS,
     dropStats,
@@ -235,6 +237,7 @@ export default function GameView(props: GameViewProps) {
               quickDropping={quickDropping}
               ghostPosition={ghostPosition}
               gameOver={gameOver}
+              paused={paused}
               COLS={COLS}
               ROWS={ROWS}
               level={level}
@@ -343,16 +346,37 @@ export default function GameView(props: GameViewProps) {
           </div>
         </GameCard>
         <GameCard title="Level">
-          {level}
+          <div className="flex items-center justify-center my-2">
+            <div className="text-3xl font-bold">{level}</div>
+          </div>
+          
+          <div className="w-full bg-gray-700 h-2 rounded-full overflow-hidden">
+            <div 
+              className="bg-green-500 h-full transition-all duration-300 ease-in-out"
+              style={{ width: `${(linesCleared % 10) * 10}%` }}
+              aria-label={`Progress to next level: ${linesCleared % 10} of 10 lines`}
+            ></div>
+          </div>
+          <div className="text-xs text-center mt-1">
+            {10 - (linesCleared % 10)} lines to next level
+          </div>
 
           <CardFooter>
-            <Button
-              // variant="outline"
-              className="mt-2 w-full"
-              onClick={resetGame}
-            >
-              Restart
-            </Button>
+            <div className="flex flex-col gap-2">
+              <Button
+                className="mt-2 w-full"
+                onClick={resetGame}
+              >
+                Restart
+              </Button>
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => setPaused(prev => !prev)}
+              >
+                {paused ? "Resume" : "Pause"}
+              </Button>
+            </div>
           </CardFooter>
         </GameCard>
         <Card className="w-full gap-0">

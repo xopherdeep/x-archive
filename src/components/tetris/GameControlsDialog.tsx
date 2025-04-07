@@ -30,6 +30,7 @@ function GameControlsDialog({ bindings, setBindings }: { bindings: { holdKey: st
             <li><strong>Arrow Up:</strong> Rotate piece</li>
             <li><strong>Shift + Arrow Up:</strong> Rotate piece opposite</li>
             <li><strong>Space:</strong> Quick drop</li>
+            <li><strong>P:</strong> Pause game</li>
             <li>
               <strong>{listening ? "Press key..." : (bindings?.holdKey || "Hold Key")}:</strong>{" "}
               <span onClick={() => setListening(true)} onKeyDown={handleKeyBinding} tabIndex={0}>

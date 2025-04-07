@@ -14,6 +14,7 @@ interface BoardProps {
   quickDropping: boolean;
   ghostPosition: { x: number; y: number };
   gameOver: boolean;
+  paused: boolean;
   COLS: number;
   ROWS: number;
   level: number;
@@ -25,6 +26,7 @@ export default function Board({
   quickDropping,
   ghostPosition,
   gameOver,
+  paused,
   COLS,
   ROWS,
   level,
@@ -130,9 +132,11 @@ export default function Board({
               return null;
             })
           )}
-          {gameOver && (
+          {(gameOver || paused) && (
             <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-              <span className="text-white text-3xl font-bold">Game Over</span>
+              <span className="text-white text-3xl font-bold">
+                {gameOver ? "Game Over" : "Paused"}
+              </span>
             </div>
           )}
         </div>

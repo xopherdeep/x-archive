@@ -74,6 +74,7 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
   const [next, setNext] = useState(() => randomTetromino(theme, 1));
   const [position, setPosition] = useState({ x: Math.floor(COLS / 2) - 1, y: -1 });
   const [gameOver, setGameOver] = useState(false);
+  const [paused, setPaused] = useState(false);
   const [score, setScore] = useState(0);
   const [level, setLevel] = useState(1);
   const initialStats = Object.keys(TETROMINOES).reduce((acc, key) => ({ ...acc, [key]: 0 }), {});
@@ -142,10 +143,10 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
   }, [board, current.tetromino, next, theme, level]);
 
   useEffect(() => {
-    if (gameOver) return;
+    if (gameOver || paused) return;
     const timer = setInterval(drop, dropInterval.current);
     return () => clearInterval(timer);
-  }, [drop, gameOver]);
+  }, [drop, gameOver, paused]);
 
   const move = (dx: number) => {
     setPosition((prev) => {
@@ -348,7 +349,14 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
     if (["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp", " "].includes(event.key)) {
       event.preventDefault();
     }
-    if (gameOver) return;
+    
+    // Handle pause with 'p' key regardless of game state
+    if (event.key === "p" || event.key === "P") {
+      setPaused(prev => !prev);
+      return;
+    }
+    
+    if (gameOver || paused) return;
     if (event.key === "ArrowUp" && event.shiftKey) {
       rotatePieceOpposite();
       return;
@@ -389,6 +397,8 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
     setPosition,
     gameOver,
     setGameOver,
+    paused,
+    setPaused,
     score,
     setScore,
     level,

@@ -25,20 +25,23 @@ export default function Background({
 }) {
   const tetrominos = useMemo(() => {
     const items: TetrominoData[] = [];
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-    for (let i = 0; i < NUM_TETROMINOS; i++) {
-      const { key, tetromino } = randomTetromino(theme, level);
-      const shapeWidth = tetromino.shape[0].length;
-      const shapeHeight = tetromino.shape.length;
-      const maxX = viewportWidth - shapeWidth * CELL_SIZE;
-      const maxY = viewportHeight - shapeHeight * CELL_SIZE;
-      const x = Math.random() * maxX;
-      const y = Math.random() * maxY;
-      items.push({ key, tetromino, x, y });
+    // Only calculate this on client-side
+    if (typeof window !== 'undefined') {
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+      for (let i = 0; i < NUM_TETROMINOS; i++) {
+        const { key, tetromino } = randomTetromino(theme, level);
+        const shapeWidth = tetromino.shape[0].length;
+        const shapeHeight = tetromino.shape.length;
+        const maxX = viewportWidth - shapeWidth * CELL_SIZE;
+        const maxY = viewportHeight - shapeHeight * CELL_SIZE;
+        const x = Math.random() * maxX;
+        const y = Math.random() * maxY;
+        items.push({ key, tetromino, x, y });
+      }
     }
     return items;
-  }, [theme]);
+  }, [theme, level]); // Add level as a dependency
 
   return (
     <div

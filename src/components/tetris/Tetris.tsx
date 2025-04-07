@@ -7,6 +7,7 @@ import { toast, Toaster } from "sonner";
 import GameCard from "./GameCard";
 import MusicPlayer from "./MusicPlayer";
 import Background from "./Background";
+import TouchControls from "./TouchControls";
 
 import { getLevelColorTheme } from "./tetrominoStyles";
 
@@ -187,6 +188,8 @@ export default function Tetris() {
     score,
     level,
     gameOver,
+    paused,
+    setPaused,
     dropStats,
     linesCleared,
     current,
@@ -262,6 +265,9 @@ export default function Tetris() {
             className="h-screen w-full flex flex-col items-center justify-center overflow-hidden"
             tabIndex={0}
             onKeyDown={handleKeyDown}
+            role="application"
+            aria-label="Tetris Game"
+            aria-live="polite"
           >
             <Background theme={theme} level={level} />
 
@@ -271,6 +277,7 @@ export default function Tetris() {
               quickDropping={quickDropping}
               ghostPosition={ghostPosition}
               gameOver={gameOver}
+              paused={paused}
               COLS={COLS}
               ROWS={ROWS}
               dropStats={dropStats}
@@ -292,6 +299,29 @@ export default function Tetris() {
               setHold={setHold}
               setHoldStats={setHoldStats}
               setTheme={setTheme}
+              setPaused={setPaused}
+            />
+            
+            <TouchControls
+              onMove={move}
+              onRotate={rotatePiece}
+              onRotateOpposite={() => {
+                setCurrent((prev) => {
+                  const rotated = { 
+                    ...prev, 
+                    tetromino: { 
+                      ...prev.tetromino, 
+                      shape: rotate(rotate(rotate(prev.tetromino.shape))) 
+                    } 
+                  };
+                  return checkCollision(board, rotated.tetromino, position) ? prev : rotated;
+                });
+              }}
+              onDrop={drop}
+              onQuickDrop={quickDrop}
+              onHold={holdPiece}
+              onPause={() => setPaused(prev => !prev)}
+              isPaused={paused}
             />
           </div>
         </div>
