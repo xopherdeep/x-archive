@@ -140,7 +140,6 @@ export default function GameView(props: GameViewProps) {
   return (
     <div className="relative flex flex-col md:flex-row gap-8 items-center justify-center">
       <div className="flex flex-col gap-4">
-        <MusicPlayer inGameHUD={true} />
         <Stats
           dropStats={dropStats}
           holdStats={holdStats}
@@ -330,6 +329,10 @@ export default function GameView(props: GameViewProps) {
             <div className="text-xs text-center mt-1">
               {10 - (linesCleared % 10)} lines to next level
             </div>
+          </div>
+          
+          <div className="mt-4">
+            <MusicPlayer inGameHUD={true} />
           </div>
         </GameCard>
       </div>
