@@ -39,6 +39,7 @@ interface StatsProps {
   setTheme: (value: "light" | "dark") => void;
   bindings: { holdKey: string };
   setBindings: React.Dispatch<React.SetStateAction<{ holdKey: string }>>;
+  level?: number;
 }
 
 export default function Stats({
