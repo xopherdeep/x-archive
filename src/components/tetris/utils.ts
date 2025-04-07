@@ -6,7 +6,7 @@ import { CONFETTI_CONFIG, SCORE_MAP } from "./constants";
 export function celebrateLineClear(cleared: number): void {
   if (cleared === 0) return;
   
-  // Show toast notification
+  // Show toast notification with higher z-index
   const points = SCORE_MAP[cleared] || 0;
   toast(`💥 Cleared ${cleared} lines +${points} points!`, {
     style: {
@@ -14,22 +14,25 @@ export function celebrateLineClear(cleared: number): void {
       color: "#fff",
       fontWeight: "bold",
       borderRadius: "8px",
+      zIndex: 9999, // Ensure toast appears above everything
     },
     position: "top-center",
   });
 
-  // Fire confetti
+  // Fire confetti with zIndex to ensure it's visible
   const config = CONFETTI_CONFIG[cleared] || CONFETTI_CONFIG[1];
   
   // Fire from both sides for more impressive effect
   confetti({
     ...config,
-    origin: { x: 0.2, y: 0.8 }
+    origin: { x: 0.2, y: 0.8 },
+    zIndex: 9999 // Ensure confetti appears above everything
   });
   
   confetti({
     ...config,
-    origin: { x: 0.8, y: 0.8 }
+    origin: { x: 0.8, y: 0.8 },
+    zIndex: 9999 // Ensure confetti appears above everything
   });
   
   // Play success sound for Tetris (4 lines)
@@ -108,7 +111,8 @@ export function celebrateLevelUp(newLevel: number): void {
           colors: colors,
           startVelocity: 40,
           gravity: 1.2,
-          scalar: 1.2
+          scalar: 1.2,
+          zIndex: 9999 // Ensure confetti appears above everything
         });
       }, i * 300);
     }
@@ -120,7 +124,8 @@ export function celebrateLevelUp(newLevel: number): void {
         color: "#fff",
         fontWeight: "bold",
         borderRadius: "8px",
-        fontSize: "18px"
+        fontSize: "18px",
+        zIndex: 9999 // Ensure toast appears above everything
       },
       duration: 5000,
       position: "top-center",
@@ -134,14 +139,16 @@ export function celebrateLevelUp(newLevel: number): void {
       particleCount: 150,
       spread: 100,
       origin: { x: 0.3, y: 0.5 },
-      colors: ['#ffd700', '#1e90ff', '#00ff00']
+      colors: ['#ffd700', '#1e90ff', '#00ff00'],
+      zIndex: 9999 // Ensure confetti appears above everything
     });
     
     confetti({
       particleCount: 150,
       spread: 100,
       origin: { x: 0.7, y: 0.5 },
-      colors: ['#ffd700', '#1e90ff', '#00ff00']
+      colors: ['#ffd700', '#1e90ff', '#00ff00'],
+      zIndex: 9999 // Ensure confetti appears above everything
     });
     
     toast(`🆙 Level Up! Now at Level ${newLevel}! 🆙`, {
@@ -149,7 +156,8 @@ export function celebrateLevelUp(newLevel: number): void {
         background: "linear-gradient(45deg, #1e90ff, #00ff00)",
         color: "#fff",
         fontWeight: "bold",
-        borderRadius: "8px"
+        borderRadius: "8px",
+        zIndex: 9999 // Ensure toast appears above everything
       },
       position: "top-center",
     });

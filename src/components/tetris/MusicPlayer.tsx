@@ -255,7 +255,7 @@ const MusicPlayer = memo(function MusicPlayer({ inGameHUD = false, paused = fals
   // Original standalone version for non-game pages
   return (
     <TooltipProvider>
-      <div className="fixed top-4 right-4 z-50 flex gap-2">
+      <div className="fixed top-4 right-4 z-[9999] flex gap-2">
         <Popover open={showControls} onOpenChange={setShowControls}>
           <PopoverTrigger asChild>
             <Button 

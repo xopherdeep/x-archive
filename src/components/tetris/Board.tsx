@@ -136,15 +136,16 @@ const Board = React.memo(function Board({
 
   return (
     <div
-      className="relative grid grid-cols-10 w-full mx-auto my-4"
+      className="relative grid grid-cols-10 w-full mx-auto my-4 z-20"
       style={{
         width: COLS * 30 + "px",
         height: ROWS * 30 + "px",
-        background: "black",
+        background: "rgba(0, 0, 0, 0.8)",
         backgroundSize: "auto",
         maxWidth: "100vw",
         maxHeight: "70vh",
         overflow: "hidden",
+        boxShadow: "0 0 20px rgba(0, 0, 0, 0.5)",
       }}
     >
       {/* Grid lines */}

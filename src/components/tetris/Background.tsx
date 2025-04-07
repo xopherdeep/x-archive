@@ -2,10 +2,11 @@
 import React, { useEffect, useRef } from "react";
 import { randomTetromino } from "./helpers";
 import { getTetrominoBlockStyle } from "./tetrominoStyles";
+import { TETROMINOES } from "./constants";
 
 // Constants
-const NUM_TETROMINOS = 30; // Reduced for better performance
-const BG_CELL_SIZE = 20; // in pixels
+const NUM_TETROMINOS = 100; // More tetrominos for a wall-like effect
+const BG_CELL_SIZE = 30; // in pixels - larger for better visibility
 
 type TetrominoData = {
   key: string;
@@ -15,7 +16,6 @@ type TetrominoData = {
   };
   x: number;
   y: number;
-  rotation: number;
   opacity: number;
 };
 
@@ -28,7 +28,6 @@ const BackgroundCanvas = React.memo(function BackgroundCanvas({
   level: number;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationRef = useRef<number>(0);
   const tetrominos = useRef<TetrominoData[]>([]);
   
   // Generate tetrominos only once on mount
@@ -38,29 +37,25 @@ const BackgroundCanvas = React.memo(function BackgroundCanvas({
       const width = window.innerWidth;
       const height = window.innerHeight;
       
-      // Use a grid-based approach for better distribution
-      const gridCellSize = 150;
-      const gridCols = Math.ceil(width / gridCellSize);
-      const gridRows = Math.ceil(height / gridCellSize);
+      // Create a grid of tetrominos to fill the screen
+      const cols = Math.ceil(width / (BG_CELL_SIZE * 4)) + 1; // +1 for overflow
+      const rows = Math.ceil(height / (BG_CELL_SIZE * 4)) + 1; // +1 for overflow
       
-      for (let i = 0; i < NUM_TETROMINOS; i++) {
-        const { key, tetromino } = randomTetromino(theme, level);
-        
-        // Place in a random grid cell
-        const gridCol = Math.floor(Math.random() * gridCols);
-        const gridRow = Math.floor(Math.random() * gridRows);
-        
-        const cellX = gridCol * gridCellSize;
-        const cellY = gridRow * gridCellSize;
-        
-        // Add some randomness within the cell
-        const x = cellX + Math.random() * (gridCellSize - 100);
-        const y = cellY + Math.random() * (gridCellSize - 100);
-        
-        const rotation = Math.floor(Math.random() * 4) * 90;
-        const opacity = 0.03 + Math.random() * 0.07; // Lower opacity for better performance
-        
-        items.push({ key, tetromino, x, y, rotation, opacity });
+      // Create a wall of tetrominos
+      for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+          // Get a random tetromino
+          const { key, tetromino } = randomTetromino(theme, level);
+          
+          // Calculate position based on grid
+          const x = col * (BG_CELL_SIZE * 4);
+          const y = row * (BG_CELL_SIZE * 4);
+          
+          // Vary opacity slightly for depth effect
+          const opacity = 0.05 + Math.random() * 0.05;
+          
+          items.push({ key, tetromino, x, y, opacity });
+        }
       }
       
       tetrominos.current = items;
@@ -84,7 +79,6 @@ const BackgroundCanvas = React.memo(function BackgroundCanvas({
     return () => {
       window.removeEventListener('resize', handleResize);
       document.removeEventListener('fullscreenchange', handleResize);
-      cancelAnimationFrame(animationRef.current);
     };
   }, [theme, level]);
   
@@ -106,13 +100,6 @@ const BackgroundCanvas = React.memo(function BackgroundCanvas({
       // Set opacity
       ctx.globalAlpha = item.opacity;
       
-      // Translate and rotate
-      ctx.translate(item.x + (item.tetromino.shape[0].length * BG_CELL_SIZE) / 2, 
-                   item.y + (item.tetromino.shape.length * BG_CELL_SIZE) / 2);
-      ctx.rotate((item.rotation * Math.PI) / 180);
-      ctx.translate(-(item.tetromino.shape[0].length * BG_CELL_SIZE) / 2, 
-                   -(item.tetromino.shape.length * BG_CELL_SIZE) / 2);
-      
       // Draw the tetromino
       item.tetromino.shape.forEach((row, rowIndex) => {
         row.forEach((cell, colIndex) => {
@@ -120,8 +107,8 @@ const BackgroundCanvas = React.memo(function BackgroundCanvas({
             const style = getTetrominoBlockStyle(item.key, item.tetromino.color, BG_CELL_SIZE);
             
             // Draw the cell
-            const x = colIndex * BG_CELL_SIZE;
-            const y = rowIndex * BG_CELL_SIZE;
+            const x = item.x + colIndex * BG_CELL_SIZE;
+            const y = item.y + rowIndex * BG_CELL_SIZE;
             
             // Background color
             ctx.fillStyle = style.backgroundColor || item.tetromino.color;
@@ -153,23 +140,8 @@ const BackgroundCanvas = React.memo(function BackgroundCanvas({
     // Initial draw
     drawBackground();
     
-    // Subtle animation for visual interest
-    const animate = () => {
-      // Slowly rotate some tetrominos for subtle movement
-      tetrominos.current.forEach((item, index) => {
-        if (index % 5 === 0) { // Only animate every 5th tetromino
-          item.rotation += 0.05;
-        }
-      });
-      
-      drawBackground();
-      animationRef.current = requestAnimationFrame(animate);
-    };
-    
-    animationRef.current = requestAnimationFrame(animate);
-    
     return () => {
-      cancelAnimationFrame(animationRef.current);
+      // No animation to clean up
     };
   }, []);
   
@@ -183,7 +155,7 @@ const BackgroundCanvas = React.memo(function BackgroundCanvas({
         width: "100%",
         height: "100%",
         pointerEvents: "none",
-        zIndex: -1,
+        zIndex: -10, // Lower z-index to ensure it stays behind everything
       }}
     />
   );

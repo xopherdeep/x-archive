@@ -333,8 +333,11 @@ export default function Tetris() {
 
   return (
     <>
+      {/* Background should always be visible */}
+      <Background theme={theme} level={level} />
+      
       <GameCard>
-        <div ref={containerRef} className="relative">
+        <div ref={containerRef} className="relative z-10">
           <Button
             variant="ghost"
             onClick={() => setIsFullscreen(!isFullscreen)}
@@ -350,8 +353,6 @@ export default function Tetris() {
             aria-label="Tetris Game"
             aria-live="polite"
           >
-            {/* Background should always be visible */}
-            <Background theme={theme} level={level} />
 
             <GameView
               mergedBoard={mergedBoard}
