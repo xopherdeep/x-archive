@@ -50,6 +50,7 @@ export default function Stats({
   const holdRanking = Object.keys(TETROMINOES).sort(
     (a, b) => (holdStats[b] || 0) - (holdStats[a] || 0)
   );
+  console.log("Hold stats in Stats component:", holdStats);
   return (
     <div className="flex flex-col gap-4 w-auto">
       <GameCard title="Tetrominoes">

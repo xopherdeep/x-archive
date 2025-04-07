@@ -52,6 +52,7 @@ type GameViewProps = {
       tetromino: { shape: number[][]; color: string };
     } | null
   ) => void;
+  setHoldStats?: (value: Record<string, number>) => void;
 };
 
 export default function GameView(props: GameViewProps) {
@@ -84,6 +85,7 @@ export default function GameView(props: GameViewProps) {
     bindings,
     setBindings,
   } = props;
+  console.log("Hold stats in GameView:", holdStats);
   const [started, setStarted] = React.useState(false);
   const resetGame = () => {
     setBoard(Array.from({ length: ROWS }, () => new Array(COLS).fill(0)));
@@ -140,6 +142,8 @@ export default function GameView(props: GameViewProps) {
               L: null,
             }).reduce((acc, key) => ({ ...acc, [key]: 0 }), {});
             setDropStats(resetStats);
+            // Also reset hold stats
+            setHoldStats?.(resetStats);
           }}
           TETROMINOES={{
             I: {

@@ -324,6 +324,7 @@ export default function Tetris() {
               COLS={COLS}
               ROWS={ROWS}
               dropStats={dropStats}
+              holdStats={holdStats}
               linesCleared={linesCleared}
               score={score}
               level={level}
@@ -339,6 +340,7 @@ export default function Tetris() {
               setGameOver={setGameOver}
               setDropStats={setDropStats}
               setHold={setHold}
+              setHoldStats={setHoldStats}
               setTheme={setTheme}
             />
           </div>
