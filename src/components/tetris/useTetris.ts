@@ -104,12 +104,26 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
             },
             position: "top-center",
           });
-          const base = 30;
-          let particleCount = base * cleared;
-          if (cleared === 4) {
-            particleCount = 200;
-          }
-          confetti({ particleCount, spread: 50, origin: { y: 0.8 } });
+        
+          // Enhanced confetti effects based on lines cleared
+          const confettiConfig = {
+            1: { particleCount: 50, spread: 50, origin: { y: 0.8 }, colors: ['#1e90ff', '#00ffff'] },
+            2: { particleCount: 100, spread: 70, origin: { y: 0.8 }, colors: ['#7fff00', '#00ff00'] },
+            3: { particleCount: 150, spread: 90, origin: { y: 0.8 }, colors: ['#ff8c00', '#ffa500'] },
+            4: { particleCount: 250, spread: 120, origin: { y: 0.8 }, colors: ['#ff4500', '#ff0000', '#ffd700'] }
+          };
+        
+          const config = confettiConfig[cleared] || confettiConfig[1];
+        
+          // Fire confetti from both sides for more impressive effect
+          confetti({
+            ...config,
+            origin: { x: 0.2, y: 0.8 }
+          });
+          confetti({
+            ...config,
+            origin: { x: 0.8, y: 0.8 }
+          });
         }
         if (prev.y < 0) {
           setGameOver(true);
@@ -199,12 +213,26 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
           },
           position: "top-center",
       });
-      const base = 30;
-      let particleCount = base * cleared;
-      if (cleared === 4) {
-        particleCount = 200;
-      }
-      confetti({ particleCount, spread: 50, origin: { y: 0.8 } });
+      
+      // Enhanced confetti effects based on lines cleared
+      const confettiConfig = {
+        1: { particleCount: 50, spread: 50, origin: { y: 0.8 }, colors: ['#1e90ff', '#00ffff'] },
+        2: { particleCount: 100, spread: 70, origin: { y: 0.8 }, colors: ['#7fff00', '#00ff00'] },
+        3: { particleCount: 150, spread: 90, origin: { y: 0.8 }, colors: ['#ff8c00', '#ffa500'] },
+        4: { particleCount: 250, spread: 120, origin: { y: 0.8 }, colors: ['#ff4500', '#ff0000', '#ffd700'] }
+      };
+      
+      const config = confettiConfig[cleared] || confettiConfig[1];
+      
+      // Fire confetti from both sides for more impressive effect
+      confetti({
+        ...config,
+        origin: { x: 0.2, y: 0.8 }
+      });
+      confetti({
+        ...config,
+        origin: { x: 0.8, y: 0.8 }
+      });
     }
     if (posCopy.y < 0) {
       setGameOver(true);
@@ -251,10 +279,67 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
     if (newLevel !== level) {
       setLevel(newLevel);
       dropInterval.current = Math.max(100, 1000 - 100 * (newLevel - 1));
+      
+      // Celebrate level up with confetti
       if (newLevel % 10 === 0) {
-        confetti({ particleCount: 300, spread: 120, origin: { y: 0.5 } });
+        // Major level milestone (every 10 levels)
+        // Create a spectacular confetti explosion
+        const colors = ['#ff0000', '#ffd700', '#00ff00', '#1e90ff', '#ff00ff', '#00ffff'];
+        
+        // Multiple bursts of confetti from different angles
+        for (let i = 0; i < 5; i++) {
+          setTimeout(() => {
+            confetti({
+              particleCount: 200,
+              spread: 160,
+              origin: { x: 0.1 + (i * 0.2), y: 0.5 },
+              colors: colors,
+              startVelocity: 40,
+              gravity: 1.2,
+              scalar: 1.2
+            });
+          }, i * 300);
+        }
+        
+        // Add a special toast notification
+        toast(`🎉 LEVEL ${newLevel} ACHIEVED! AMAZING! 🎉`, {
+          style: {
+            background: "linear-gradient(45deg, #ff4500, #ffd700)",
+            color: "#fff",
+            fontWeight: "bold",
+            borderRadius: "8px",
+            fontSize: "18px"
+          },
+          duration: 5000,
+          position: "top-center",
+        });
       } else {
-        confetti({ particleCount: 100, spread: 100, origin: { y: 0.5 } });
+        // Regular level up
+        // Fire confetti from multiple positions
+        confetti({
+          particleCount: 150,
+          spread: 100,
+          origin: { x: 0.3, y: 0.5 },
+          colors: ['#ffd700', '#1e90ff', '#00ff00']
+        });
+        
+        confetti({
+          particleCount: 150,
+          spread: 100,
+          origin: { x: 0.7, y: 0.5 },
+          colors: ['#ffd700', '#1e90ff', '#00ff00']
+        });
+        
+        // Add a toast notification
+        toast(`🆙 Level Up! Now at Level ${newLevel}! 🆙`, {
+          style: {
+            background: "linear-gradient(45deg, #1e90ff, #00ff00)",
+            color: "#fff",
+            fontWeight: "bold",
+            borderRadius: "8px"
+          },
+          position: "top-center",
+        });
       }
     }
   }, [linesCleared, level]);
