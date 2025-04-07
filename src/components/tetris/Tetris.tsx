@@ -263,7 +263,7 @@ export default function Tetris() {
             tabIndex={0}
             onKeyDown={handleKeyDown}
           >
-            <Background theme={theme} />
+            <Background theme={theme} level={level} />
 
             <GameView
               mergedBoard={mergedBoard}

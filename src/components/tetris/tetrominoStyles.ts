@@ -19,43 +19,42 @@ export const tetrominoStyleMap: Record<string, BlockStyle> = {
 // Level color themes
 export function getLevelColorTheme(level: number): Record<string, string> {
   // Base colors for different level ranges
-  const themes = [
-    // Levels 1-5
-    {
-      I: "#00ffff", // Cyan
-      O: "#ffff00", // Yellow
-      T: "#dda0dd", // Purple
-      S: "#7fff00", // Green
-      Z: "#ff4500", // Red
-      J: "#1e90ff", // Blue
-      L: "#ff8c00", // Orange
-    },
-    // Levels 6-10
-    {
-      I: "#00cccc", // Darker Cyan
-      O: "#cccc00", // Darker Yellow
-      T: "#ba8bb0", // Darker Purple
-      S: "#6fbf00", // Darker Green
-      Z: "#e03e00", // Darker Red
-      J: "#199ae6", // Darker Blue
-      L: "#e68a00", // Darker Orange
-    },
-    // Levels 11+
-    {
-      I: "#009999", // Even Darker Cyan
-      O: "#999900", // Even Darker Yellow
-      T: "#a275a2", // Even Darker Purple
-      S: "#5fb000", // Even Darker Green
-      Z: "#c02e00", // Even Darker Red
-      J: "#157bb8", // Even Darker Blue
-      L: "#cc7000", // Even Darker Orange
-    }
+  const levelColors = [
+    "#00ffff", // Level 1: Cyan
+    "#ff8c00", // Level 2: Orange
+    "#dda0dd", // Level 3: Purple
+    "#7fff00", // Level 4: Green
+    "#ff4500", // Level 5: Red
+    "#1e90ff", // Level 6: Blue
+    "#ffff00", // Level 7: Yellow
+    "#ff69b4", // Level 8: Hot Pink
+    "#32cd32", // Level 9: Lime Green
+    "#9370db", // Level 10: Medium Purple
+    "#ff6347", // Level 11: Tomato
+    "#4169e1", // Level 12: Royal Blue
+    "#ffa500", // Level 13: Orange
+    "#8a2be2", // Level 14: Blue Violet
+    "#00fa9a", // Level 15: Medium Spring Green
+    "#dc143c", // Level 16: Crimson
+    "#00bfff", // Level 17: Deep Sky Blue
+    "#ff00ff", // Level 18: Magenta
+    "#adff2f", // Level 19: Green Yellow
+    "#ff1493", // Level 20: Deep Pink
   ];
-
-  // Select theme based on level
-  if (level <= 5) return themes[0];
-  if (level <= 10) return themes[1];
-  return themes[2];
+  
+  // Get the base color for the current level (cycle through colors for levels > 20)
+  const baseColor = levelColors[(level - 1) % levelColors.length];
+  
+  // Return the same base color for all tetrominos at this level
+  return {
+    I: baseColor,
+    O: baseColor,
+    T: baseColor,
+    S: baseColor,
+    Z: baseColor,
+    J: baseColor,
+    L: baseColor,
+  };
 }
 
 // Get tetromino block style based on its type and color

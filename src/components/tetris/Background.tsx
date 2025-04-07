@@ -1,7 +1,7 @@
 "use client";
 import React, { useMemo } from "react";
 import { randomTetromino } from "./helpers";
-import { getTetrominoBlockStyle } from "./tetrominoStyles";
+import { getTetrominoBlockStyle, getLevelColorTheme } from "./tetrominoStyles";
 
 type TetrominoData = {
   key: string;
@@ -18,15 +18,17 @@ const CELL_SIZE = 20; // in pixels
 
 export default function Background({
   theme = "light",
+  level = 1,
 }: {
   theme?: "light" | "dark";
+  level?: number;
 }) {
   const tetrominos = useMemo(() => {
     const items: TetrominoData[] = [];
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
     for (let i = 0; i < NUM_TETROMINOS; i++) {
-      const { key, tetromino } = randomTetromino(theme, 1);
+      const { key, tetromino } = randomTetromino(theme, level);
       const shapeWidth = tetromino.shape[0].length;
       const shapeHeight = tetromino.shape.length;
       const maxX = viewportWidth - shapeWidth * CELL_SIZE;

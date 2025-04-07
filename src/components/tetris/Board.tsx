@@ -46,17 +46,11 @@ export default function Board({
   
   // Guess the tetromino key based on its color (for backward compatibility)
   function guessTetrominoKeyFromColor(color: string): string {
-    const colorMap: Record<string, string> = {
-      "#00ffff": "I", "#00cccc": "I", "#009999": "I", // Cyan variants
-      "#ffff00": "O", "#cccc00": "O", "#999900": "O", // Yellow variants
-      "#dda0dd": "T", "#ba8bb0": "T", "#a275a2": "T", // Purple variants
-      "#7fff00": "S", "#6fbf00": "S", "#5fb000": "S", // Green variants
-      "#ff4500": "Z", "#e03e00": "Z", "#c02e00": "Z", // Red variants
-      "#1e90ff": "J", "#199ae6": "J", "#157bb8": "J", // Blue variants
-      "#ff8c00": "L", "#e68a00": "L", "#cc7000": "L", // Orange variants
-    };
-    
-    return colorMap[color] || "I"; // Default to I if unknown
+    // Since we now use the same color for all tetrominos at a given level,
+    // we can't reliably guess the tetromino type from color alone.
+    // We'll use a default distribution based on position in the board
+    const keys = ["I", "O", "T", "S", "Z", "J", "L"];
+    return keys[Math.floor(Math.random() * keys.length)];
   }
   
   function getCellStyle(cell: 0 | string, level: number): React.CSSProperties {

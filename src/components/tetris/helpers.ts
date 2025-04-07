@@ -118,7 +118,7 @@ export function randomTetromino(theme: "light" | "dark", level: number = 1): { k
     key: randKey,
     tetromino: {
       ...tetromino,
-      color: palette[randKey] || tetromino.color,
+      color: palette[randKey], // Use the level-based color
     },
   };
 }
