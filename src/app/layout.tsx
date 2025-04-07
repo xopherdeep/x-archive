@@ -54,8 +54,8 @@ export default function RootLayout({
                   </NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <NavigationMenuLink href="/tools">
-                    Tool Shack
+                  <NavigationMenuLink href="/components">
+                    Component Library
                   </NavigationMenuLink>
                 </NavigationMenuItem>
               </NavigationMenuList>

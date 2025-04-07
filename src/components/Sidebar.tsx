@@ -11,7 +11,7 @@ export default function Sidebar() {
             <Link href="/" className="text-gray-700 hover:text-gray-900">Home</Link>
           </li>
           <li className="mb-2">
-            <Link href="/tools" className="text-gray-700 hover:text-gray-900">Tool Shack</Link>
+            <Link href="/components" className="text-gray-700 hover:text-gray-900">Component Library</Link>
           </li>
           <li className="mb-2">
             <Link href="/docs" className="text-gray-700 hover:text-gray-900">Docs</Link>

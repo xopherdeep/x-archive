@@ -58,12 +58,12 @@ export default function Home() {
               </svg>
             </div>
             <div className="p-6">
-              <h3 className="text-2xl font-bold mb-2 text-gray-800 dark:text-white">Tool Shack</h3>
+              <h3 className="text-2xl font-bold mb-2 text-gray-800 dark:text-white">Component Library</h3>
               <p className="text-gray-600 dark:text-gray-300 mb-4">
-                A collection of useful components and tools for developers. Boost your productivity with our ready-to-use resources.
+                A collection of useful UI components for developers. Boost your productivity with our ready-to-use resources.
               </p>
-              <Link href="/tools" className="inline-block bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
-                Explore Tools
+              <Link href="/components" className="inline-block bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                Explore Components
               </Link>
             </div>
           </div>
