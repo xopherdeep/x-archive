@@ -143,7 +143,7 @@ export default function Stats({
           </Button>
           {setPaused && (
             <Button
-              variant="outline"
+              variant="ghost"
               size="sm"
               onClick={() => setPaused(prev => !prev)}
             >
