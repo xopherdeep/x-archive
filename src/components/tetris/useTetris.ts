@@ -3,6 +3,7 @@ import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { randomTetromino, mergeBoard, checkCollision, clearLines, cropShape, rotate } from "./helpers";
 import { celebrateLineClear, celebrateLevelUp, storage } from "./utils";
 import { COLS, ROWS, TETROMINOES, INITIAL_STATS, SCORE_MAP } from "./constants";
+import { audioManager, SOUND_EFFECTS } from "./sounds";
 
 export default function useTetris(initialTheme: "light" | "dark", bindings = { holdKey: "c" }) {
   // Game state
@@ -93,14 +94,28 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
   const move = (dx: number) => {
     setPosition((prev) => {
       const newPos = { x: prev.x + dx, y: prev.y };
-      return checkCollision(board, current.tetromino, newPos) ? prev : newPos;
+      const canMove = !checkCollision(board, current.tetromino, newPos);
+      
+      if (canMove) {
+        // Play move sound
+        audioManager.playSound('MOVE');
+        return newPos;
+      }
+      return prev;
     });
   };
 
   const rotatePiece = () => {
     setCurrent((prev) => {
       const rotated = { ...prev, tetromino: { ...prev.tetromino, shape: rotate(prev.tetromino.shape) } };
-      return checkCollision(board, rotated.tetromino, position) ? prev : rotated;
+      const canRotate = !checkCollision(board, rotated.tetromino, position);
+      
+      if (canRotate) {
+        // Play rotate sound
+        audioManager.playSound('ROTATE');
+        return rotated;
+      }
+      return prev;
     });
   };
 
@@ -116,6 +131,9 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
     
     // Prevent multiple holds per piece
     canHold.current = false;
+    
+    // Play hold sound
+    audioManager.playSound('HOLD');
     
     const pieceToHold = current;
     let newCurrent;
@@ -149,6 +167,9 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
     if (gameOver || paused) return;
     
     setQuickDropping(true);
+    
+    // Play hard drop sound
+    audioManager.playSound('HARD_DROP');
     
     // Find the lowest valid position
     let posCopy = { ...position };

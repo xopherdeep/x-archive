@@ -8,6 +8,7 @@ import GameCard from "./GameCard";
 import MusicPlayer from "./MusicPlayer";
 import Background from "./Background";
 import TouchControls from "./TouchControls";
+import { audioManager } from "./sounds";
 
 import { getLevelColorTheme } from "./tetrominoStyles";
 
@@ -254,9 +255,17 @@ export default function Tetris() {
   }, []);
 
   React.useEffect(() => {
-    if (gameOver && score > topScore) {
-      setTopScore(score);
-      localStorage.setItem("tetris-topscore", String(score));
+    if (gameOver) {
+      // Play game over sound
+      audioManager.playSound('GAME_OVER');
+      
+      if (score > topScore) {
+        setTopScore(score);
+        localStorage.setItem("tetris-topscore", String(score));
+        
+        // Play high score music if it's a new top score
+        audioManager.playMusic('high_score');
+      }
     }
   }, [gameOver, score, topScore]);
 

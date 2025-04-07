@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState, memo } from "react";
 import { Button } from "@/components/ui/button";
 import { Volume2, VolumeX, Volume1, Music, Info } from "lucide-react";
-import { MUSIC_TRACKS } from "./constants";
+import { MUSIC_TRACKS, audioManager } from "./sounds";
 import { 
   Tooltip,
   TooltipContent,
@@ -34,7 +34,6 @@ interface MusicPlayerProps {
 
 // Memoize the component to prevent unnecessary re-renders
 const MusicPlayer = memo(function MusicPlayer({ inGameHUD = false, paused = false }: MusicPlayerProps) {
-  const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.5);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
@@ -48,70 +47,37 @@ const MusicPlayer = memo(function MusicPlayer({ inGameHUD = false, paused = fals
     // Select Music 1 as default track (most recognizable Tetris theme)
     setCurrentTrackIndex(0);
     
-    // Set up audio element
-    if (audioRef.current) {
-      audioRef.current.src = currentTrack.src;
-      audioRef.current.loop = currentTrack.loop !== false; // Loop by default
-      audioRef.current.volume = volume;
-      
-      // Handle track end
-      const handleEnded = () => {
-        if (currentTrack.loop === false) {
-          // For non-looping tracks like victory, go to next track
-          // Only go to main music tracks (0, 2, 4) after special tracks
-          const mainMusicIndices = [0, 2, 4];
-          const nextIndex = mainMusicIndices[Math.floor(Math.random() * mainMusicIndices.length)];
-          setCurrentTrackIndex(nextIndex);
-        }
-      };
-      
-      // Listen for music started event from game
-      const handleMusicStarted = (event: CustomEvent) => {
-        if (audioRef.current) {
-          audioRef.current.volume = event.detail.volume || 0.5;
-          setVolume(event.detail.volume || 0.5);
-          setIsPlaying(true);
-          audioRef.current.play().catch(err => console.error(err));
-        }
-      };
-      
-      audioRef.current.addEventListener('ended', handleEnded);
-      
-      // Add custom event listener to the component
-      const element = document.querySelector('[data-music-player]');
-      if (element) {
-        element.addEventListener('musicStarted', handleMusicStarted as EventListener);
-      }
-      
-      // Preload all audio files to prevent delays
-      MUSIC_TRACKS.forEach(track => {
-        const audio = new Audio();
-        audio.preload = 'metadata';
-        audio.src = track.src;
-      });
-      
-      return () => {
-        if (audioRef.current) {
-          audioRef.current.removeEventListener('ended', handleEnded);
-          audioRef.current.pause();
-        }
-        
-        // Remove custom event listener
-        if (element) {
-          element.removeEventListener('musicStarted', handleMusicStarted as EventListener);
-        }
-      };
+    // Set initial volume
+    audioManager.setVolume(volume);
+    
+    // Listen for music started event from game
+    const handleMusicStarted = (event: CustomEvent) => {
+      const newVolume = event.detail.volume || 0.5;
+      setVolume(newVolume);
+      audioManager.setVolume(newVolume);
+      setIsPlaying(true);
+      audioManager.playMusic('music1');
+    };
+    
+    // Add custom event listener to the component
+    const element = document.querySelector('[data-music-player]');
+    if (element) {
+      element.addEventListener('musicStarted', handleMusicStarted as EventListener);
     }
+    
+    return () => {
+      // Remove custom event listener
+      if (element) {
+        element.removeEventListener('musicStarted', handleMusicStarted as EventListener);
+      }
+    };
   }, []);
   
   // Update audio when track changes
   useEffect(() => {
-    if (audioRef.current && currentTrack) {
-      audioRef.current.src = currentTrack.src;
-      audioRef.current.loop = currentTrack.loop !== false;
-      
+    if (currentTrack) {
       if (isPlaying) {
-        audioRef.current.play().catch(err => console.error(err));
+        audioManager.playMusic(currentTrack.id);
         
         // Show toast with track info
         toast(`🎵 Now playing: ${currentTrack.name}`, {
@@ -127,42 +93,38 @@ const MusicPlayer = memo(function MusicPlayer({ inGameHUD = false, paused = fals
         });
       }
     }
-  }, [currentTrackIndex, currentTrack]);
+  }, [currentTrackIndex, currentTrack, isPlaying]);
 
   // Handle game pause state
   useEffect(() => {
-    if (!audioRef.current) return;
-    
     if (paused && isPlaying) {
-      audioRef.current.pause();
+      audioManager.pauseMusic();
     } else if (!paused && isPlaying) {
-      audioRef.current.play().catch(err => console.error(err));
+      audioManager.resumeMusic();
     }
   }, [paused, isPlaying]);
 
   // Toggle music playback
   const toggleMusic = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play().catch(err => console.error(err));
-        
-        // Show toast with track info when starting playback
-        toast(`🎵 Now playing: ${currentTrack.name}`, {
-          description: `Composed by ${currentTrack.composer}, arranged by ${currentTrack.arranger}`,
-          duration: 3000,
-          position: "top-center",
-          style: {
-            background: "linear-gradient(45deg, #1e90ff, #00bfff)",
-            color: "#fff",
-            fontWeight: "bold",
-            borderRadius: "8px",
-          },
-        });
-      }
-      setIsPlaying(!isPlaying);
+    if (isPlaying) {
+      audioManager.pauseMusic();
+    } else {
+      audioManager.playMusic(currentTrack.id);
+      
+      // Show toast with track info when starting playback
+      toast(`🎵 Now playing: ${currentTrack.name}`, {
+        description: `Composed by ${currentTrack.composer}, arranged by ${currentTrack.arranger}`,
+        duration: 3000,
+        position: "top-center",
+        style: {
+          background: "linear-gradient(45deg, #1e90ff, #00bfff)",
+          color: "#fff",
+          fontWeight: "bold",
+          borderRadius: "8px",
+        },
+      });
     }
+    setIsPlaying(!isPlaying);
   };
   
   // Change to next track
@@ -180,18 +142,17 @@ const MusicPlayer = memo(function MusicPlayer({ inGameHUD = false, paused = fals
   // Adjust volume directly
   const adjustVolume = (newVolume: number) => {
     setVolume(newVolume);
+    audioManager.setVolume(newVolume);
     
-    if (audioRef.current) {
-      audioRef.current.volume = newVolume;
-      // If volume is set to 0, pause the audio
-      if (newVolume === 0) {
-        audioRef.current.pause();
-        setIsPlaying(false);
-      } else if (!isPlaying && newVolume > 0) {
-        // If volume is increased from 0, start playing
-        audioRef.current.play().catch(err => console.error(err));
-        setIsPlaying(true);
-      }
+    // If volume is set to 0, mute the audio
+    if (newVolume === 0) {
+      audioManager.mute();
+      setIsPlaying(false);
+    } else if (!isPlaying && newVolume > 0) {
+      // If volume is increased from 0, start playing
+      audioManager.unmute();
+      audioManager.playMusic(currentTrack.id);
+      setIsPlaying(true);
     }
   };
   
@@ -267,7 +228,7 @@ const MusicPlayer = memo(function MusicPlayer({ inGameHUD = false, paused = fals
             />
           </div>
           
-          <audio ref={audioRef} />
+          {/* No need for audio element anymore, using AudioManager */}
         </div>
       </GameCard>
     );
@@ -383,7 +344,7 @@ const MusicPlayer = memo(function MusicPlayer({ inGameHUD = false, paused = fals
           </TooltipContent>
         </Tooltip>
         
-        <audio ref={audioRef} />
+        {/* No need for audio element anymore, using AudioManager */}
       </div>
     </TooltipProvider>
   );

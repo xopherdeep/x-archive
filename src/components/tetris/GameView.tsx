@@ -21,6 +21,7 @@ import StyleBoxes from "./StyleBoxes";
 import GameCard from "./GameCard";
 import { toast } from "sonner";
 import { randomTetromino } from "./helpers";
+import { audioManager } from "./sounds";
 import {
   tetrominoStyleMap,
   BlockStyle,
@@ -302,26 +303,23 @@ export default function GameView(props: GameViewProps) {
                         setStarted(true);
 
                         // Start the music when game starts
-                        const audioElement = document.querySelector("audio");
-                        if (audioElement) {
-                          // Ensure volume is set to a reasonable level
-                          audioElement.volume = 0.5;
-                          audioElement
-                            .play()
-                            .catch((err) => console.error(err));
-
-                          // Update any music player state in the DOM
-                          const musicPlayerComponent = document.querySelector(
-                            "[data-music-player]"
-                          );
-                          if (musicPlayerComponent) {
-                            // Dispatch a custom event to notify the music player
-                            const event = new CustomEvent("musicStarted", {
-                              detail: { volume: 0.5 },
-                            });
-                            musicPlayerComponent.dispatchEvent(event);
-                          }
+                        audioManager.setVolume(0.5);
+                        audioManager.playMusic("music1");
+                        
+                        // Update any music player state in the DOM
+                        const musicPlayerComponent = document.querySelector(
+                          "[data-music-player]"
+                        );
+                        if (musicPlayerComponent) {
+                          // Dispatch a custom event to notify the music player
+                          const event = new CustomEvent("musicStarted", {
+                            detail: { volume: 0.5 },
+                          });
+                          musicPlayerComponent.dispatchEvent(event);
                         }
+                        
+                        // Play start game sound
+                        audioManager.playSound("MENU_CONFIRM");
 
                         toast("Game Started! Good luck!", {
                           style: {
