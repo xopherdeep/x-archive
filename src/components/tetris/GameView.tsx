@@ -92,6 +92,7 @@ export default function GameView(props: GameViewProps) {
     setTheme,
     bindings,
     setBindings,
+    setPaused,
   } = props;
   console.log("Hold stats in GameView:", holdStats);
   const [started, setStarted] = React.useState(false);
