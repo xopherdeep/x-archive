@@ -85,6 +85,7 @@ export default function GameView(props: GameViewProps) {
     setBindings,
   } = props;
   const [started, setStarted] = React.useState(false);
+  const [isFullscreen, setFullscreen] = React.useState(false);
   const resetGame = () => {
     setBoard(Array.from({ length: ROWS }, () => new Array(COLS).fill(0)));
     setCurrent(randomTetromino(theme, level));
@@ -124,7 +125,13 @@ export default function GameView(props: GameViewProps) {
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-8 items-center">
+    <div className={`${isFullscreen ? "fixed inset-0 z-50 bg-gray-900" : ""} relative flex flex-col md:flex-row gap-8 items-center`}>
+      <Button
+        onClick={() => setFullscreen(!isFullscreen)}
+        className="absolute top-4 right-4 z-50"
+      >
+        {isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+      </Button>
       <div>
         <Stats
           dropStats={dropStats}
