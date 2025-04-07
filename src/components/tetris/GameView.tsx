@@ -384,20 +384,27 @@ export default function GameView(props: GameViewProps) {
         </GameCard>
         <GameCard title="Level">
           <div className="flex items-center justify-center my-2">
-            <div className="text-3xl font-bold">{level}</div>
+            <div 
+              className="text-3xl font-bold" 
+              style={{ 
+                color: getLevelColorTheme(level).I, 
+                textShadow: "0 0 5px rgba(0,0,0,0.5)" 
+              }}
+            >
+              {level}
+            </div>
           </div>
 
-          <CardFooter>
-            <div className="flex flex-col gap-2">
-              <Button
-                variant="ghost"
-                className="mt-2 w-full"
-                onClick={resetGame}
-              >
-                Restart
-              </Button>
-            </div>
-          </CardFooter>
+          <div className="flex justify-center mt-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={resetGame}
+              className="w-full mx-auto"
+            >
+              Restart
+            </Button>
+          </div>
         </GameCard>
         <Card className="w-full gap-0">
           <CardContent className="p-2 text-left bg-gray-900 rounded-sm mx-2 space-y-2">
