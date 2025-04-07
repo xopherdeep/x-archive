@@ -31,10 +31,10 @@ export default function Home() {
               priority
             />
             <nav className="text-center sm:text-left text-lg">
-              Archive of various React components
+              Archive of various React components and educational resources
             </nav>
 
-            <div className="flex gap-4 items-center flex-col sm:flex-row">
+            <div className="flex gap-4 items-center flex-col sm:flex-row mb-6">
               <a
                 className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
                 href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
@@ -57,6 +57,21 @@ export default function Home() {
                 rel="noopener noreferrer"
               >
                 Read our docs
+              </a>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl">
+              <a href="/games" className="p-4 border rounded-lg bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow">
+                <h3 className="text-lg font-bold mb-2">Games</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  Play classic games like Snake, Tetris, and more
+                </p>
+              </a>
+              <a href="/education" className="p-4 border rounded-lg bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow">
+                <h3 className="text-lg font-bold mb-2">Learning Hub</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  Educational resources for students of all ages
+                </p>
               </a>
             </div>
           </main>

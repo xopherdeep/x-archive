@@ -111,15 +111,17 @@ export default function Grade3To5Page() {
             </div>
           </Link>
           
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
-            <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mb-4">
-              <span className="text-green-600 dark:text-green-400 text-xl font-bold">A</span>
+          <Link href="/education/grade-3-5/language/vocabulary" className="block">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
+              <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mb-4">
+                <span className="text-green-600 dark:text-green-400 text-xl font-bold">A</span>
+              </div>
+              <h3 className="font-bold text-lg mb-2">Vocabulary Challenge</h3>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">
+                Expand your vocabulary with fun word games
+              </p>
             </div>
-            <h3 className="font-bold text-lg mb-2">Vocabulary Challenge</h3>
-            <p className="text-gray-600 dark:text-gray-400 text-sm">
-              Expand your vocabulary with fun word games
-            </p>
-          </div>
+          </Link>
           
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
             <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mb-4">
