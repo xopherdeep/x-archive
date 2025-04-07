@@ -130,9 +130,8 @@ const MusicPlayer = memo(function MusicPlayer({ inGameHUD = false }: MusicPlayer
     setCurrentTrackIndex(prevIndex);
   };
   
-  // Adjust volume
-  const adjustVolume = () => {
-    const newVolume = volume <= 0.2 ? 0.5 : volume >= 0.8 ? 0 : volume + 0.3;
+  // Adjust volume directly
+  const adjustVolume = (newVolume: number) => {
     setVolume(newVolume);
     
     if (audioRef.current) {
@@ -147,6 +146,12 @@ const MusicPlayer = memo(function MusicPlayer({ inGameHUD = false }: MusicPlayer
         setIsPlaying(true);
       }
     }
+  };
+  
+  // Quick volume toggle (for button double-click)
+  const toggleVolume = () => {
+    const newVolume = volume <= 0.2 ? 0.5 : volume >= 0.8 ? 0 : volume + 0.3;
+    adjustVolume(newVolume);
   };
 
   // Get the appropriate volume icon
@@ -171,108 +176,71 @@ const MusicPlayer = memo(function MusicPlayer({ inGameHUD = false }: MusicPlayer
               >
                 <VolumeIcon className="h-3 w-3" />
               </Button>
-              <Button 
-                variant="ghost" 
-                size="icon"
-                className="h-6 w-6"
-                onClick={() => setShowControls(true)}
-                aria-label="Music controls"
-              >
-                <Music className="h-3 w-3" />
-              </Button>
             </div>
           </div>
           
-          <div className="w-full bg-gray-700 h-1 rounded-full overflow-hidden">
+          {/* Track selection */}
+          <div className="flex items-center justify-between mt-1">
+            <div className="text-xs">Track:</div>
+            <select 
+              className="text-xs bg-gray-800 border border-gray-700 rounded px-1 py-0.5 max-w-[120px]"
+              value={currentTrackIndex}
+              onChange={(e) => {
+                const index = parseInt(e.target.value);
+                setCurrentTrackIndex(index);
+                if (!isPlaying) {
+                  setIsPlaying(true);
+                }
+              }}
+            >
+              {MUSIC_TRACKS.filter(track => 
+                !track.id.includes('_fast') && 
+                track.id !== 'success'
+              ).map((track, index) => {
+                // Find the actual index in the full MUSIC_TRACKS array
+                const actualIndex = MUSIC_TRACKS.findIndex(t => t.id === track.id);
+                return (
+                  <option key={track.id} value={actualIndex}>
+                    {track.name}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          
+          {/* Volume slider */}
+          <div className="flex items-center justify-between mt-1">
+            <div className="text-xs">Volume:</div>
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={volume}
+              onChange={(e) => adjustVolume(parseFloat(e.target.value))}
+              className="w-[120px] h-2"
+            />
+          </div>
+          
+          <div className="w-full bg-gray-700 h-1 rounded-full overflow-hidden mt-1">
             <div 
               className="bg-red-500 h-full transition-all duration-300 ease-in-out"
               style={{ width: `${volume * 100}%` }}
             ></div>
           </div>
           
-          <Popover open={showControls} onOpenChange={setShowControls}>
-            <PopoverContent className="w-80 p-4" side="right">
-              <div className="space-y-4">
-                <h3 className="font-medium text-center">NES Tetris Music</h3>
-                <div className="text-sm text-center mb-2">
-                  Original music by Hirokazu Tanaka (1989)
-                </div>
-                
-                <div className="space-y-2">
-                  {MUSIC_TRACKS.filter(track => 
-                    !track.id.includes('_fast') && 
-                    track.id !== 'success'
-                  ).map((track, index) => {
-                    // Find the actual index in the full MUSIC_TRACKS array
-                    const actualIndex = MUSIC_TRACKS.findIndex(t => t.id === track.id);
-                    
-                    return (
-                      <Button 
-                        key={track.id}
-                        variant={currentTrackIndex === actualIndex ? "default" : "outline"}
-                        className="w-full justify-start"
-                        onClick={() => {
-                          setCurrentTrackIndex(actualIndex);
-                          if (!isPlaying) {
-                            setIsPlaying(true);
-                          }
-                        }}
-                      >
-                        <span className="truncate">{track.name}</span>
-                      </Button>
-                    );
-                  })}
-                </div>
-                
-                <div className="flex justify-between">
-                  <div className="text-xs text-muted-foreground">
-                    {currentTrack.composer !== currentTrack.arranger ? (
-                      <>Composed by {currentTrack.composer}<br/>Arranged by {currentTrack.arranger}</>
-                    ) : (
-                      <>By {currentTrack.composer}</>
-                    )}
-                  </div>
-                  <div className="text-xs text-muted-foreground text-right">
-                    From Nintendo's<br/>Tetris (NES, 1989)
-                  </div>
-                </div>
-                
-                <div className="flex justify-between items-center">
-                  <div className="text-sm">Volume</div>
-                  <div className="flex gap-2">
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={() => {
-                        const newVolume = Math.max(0, volume - 0.1);
-                        setVolume(newVolume);
-                        if (audioRef.current) audioRef.current.volume = newVolume;
-                      }}
-                    >
-                      -
-                    </Button>
-                    <div className="w-16 bg-gray-700 h-6 rounded-full overflow-hidden">
-                      <div 
-                        className="bg-red-500 h-full transition-all duration-300 ease-in-out"
-                        style={{ width: `${volume * 100}%` }}
-                      ></div>
-                    </div>
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => {
-                        const newVolume = Math.min(1, volume + 0.1);
-                        setVolume(newVolume);
-                        if (audioRef.current) audioRef.current.volume = newVolume;
-                      }}
-                    >
-                      +
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </PopoverContent>
-          </Popover>
+          <div className="flex justify-between mt-1">
+            <div className="text-xs text-muted-foreground">
+              {currentTrack.composer !== currentTrack.arranger ? (
+                <>By {currentTrack.composer}</>
+              ) : (
+                <>By {currentTrack.composer}</>
+              )}
+            </div>
+            <div className="text-xs text-muted-foreground text-right">
+              NES (1989)
+            </div>
+          </div>
           
           <audio ref={audioRef} />
         </div>
@@ -349,7 +317,7 @@ const MusicPlayer = memo(function MusicPlayer({ inGameHUD = false }: MusicPlayer
               variant="outline" 
               size="icon" 
               onClick={toggleMusic}
-              onDoubleClick={adjustVolume}
+              onDoubleClick={toggleVolume}
               aria-label={isPlaying ? "Pause music" : "Play music"}
             >
               <VolumeIcon className="h-4 w-4" />
