@@ -52,12 +52,21 @@ const MusicPlayer = memo(function MusicPlayer() {
       const handleEnded = () => {
         if (currentTrack.loop === false) {
           // For non-looping tracks like victory, go to next track
-          const nextIndex = (currentTrackIndex + 1) % MUSIC_TRACKS.length;
+          // Only go to main music tracks (0, 2, 4) after special tracks
+          const mainMusicIndices = [0, 2, 4];
+          const nextIndex = mainMusicIndices[Math.floor(Math.random() * mainMusicIndices.length)];
           setCurrentTrackIndex(nextIndex);
         }
       };
       
       audioRef.current.addEventListener('ended', handleEnded);
+      
+      // Preload all audio files to prevent delays
+      MUSIC_TRACKS.forEach(track => {
+        const audio = new Audio();
+        audio.preload = 'metadata';
+        audio.src = track.src;
+      });
       
       return () => {
         if (audioRef.current) {
@@ -159,21 +168,29 @@ const MusicPlayer = memo(function MusicPlayer() {
               </div>
               
               <div className="space-y-2">
-                {MUSIC_TRACKS.map((track, index) => (
-                  <Button 
-                    key={track.id}
-                    variant={currentTrackIndex === index ? "default" : "outline"}
-                    className="w-full justify-start"
-                    onClick={() => {
-                      setCurrentTrackIndex(index);
-                      if (!isPlaying) {
-                        setIsPlaying(true);
-                      }
-                    }}
-                  >
-                    <span className="truncate">{track.name}</span>
-                  </Button>
-                ))}
+                {MUSIC_TRACKS.filter(track => 
+                  !track.id.includes('_fast') && 
+                  track.id !== 'success'
+                ).map((track, index) => {
+                  // Find the actual index in the full MUSIC_TRACKS array
+                  const actualIndex = MUSIC_TRACKS.findIndex(t => t.id === track.id);
+                  
+                  return (
+                    <Button 
+                      key={track.id}
+                      variant={currentTrackIndex === actualIndex ? "default" : "outline"}
+                      className="w-full justify-start"
+                      onClick={() => {
+                        setCurrentTrackIndex(actualIndex);
+                        if (!isPlaying) {
+                          setIsPlaying(true);
+                        }
+                      }}
+                    >
+                      <span className="truncate">{track.name}</span>
+                    </Button>
+                  );
+                })}
               </div>
               
               <div className="flex justify-between">

@@ -241,6 +241,37 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
       celebrateLevelUp(newLevel);
     }
   }, [linesCleared, level]);
+  
+  // Calculate board fullness and adjust music speed
+  useEffect(() => {
+    if (gameOver || paused) return;
+    
+    // Count filled cells in the top half of the board
+    let filledCells = 0;
+    const topHalfRows = 10; // Check top half of the board
+    const totalCells = COLS * topHalfRows;
+    
+    for (let y = 0; y < topHalfRows; y++) {
+      for (let x = 0; x < COLS; x++) {
+        if (board[y][x] !== 0) {
+          filledCells++;
+        }
+      }
+    }
+    
+    // Calculate danger level (0-1)
+    const dangerLevel = filledCells / totalCells;
+    
+    // Import music speed functions
+    import('./utils').then(({ switchToFastMusic, switchToNormalMusic }) => {
+      if (dangerLevel >= 0.7) {
+        switchToFastMusic(dangerLevel);
+      } else if (dangerLevel < 0.5) {
+        switchToNormalMusic(dangerLevel);
+      }
+    });
+    
+  }, [board, gameOver, paused]);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp", " "].includes(event.key)) {

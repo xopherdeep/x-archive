@@ -79,29 +79,74 @@ export const MUSIC_TRACKS = [
   {
     id: "music1",
     name: "Music 1 (Dance of the Sugar Plum Fairy)",
-    src: "/assets/music/tetris-nes-music1.mp3",
+    src: "https://www.vgmpf.com/Wiki/images/7/76/01_-_Tetris_-_NES_-_Music_1.ogg",
+    composer: "Pyotr Ilyich Tchaikovsky",
+    arranger: "Hirokazu Tanaka"
+  },
+  {
+    id: "music1_fast",
+    name: "Music 1 - Fast",
+    src: "https://www.vgmpf.com/Wiki/images/1/1b/02_-_Tetris_-_NES_-_Music_1_-_Fast.ogg",
     composer: "Pyotr Ilyich Tchaikovsky",
     arranger: "Hirokazu Tanaka"
   },
   {
     id: "music2",
     name: "Music 2 (Russian Folk Song)",
-    src: "/assets/music/tetris-nes-music2.mp3",
+    src: "https://www.vgmpf.com/Wiki/images/2/23/03_-_Tetris_-_NES_-_Music_2.ogg",
+    composer: "Hirokazu Tanaka",
+    arranger: "Hirokazu Tanaka"
+  },
+  {
+    id: "music2_fast",
+    name: "Music 2 - Fast",
+    src: "https://www.vgmpf.com/Wiki/images/b/b0/04_-_Tetris_-_NES_-_Music_2_-_Fast.ogg",
     composer: "Hirokazu Tanaka",
     arranger: "Hirokazu Tanaka"
   },
   {
     id: "music3",
     name: "Music 3 (Nintendo Call Hold Music)",
-    src: "/assets/music/tetris-nes-music3.mp3",
+    src: "https://www.vgmpf.com/Wiki/images/a/a6/05_-_Tetris_-_NES_-_Music_3.ogg",
     composer: "Hirokazu Tanaka",
     arranger: "Hirokazu Tanaka"
   },
   {
+    id: "music3_fast",
+    name: "Music 3 - Fast",
+    src: "https://www.vgmpf.com/Wiki/images/f/ff/06_-_Tetris_-_NES_-_Music_3_-_Fast.ogg",
+    composer: "Hirokazu Tanaka",
+    arranger: "Hirokazu Tanaka"
+  },
+  {
+    id: "success",
+    name: "Success!",
+    src: "https://www.vgmpf.com/Wiki/images/a/a6/07_-_Tetris_-_NES_-_Success%21.ogg",
+    composer: "Hirokazu Tanaka",
+    arranger: "Hirokazu Tanaka",
+    loop: false
+  },
+  {
     id: "victory",
     name: "Victory (Toréador Song from Carmen)",
-    src: "/assets/music/tetris-nes-victory.mp3",
+    src: "https://www.vgmpf.com/Wiki/images/0/0d/08_-_Tetris_-_NES_-_Victory.ogg",
     composer: "Georges Bizet",
+    arranger: "Hirokazu Tanaka",
+    loop: false
+  },
+  {
+    id: "high_score",
+    name: "High Score",
+    src: "https://www.vgmpf.com/Wiki/images/9/9d/09_-_Tetris_-_NES_-_High_Score.ogg",
+    composer: "Hirokazu Tanaka",
+    arranger: "Hirokazu Tanaka",
+    loop: false
+  },
+  {
+    id: "unknown",
+    name: "Unknown (Unused Title Screen)",
+    src: "https://www.vgmpf.com/Wiki/images/4/49/10_-_Tetris_-_NES_-_Unknown.ogg",
+    composer: "Hirokazu Tanaka",
     arranger: "Hirokazu Tanaka",
     loop: false
   }

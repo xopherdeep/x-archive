@@ -31,6 +31,53 @@ export function celebrateLineClear(cleared: number): void {
     ...config,
     origin: { x: 0.8, y: 0.8 }
   });
+  
+  // Play success sound for Tetris (4 lines)
+  if (cleared === 4) {
+    playSuccessSound();
+  }
+}
+
+// Play success sound effect
+export function playSuccessSound(): void {
+  // Find any existing audio player
+  const existingAudio = document.querySelector('audio');
+  
+  if (existingAudio) {
+    // Store current track info to resume after success sound
+    const currentSrc = existingAudio.src;
+    const wasPlaying = !existingAudio.paused;
+    const currentTime = existingAudio.currentTime;
+    const currentVolume = existingAudio.volume;
+    
+    // Import music tracks to find success sound
+    import('./constants').then(({ MUSIC_TRACKS }) => {
+      const successTrack = MUSIC_TRACKS.find(track => track.id === 'success');
+      
+      if (successTrack) {
+        // Play success sound
+        existingAudio.src = successTrack.src;
+        existingAudio.loop = false;
+        existingAudio.volume = currentVolume;
+        existingAudio.play().catch(err => console.error(err));
+        
+        // Listen for end of success sound to resume previous track
+        const handleSuccessEnd = () => {
+          existingAudio.src = currentSrc;
+          existingAudio.currentTime = currentTime;
+          existingAudio.loop = true;
+          
+          if (wasPlaying) {
+            existingAudio.play().catch(err => console.error(err));
+          }
+          
+          existingAudio.removeEventListener('ended', handleSuccessEnd);
+        };
+        
+        existingAudio.addEventListener('ended', handleSuccessEnd);
+      }
+    });
+  }
 }
 
 // Celebrate level up
@@ -126,14 +173,38 @@ export function playVictoryMusic(): void {
           duration: 3000,
         });
         
-        // Listen for end of victory music to resume previous track
+        // After victory music, play high score music
         const handleVictoryEnd = () => {
-          existingAudio.src = currentSrc;
-          existingAudio.currentTime = currentTime;
-          existingAudio.loop = true;
+          const highScoreTrack = MUSIC_TRACKS.find(track => track.id === 'high_score');
           
-          if (wasPlaying) {
+          if (highScoreTrack) {
+            existingAudio.src = highScoreTrack.src;
+            existingAudio.loop = false;
             existingAudio.play().catch(err => console.error(err));
+            
+            // After high score music, resume previous track
+            const handleHighScoreEnd = () => {
+              existingAudio.src = currentSrc;
+              existingAudio.currentTime = currentTime;
+              existingAudio.loop = true;
+              
+              if (wasPlaying) {
+                existingAudio.play().catch(err => console.error(err));
+              }
+              
+              existingAudio.removeEventListener('ended', handleHighScoreEnd);
+            };
+            
+            existingAudio.addEventListener('ended', handleHighScoreEnd);
+          } else {
+            // If high score track not found, resume previous track
+            existingAudio.src = currentSrc;
+            existingAudio.currentTime = currentTime;
+            existingAudio.loop = true;
+            
+            if (wasPlaying) {
+              existingAudio.play().catch(err => console.error(err));
+            }
           }
           
           existingAudio.removeEventListener('ended', handleVictoryEnd);
@@ -143,6 +214,98 @@ export function playVictoryMusic(): void {
       }
     });
   }
+}
+
+// Switch to fast music when board is getting full
+export function switchToFastMusic(dangerLevel: number): void {
+  // dangerLevel should be between 0-1, where 1 means the board is almost full
+  if (dangerLevel < 0.7) return; // Only switch when board is 70% or more full
+  
+  const existingAudio = document.querySelector('audio');
+  if (!existingAudio || existingAudio.paused) return;
+  
+  // Get current track URL
+  const currentSrc = existingAudio.src;
+  
+  // Import music tracks to find the fast version
+  import('./constants').then(({ MUSIC_TRACKS }) => {
+    // Find the current track
+    const currentTrack = MUSIC_TRACKS.find(track => track.src === currentSrc);
+    
+    // If we're already playing a fast track, don't switch
+    if (currentTrack?.id.includes('_fast')) return;
+    
+    // Find the corresponding fast track
+    if (currentTrack) {
+      const fastTrackId = `${currentTrack.id}_fast`;
+      const fastTrack = MUSIC_TRACKS.find(track => track.id === fastTrackId);
+      
+      if (fastTrack) {
+        // Save current position
+        const currentTime = existingAudio.currentTime;
+        const duration = existingAudio.duration;
+        const relativePosition = currentTime / duration;
+        
+        // Switch to fast version
+        existingAudio.src = fastTrack.src;
+        existingAudio.loop = true;
+        
+        // Try to match position in the new track
+        existingAudio.addEventListener('loadedmetadata', () => {
+          existingAudio.currentTime = relativePosition * existingAudio.duration;
+          existingAudio.play().catch(err => console.error(err));
+        }, { once: true });
+        
+        existingAudio.load();
+      }
+    }
+  });
+}
+
+// Switch back to normal speed music when board is less full
+export function switchToNormalMusic(dangerLevel: number): void {
+  // Only switch back when board is less than 50% full
+  if (dangerLevel >= 0.5) return;
+  
+  const existingAudio = document.querySelector('audio');
+  if (!existingAudio || existingAudio.paused) return;
+  
+  // Get current track URL
+  const currentSrc = existingAudio.src;
+  
+  // Import music tracks to find the normal version
+  import('./constants').then(({ MUSIC_TRACKS }) => {
+    // Find the current track
+    const currentTrack = MUSIC_TRACKS.find(track => track.src === currentSrc);
+    
+    // If we're not playing a fast track, don't switch
+    if (!currentTrack?.id.includes('_fast')) return;
+    
+    // Find the corresponding normal track
+    if (currentTrack) {
+      const normalTrackId = currentTrack.id.replace('_fast', '');
+      const normalTrack = MUSIC_TRACKS.find(track => track.id === normalTrackId);
+      
+      if (normalTrack) {
+        // Save current position
+        const currentTime = existingAudio.currentTime;
+        const duration = existingAudio.duration;
+        const relativePosition = currentTime / duration;
+        
+        // Switch to normal version
+        existingAudio.src = normalTrack.src;
+        existingAudio.loop = true;
+        
+        // Try to match position in the new track
+        existingAudio.addEventListener('loadedmetadata', () => {
+          existingAudio.currentTime = relativePosition * existingAudio.duration;
+          existingAudio.play().catch(err => console.error(err));
+        }, { once: true });
+        
+        existingAudio.load();
+      }
+    }
+  });
 }
 
 // Local storage helpers
