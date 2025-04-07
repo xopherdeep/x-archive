@@ -104,24 +104,27 @@ const BackgroundCanvas = React.memo(function BackgroundCanvas({
       item.tetromino.shape.forEach((row, rowIndex) => {
         row.forEach((cell, colIndex) => {
           if (cell) {
-            const style = getTetrominoBlockStyle(item.key, item.tetromino.color, BG_CELL_SIZE);
-            
             // Draw the cell
             const x = item.x + colIndex * BG_CELL_SIZE;
             const y = item.y + rowIndex * BG_CELL_SIZE;
             
-            // Background color
-            ctx.fillStyle = style.backgroundColor || item.tetromino.color;
+            // Simple solid color for background tetrominos
+            ctx.fillStyle = item.tetromino.color;
             ctx.fillRect(x, y, BG_CELL_SIZE, BG_CELL_SIZE);
             
-            // Border
-            if (style.border) {
-              const borderWidth = parseInt(style.border.split(' ')[0]) || 2;
-              ctx.strokeStyle = style.border.split(' ')[2] || '#000';
-              ctx.lineWidth = borderWidth;
-              ctx.strokeRect(x + borderWidth/2, y + borderWidth/2, 
-                            BG_CELL_SIZE - borderWidth, BG_CELL_SIZE - borderWidth);
-            }
+            // Add a border
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(x, y, BG_CELL_SIZE, BG_CELL_SIZE);
+            
+            // Add a highlight effect
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x + BG_CELL_SIZE, y);
+            ctx.lineTo(x, y + BG_CELL_SIZE);
+            ctx.closePath();
+            ctx.fill();
           }
         });
       });
@@ -140,6 +143,9 @@ const BackgroundCanvas = React.memo(function BackgroundCanvas({
     // Initial draw
     drawBackground();
     
+    // Call drawBackground on mount to ensure tetrominos are visible
+    setTimeout(drawBackground, 100);
+    
     return () => {
       // No animation to clean up
     };
@@ -155,7 +161,8 @@ const BackgroundCanvas = React.memo(function BackgroundCanvas({
         width: "100%",
         height: "100%",
         pointerEvents: "none",
-        zIndex: -1, // Changed from -10 to -1 to ensure visibility
+        zIndex: -1,
+        opacity: 0.8, // Increased opacity for better visibility
       }}
     />
   );
