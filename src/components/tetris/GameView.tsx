@@ -234,24 +234,39 @@ export default function GameView(props: GameViewProps) {
         >
           TETRIS
         </h1>
-        <div className="flex justify-center gap-2 mt-2 mb-4">
-          {Array.from({ length: 10 }, (_, i) => i + 1).map((lvl) => (
-            <div
-              key={lvl}
-              className="w-8 h-8 flex items-center justify-center rounded-full transition-all duration-300"
-              style={{
-                backgroundColor: 'rgba(0,0,0,0.3)',
-                color: getLevelColorTheme(lvl).I,
-                opacity: level === lvl ? 1 : 0.4,
-                fontWeight: 'bold',
-                border: level === lvl ? `2px solid ${getLevelColorTheme(lvl).I}` : '1px solid rgba(255,255,255,0.2)',
-                boxShadow: level === lvl ? `0 0 8px ${getLevelColorTheme(lvl).I}` : 'none',
-                transform: level === lvl ? 'scale(1.1)' : 'scale(1)',
+        <div className="flex flex-col items-center mt-2 mb-4">
+          <div className="flex justify-center gap-2 mb-2">
+            {Array.from({ length: 10 }, (_, i) => i + 1).map((lvl) => (
+              <div
+                key={lvl}
+                className="w-8 h-8 flex items-center justify-center rounded-full transition-all duration-300"
+                style={{
+                  backgroundColor: 'rgba(0,0,0,0.3)',
+                  color: getLevelColorTheme(lvl).I,
+                  opacity: level === lvl ? 1 : 0.4,
+                  fontWeight: 'bold',
+                  border: level === lvl ? `2px solid ${getLevelColorTheme(lvl).I}` : '1px solid rgba(255,255,255,0.2)',
+                  boxShadow: level === lvl ? `0 0 8px ${getLevelColorTheme(lvl).I}` : 'none',
+                  transform: level === lvl ? 'scale(1.1)' : 'scale(1)',
+                }}
+              >
+                {lvl}
+              </div>
+            ))}
+          </div>
+          <div className="w-full max-w-xs bg-gray-700 h-2 rounded-full overflow-hidden">
+            <div 
+              className="bg-green-500 h-full transition-all duration-300 ease-in-out"
+              style={{ 
+                width: `${(linesCleared % 10) * 10}%`,
+                backgroundColor: getLevelColorTheme(level).I
               }}
-            >
-              {lvl}
-            </div>
-          ))}
+              aria-label={`Progress to next level: ${linesCleared % 10} of 10 lines`}
+            ></div>
+          </div>
+          <div className="text-xs text-center mt-1">
+            {10 - (linesCleared % 10)} lines to next level
+          </div>
         </div>
         <GameCard>
           <div className="relative">
@@ -356,16 +371,6 @@ export default function GameView(props: GameViewProps) {
           </div>
           <div className="mt-4 text-xl font-bold text-center">
             Lines: {linesCleared}
-            <div className="w-full bg-gray-700 h-2 rounded-full overflow-hidden mt-2">
-              <div 
-                className="bg-green-500 h-full transition-all duration-300 ease-in-out"
-                style={{ width: `${(linesCleared % 10) * 10}%` }}
-                aria-label={`Progress to next level: ${linesCleared % 10} of 10 lines`}
-              ></div>
-            </div>
-            <div className="text-xs text-center mt-1">
-              {10 - (linesCleared % 10)} lines to next level
-            </div>
           </div>
           
           
