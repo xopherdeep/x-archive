@@ -142,6 +142,7 @@ export default function GameView(props: GameViewProps) {
           backgroundColor: variations.light,
           border: `2px solid ${variations.border}`,
           boxShadow: `inset 1px 1px 1px ${variations.highlight}, inset -1px -1px 1px ${variations.shadow}`,
+          backgroundImage: `radial-gradient(circle at center, white 30%, transparent 70%)`,
         };
         
       case BlockStyle.DARK: // J, S

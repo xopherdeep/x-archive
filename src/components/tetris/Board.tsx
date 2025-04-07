@@ -79,6 +79,8 @@ export default function Board({
           border: `2px solid ${variations.border}`,
           boxShadow: `inset 2px 2px 2px ${variations.highlight}, inset -2px -2px 2px ${variations.shadow}`,
           position: 'relative',
+          // Add white center for bordered blocks
+          backgroundImage: `radial-gradient(circle at center, white 30%, transparent 70%)`,
         };
         
       case BlockStyle.DARK: // J, S

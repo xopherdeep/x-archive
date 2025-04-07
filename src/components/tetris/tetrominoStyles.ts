@@ -68,16 +68,7 @@ export function generateBlockStyle(
         border: `2px solid ${variations.border}`,
         boxShadow: `inset 2px 2px 2px ${variations.highlight}, inset -2px -2px 2px ${variations.shadow}`,
         position: 'relative',
-        '&::after': {
-          content: '""',
-          position: 'absolute',
-          top: '4px',
-          left: '4px',
-          right: '4px',
-          bottom: '4px',
-          backgroundColor: '#ffffff',
-          opacity: 0.7,
-        }
+        backgroundImage: `radial-gradient(circle at center, white 30%, transparent 70%)`,
       } as React.CSSProperties;
 
     case BlockStyle.DARK:
@@ -171,6 +162,8 @@ export function createBorderedBlock(color: string, size: number = 30): React.CSS
     height: `${size}px`,
     backgroundColor: variations.light,
     border: `2px solid ${variations.border}`,
+    boxShadow: `inset 2px 2px 2px ${variations.highlight}, inset -2px -2px 2px ${variations.shadow}`,
+    backgroundImage: `radial-gradient(circle at center, white 30%, transparent 70%)`,
     boxSizing: 'border-box',
   } as React.CSSProperties;
 }

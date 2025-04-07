@@ -69,6 +69,7 @@ export default function Stats({
           backgroundColor: variations.light,
           border: `2px solid ${variations.border}`,
           boxShadow: `inset 1px 1px 1px ${variations.highlight}, inset -1px -1px 1px ${variations.shadow}`,
+          backgroundImage: `radial-gradient(circle at center, white 30%, transparent 70%)`,
         };
         
       case BlockStyle.DARK: // J, S
@@ -125,6 +126,7 @@ export default function Stats({
                                   width: 20,
                                   height: 20,
                                   ...(cell ? getTetrominoBlockStyle(key, tetromino.color, 20) : { backgroundColor: "transparent" }),
+                                  boxSizing: "border-box",
                                 }}
                               />
                             ))}
