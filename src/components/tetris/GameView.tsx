@@ -299,6 +299,13 @@ export default function GameView(props: GameViewProps) {
                       onClick={() => {
                         resetGame();
                         setStarted(true);
+                        
+                        // Start the music when game starts
+                        const audioElement = document.querySelector('audio');
+                        if (audioElement) {
+                          audioElement.play().catch(err => console.error(err));
+                        }
+                        
                         toast("Game Started! Good luck!", {
                           style: {
                             background:
