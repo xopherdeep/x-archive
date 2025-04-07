@@ -1,129 +1,96 @@
 "use client";
 import Image from "next/image";
-import { Sidebar, SidebarProvider } from "../components/ui/sidebar";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <SidebarProvider>
-      <div className="flex">
-        <Sidebar>
-          <nav className="p-4">
-            <ul className="space-y-2">
-              <li>
-                <a href="/games" className="text-gray-700 hover:text-gray-900">
-                  Games
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </Sidebar>
-        <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-          <header className="w-full text-center py-4">
-            <h1 className="text-3xl font-bold">X's Archive</h1>
-          </header>
-          <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-            <Image
-              className="dark:invert"
-              src="/next.svg"
-              alt="Next.js logo"
-              width={180}
-              height={38}
-              priority
-            />
-            <nav className="text-center sm:text-left text-lg">
-              Archive of various React components and educational resources
-            </nav>
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800">
+      <div className="container mx-auto px-4 py-12">
+        <div className="text-center mb-16">
+          <h1 className="text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
+            X's Archive
+          </h1>
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            Your gateway to interactive games, educational resources, and useful development tools
+          </p>
+        </div>
 
-            <div className="flex gap-4 items-center flex-col sm:flex-row mb-6">
-              <a
-                className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-                href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Image
-                  className="dark:invert"
-                  src="/vercel.svg"
-                  alt="Vercel logomark"
-                  width={20}
-                  height={20}
-                />
-                Deploy now
-              </a>
-              <a
-                className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-                href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Read our docs
-              </a>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transform transition-all hover:scale-105 hover:shadow-xl">
+            <div className="h-48 bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
             </div>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl">
-              <a href="/games" className="p-4 border rounded-lg bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow">
-                <h3 className="text-lg font-bold mb-2">Games</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300">
-                  Play classic games like Snake, Tetris, and more
-                </p>
-              </a>
-              <a href="/education" className="p-4 border rounded-lg bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow">
-                <h3 className="text-lg font-bold mb-2">Learning Hub</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300">
-                  Educational resources for students of all ages
-                </p>
-              </a>
+            <div className="p-6">
+              <h3 className="text-2xl font-bold mb-2 text-gray-800 dark:text-white">Games</h3>
+              <p className="text-gray-600 dark:text-gray-300 mb-4">
+                Enjoy classic games like Snake, Tetris, Flappy Bird, and more. Perfect for a quick break or nostalgic fun.
+              </p>
+              <Link href="/games" className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                Play Now
+              </Link>
             </div>
-          </main>
-          <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-            <a
-              className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Image
-                aria-hidden
-                src="/file.svg"
-                alt="File icon"
-                width={16}
-                height={16}
-              />
-              Tool Shack
-            </a>
-            <a
-              className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Image
-                aria-hidden
-                src="/window.svg"
-                alt="Window icon"
-                width={16}
-                height={16}
-              />
-              About
-            </a>
-            <a
-              className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-              href="https://github.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Image
-                aria-hidden
-                src="/globe.svg"
-                alt="Globe icon"
-                width={16}
-                height={16}
-              />
-              GitHub Repository →
-            </a>
-          </footer>
+          </div>
+
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transform transition-all hover:scale-105 hover:shadow-xl">
+            <div className="h-48 bg-gradient-to-r from-green-500 to-teal-600 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+            </div>
+            <div className="p-6">
+              <h3 className="text-2xl font-bold mb-2 text-gray-800 dark:text-white">Learning Hub</h3>
+              <p className="text-gray-600 dark:text-gray-300 mb-4">
+                Educational resources for students of all ages. From elementary to high school, find materials to support learning.
+              </p>
+              <Link href="/education" className="inline-block bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                Start Learning
+              </Link>
+            </div>
+          </div>
+
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transform transition-all hover:scale-105 hover:shadow-xl">
+            <div className="h-48 bg-gradient-to-r from-purple-500 to-pink-600 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+              </svg>
+            </div>
+            <div className="p-6">
+              <h3 className="text-2xl font-bold mb-2 text-gray-800 dark:text-white">Tool Shack</h3>
+              <p className="text-gray-600 dark:text-gray-300 mb-4">
+                A collection of useful components and tools for developers. Boost your productivity with our ready-to-use resources.
+              </p>
+              <Link href="/components" className="inline-block bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                Explore Tools
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white">Featured Content</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <Link href="/games/tetris" className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition-shadow">
+              <h3 className="font-bold text-gray-800 dark:text-white">Tetris</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Classic block-stacking game</p>
+            </Link>
+            <Link href="/games/snake" className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition-shadow">
+              <h3 className="font-bold text-gray-800 dark:text-white">Snake</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Grow your snake by eating food</p>
+            </Link>
+            <Link href="/education/grade-6-8" className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition-shadow">
+              <h3 className="font-bold text-gray-800 dark:text-white">Middle School</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Resources for grades 6-8</p>
+            </Link>
+            <Link href="/education/grade-9-12" className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition-shadow">
+              <h3 className="font-bold text-gray-800 dark:text-white">High School</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Resources for grades 9-12</p>
+            </Link>
+          </div>
         </div>
       </div>
-    </SidebarProvider>
+    </div>
   );
 }
