@@ -72,8 +72,8 @@ export function getTetrominoBlockStyle(key: string, color: string, size: number 
     case BlockStyle.BORDERED: // I, O, T
       return {
         backgroundColor: color,
-        border: `2px solid ${borderColor}`,
-        backgroundImage: `radial-gradient(circle at center, white 30%, transparent 70%)`,
+        border: `3px solid ${borderColor}`,
+        boxShadow: `inset 0 0 0 2px rgba(255,255,255,0.4)`,
       };
       
     case BlockStyle.DARK: // J, S
