@@ -84,16 +84,7 @@ export default function GameView(props: GameViewProps) {
     bindings,
     setBindings,
   } = props;
-  const [isFullscreen, setIsFullscreen] = React.useState(false);
   const [started, setStarted] = React.useState(false);
-  const containerRef = React.useRef<HTMLDivElement>(null);
-  React.useEffect(() => {
-    if (isFullscreen) {
-      containerRef.current?.requestFullscreen();
-    } else if (document.fullscreenElement) {
-      document.exitFullscreen();
-    }
-  }, [isFullscreen]);
   const resetGame = () => {
     setBoard(Array.from({ length: ROWS }, () => new Array(COLS).fill(0)));
     setCurrent(randomTetromino(theme, level));
@@ -133,7 +124,7 @@ export default function GameView(props: GameViewProps) {
   };
 
   return (
-    <div ref={containerRef} className={`${isFullscreen ? "fixed inset-0 z-50 bg-gray-900" : "relative"} flex flex-col md:flex-row gap-8 items-center justify-center`}>
+    <div className="relative flex flex-col md:flex-row gap-8 items-center justify-center">
       
       <div>
         <Stats
@@ -226,12 +217,6 @@ export default function GameView(props: GameViewProps) {
         </h1>
         <GameCard>
           <div className="relative">
-            <Button
-              onClick={() => setIsFullscreen(!isFullscreen)}
-              className="absolute top-4 right-4 z-50"
-            >
-              {isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
-            </Button>
             <Board
               mergedBoard={mergedBoard}
               current={current}
