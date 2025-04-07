@@ -73,7 +73,7 @@ export default function Board({
           style={{
             width: COLS * 30 + "px",
             height: ROWS * 30 + "px",
-            background: "url('/assets/retro-bg.png') repeat",
+            background: "black",
             backgroundSize: "auto",
             maxWidth: "100vw",
             maxHeight: "70vh",
