@@ -221,6 +221,8 @@ export default function GameView(props: GameViewProps) {
           bindings={bindings}
           setBindings={setBindings}
           level={level}
+          paused={paused}
+          setPaused={setPaused}
         />
       </div>
       <div>
@@ -368,13 +370,6 @@ export default function GameView(props: GameViewProps) {
                 onClick={resetGame}
               >
                 Restart
-              </Button>
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={() => setPaused(prev => !prev)}
-              >
-                {paused ? "Resume" : "Pause"}
               </Button>
             </div>
           </CardFooter>

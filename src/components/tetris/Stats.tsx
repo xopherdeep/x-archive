@@ -40,6 +40,8 @@ interface StatsProps {
   bindings: { holdKey: string };
   setBindings: React.Dispatch<React.SetStateAction<{ holdKey: string }>>;
   level?: number;
+  paused?: boolean;
+  setPaused?: (value: React.SetStateAction<boolean>) => void;
 }
 
 export default function Stats({
@@ -54,6 +56,8 @@ export default function Stats({
   bindings,
   setBindings,
   level = 1,
+  paused,
+  setPaused,
 }: StatsProps) {
   const holdRanking = Object.keys(TETROMINOES).sort(
     (a, b) => (holdStats[b] || 0) - (holdStats[a] || 0)
@@ -129,14 +133,24 @@ export default function Stats({
               );
             })}
         </div>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={onReset}
-          className="w-full mt-2"
-        >
-          Reset
-        </Button>
+        <div className="flex flex-col gap-2 mt-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onReset}
+          >
+            Reset
+          </Button>
+          {setPaused && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setPaused(prev => !prev)}
+            >
+              {paused ? "Resume" : "Pause"}
+            </Button>
+          )}
+        </div>
 
         <hr className="my-2" />
         <GameControlsDialog bindings={bindings} setBindings={setBindings} />
