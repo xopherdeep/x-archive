@@ -303,7 +303,17 @@ export default function GameView(props: GameViewProps) {
                         // Start the music when game starts
                         const audioElement = document.querySelector('audio');
                         if (audioElement) {
+                          // Ensure volume is set to a reasonable level
+                          audioElement.volume = 0.5;
                           audioElement.play().catch(err => console.error(err));
+                          
+                          // Update any music player state in the DOM
+                          const musicPlayerComponent = document.querySelector('[data-music-player]');
+                          if (musicPlayerComponent) {
+                            // Dispatch a custom event to notify the music player
+                            const event = new CustomEvent('musicStarted', { detail: { volume: 0.5 } });
+                            musicPlayerComponent.dispatchEvent(event);
+                          }
                         }
                         
                         toast("Game Started! Good luck!", {

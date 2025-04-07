@@ -65,7 +65,23 @@ const MusicPlayer = memo(function MusicPlayer({ inGameHUD = false, paused = fals
         }
       };
       
+      // Listen for music started event from game
+      const handleMusicStarted = (event: CustomEvent) => {
+        if (audioRef.current) {
+          audioRef.current.volume = event.detail.volume || 0.5;
+          setVolume(event.detail.volume || 0.5);
+          setIsPlaying(true);
+          audioRef.current.play().catch(err => console.error(err));
+        }
+      };
+      
       audioRef.current.addEventListener('ended', handleEnded);
+      
+      // Add custom event listener to the component
+      const element = document.querySelector('[data-music-player]');
+      if (element) {
+        element.addEventListener('musicStarted', handleMusicStarted as EventListener);
+      }
       
       // Preload all audio files to prevent delays
       MUSIC_TRACKS.forEach(track => {
@@ -78,6 +94,11 @@ const MusicPlayer = memo(function MusicPlayer({ inGameHUD = false, paused = fals
         if (audioRef.current) {
           audioRef.current.removeEventListener('ended', handleEnded);
           audioRef.current.pause();
+        }
+        
+        // Remove custom event listener
+        if (element) {
+          element.removeEventListener('musicStarted', handleMusicStarted as EventListener);
         }
       };
     }
@@ -255,7 +276,7 @@ const MusicPlayer = memo(function MusicPlayer({ inGameHUD = false, paused = fals
   // Original standalone version for non-game pages
   return (
     <TooltipProvider>
-      <div className="fixed top-4 right-4 z-[9999] flex gap-2">
+      <div className="fixed top-4 right-4 z-[9999] flex gap-2" data-music-player>
         <Popover open={showControls} onOpenChange={setShowControls}>
           <PopoverTrigger asChild>
             <Button 
