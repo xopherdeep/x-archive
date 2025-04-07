@@ -5,6 +5,7 @@ import GameView from "./GameView";
 import { Button } from "../ui/button";
 import { toast, Toaster } from "sonner";
 import GameCard from "./GameCard";
+import MusicPlayer from "./MusicPlayer";
 import Background from "./Background";
 
 const LIGHT_THEME = {
@@ -298,6 +299,7 @@ export default function Tetris() {
 
   return mounted ? (
     <>
+      <MusicPlayer />
       <GameCard>
         <div ref={containerRef} className="relative">
           <Button
