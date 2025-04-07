@@ -62,7 +62,7 @@ export default function Home() {
               <p className="text-gray-600 dark:text-gray-300 mb-4">
                 A collection of useful components and tools for developers. Boost your productivity with our ready-to-use resources.
               </p>
-              <Link href="/components" className="inline-block bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+              <Link href="/tools" className="inline-block bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
                 Explore Tools
               </Link>
             </div>
