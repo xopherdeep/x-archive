@@ -67,12 +67,7 @@ export default function Board({
   return (
     <Card className="w-fit">
       <CardContent>
-        <div
-          className={`relative grid grid-cols-10 ${
-            quickDropping
-              ? "transition-transform duration-300 transform translate-y-2"
-              : ""
-          }`}
+        <div className="relative grid grid-cols-10"
           style={{
             width: COLS * 30 + "px",
             height: ROWS * 30 + "px",
@@ -91,7 +86,6 @@ export default function Board({
           {mergedBoard.map((cell, index) => (
             <div
               key={index}
-              className="transition-all duration-300"
               style={{
                 width: "30px",
                 height: "30px",
