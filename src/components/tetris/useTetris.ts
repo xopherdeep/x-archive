@@ -117,10 +117,7 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
         }
         const scoreMap = { 1: 10, 2: 25, 3: 40, 4: 50 };
         setScore((prevScore) => prevScore + (scoreMap[cleared] || 0));
-        setDropStats((prevStats) => ({
-          ...prevStats,
-          [current.key]: (prevStats[current.key] || 0) + 1,
-        }));
+        // Drop stats are updated in quickDrop, so we don't need to update them here
         const newPiece = next;
         setCurrent(newPiece);
         setNext(randomTetromino(theme, level));
