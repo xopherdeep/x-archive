@@ -52,6 +52,7 @@ export default function Stats({
   setTheme,
   bindings,
   setBindings,
+  level = 1,
 }: StatsProps) {
   const holdRanking = Object.keys(TETROMINOES).sort(
     (a, b) => (holdStats[b] || 0) - (holdStats[a] || 0)
@@ -94,7 +95,7 @@ export default function Stats({
                                 style={{
                                   width: 20,
                                   height: 20,
-                                  ...(cell ? getTetrominoBlockStyle(key, tetromino.color, 20) : { backgroundColor: "transparent" }),
+                                  ...(cell ? getTetrominoBlockStyle(key, getLevelColorTheme(level)[key], 20) : { backgroundColor: "transparent" }),
                                   boxSizing: "border-box",
                                 }}
                               />
@@ -160,7 +161,7 @@ export default function Stats({
                         width: "30px",
                         height: "30px",
                         ...(cell 
-                          ? getTetrominoBlockStyle(hold.key, hold.tetromino.color, 30) 
+                          ? getTetrominoBlockStyle(hold.key, getLevelColorTheme(level)[hold.key], 30) 
                           : { backgroundColor: "transparent" }),
                         boxSizing: "border-box",
                       }}

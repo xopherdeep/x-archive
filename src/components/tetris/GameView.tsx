@@ -217,6 +217,7 @@ export default function GameView(props: GameViewProps) {
           setTheme={setTheme}
           bindings={bindings}
           setBindings={setBindings}
+          level={level}
         />
       </div>
       <div>
