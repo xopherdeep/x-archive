@@ -16,80 +16,6 @@ export const tetrominoStyleMap: Record<string, BlockStyle> = {
   L: BlockStyle.LIGHT
 };
 
-// Generate color variations for a base color
-export function generateColorVariations(baseColor: string): {
-  light: string;
-  dark: string;
-  border: string;
-  highlight: string;
-  shadow: string;
-} {
-  // Convert hex to RGB for easier manipulation
-  const hexToRgb = (hex: string): [number, number, number] => {
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-    return [r, g, b];
-  };
-
-  // Convert RGB to hex
-  const rgbToHex = (r: number, g: number, b: number): string => {
-    return `#${Math.round(r).toString(16).padStart(2, '0')}${Math.round(g).toString(16).padStart(2, '0')}${Math.round(b).toString(16).padStart(2, '0')}`;
-  };
-
-  // Clamp value between 0 and 255
-  const clamp = (value: number): number => Math.min(255, Math.max(0, value));
-
-  const [r, g, b] = hexToRgb(baseColor);
-
-  // Create variations
-  const light = rgbToHex(clamp(r * 1.3), clamp(g * 1.3), clamp(b * 1.3));
-  const dark = rgbToHex(clamp(r * 0.7), clamp(g * 0.7), clamp(b * 0.7));
-  const border = rgbToHex(clamp(r * 0.5), clamp(g * 0.5), clamp(b * 0.5));
-  const highlight = rgbToHex(clamp(r * 1.5), clamp(g * 1.5), clamp(b * 1.5));
-  const shadow = rgbToHex(clamp(r * 0.3), clamp(g * 0.3), clamp(b * 0.3));
-
-  return { light, dark, border, highlight, shadow };
-}
-
-// Generate CSS for a tetromino block based on its style and color
-export function generateBlockStyle(
-  tetrominoKey: string,
-  baseColor: string,
-  blockSize: number = 30
-): React.CSSProperties {
-  const variations = generateColorVariations(baseColor);
-  const style = tetrominoStyleMap[tetrominoKey];
-
-  switch (style) {
-    case BlockStyle.BORDERED:
-      return {
-        backgroundColor: variations.light,
-        border: `2px solid ${variations.border}`,
-        boxShadow: `inset 2px 2px 2px ${variations.highlight}, inset -2px -2px 2px ${variations.shadow}`,
-        position: 'relative',
-        backgroundImage: `radial-gradient(circle at center, white 30%, transparent 70%)`,
-      } as React.CSSProperties;
-
-    case BlockStyle.DARK:
-      return {
-        backgroundColor: variations.dark,
-        border: `1px solid ${variations.border}`,
-        boxShadow: `inset 3px 3px 3px ${variations.highlight}, inset -3px -3px 3px ${variations.shadow}`,
-      } as React.CSSProperties;
-
-    case BlockStyle.LIGHT:
-      return {
-        backgroundColor: variations.light,
-        border: `1px solid ${variations.border}`,
-        boxShadow: `inset 3px 3px 3px ${variations.highlight}, inset -3px -3px 3px ${variations.shadow}`,
-      } as React.CSSProperties;
-
-    default:
-      return { backgroundColor: baseColor };
-  }
-}
-
 // Level color themes
 export function getLevelColorTheme(level: number): Record<string, string> {
   // Base colors for different level ranges
@@ -132,66 +58,40 @@ export function getLevelColorTheme(level: number): Record<string, string> {
   return themes[2];
 }
 
-// Render a tetromino block with the appropriate style
-export function renderTetrominoBlock(
-  tetrominoKey: string,
-  baseColor: string,
-  level: number,
-  size: number = 30
-): React.CSSProperties {
-  const style = generateBlockStyle(tetrominoKey, baseColor, size);
+// Get tetromino block style based on its type and color
+export function getTetrominoBlockStyle(key: string, color: string, size: number = 30): React.CSSProperties {
+  const style = tetrominoStyleMap[key];
   
-  // Add level-specific effects for higher levels
-  if (level > 10) {
-    return {
-      ...style,
-      animation: 'pulse 2s infinite',
-    };
+  // Create a darker border color
+  const darkerColor = color.replace(/^#/, '');
+  const r = parseInt(darkerColor.substr(0, 2), 16) * 0.6;
+  const g = parseInt(darkerColor.substr(2, 2), 16) * 0.6;
+  const b = parseInt(darkerColor.substr(4, 2), 16) * 0.6;
+  const borderColor = `#${Math.round(r).toString(16).padStart(2, '0')}${Math.round(g).toString(16).padStart(2, '0')}${Math.round(b).toString(16).padStart(2, '0')}`;
+  
+  switch (style) {
+    case BlockStyle.BORDERED: // I, O, T
+      return {
+        backgroundColor: color,
+        border: `2px solid ${borderColor}`,
+        backgroundImage: `radial-gradient(circle at center, white 30%, transparent 70%)`,
+      };
+      
+    case BlockStyle.DARK: // J, S
+      return {
+        backgroundColor: color,
+        border: `2px solid ${borderColor}`,
+        boxShadow: `inset 2px 2px 2px rgba(255,255,255,0.3), inset -2px -2px 2px rgba(0,0,0,0.3)`,
+      };
+      
+    case BlockStyle.LIGHT: // Z, L
+      return {
+        backgroundColor: color,
+        border: `2px solid ${borderColor}`,
+        boxShadow: `inset 2px 2px 2px rgba(255,255,255,0.5), inset -2px -2px 2px rgba(0,0,0,0.2)`,
+      };
+      
+    default:
+      return { backgroundColor: color };
   }
-  
-  return style;
-}
-
-// Generate a bordered block with white center
-export function createBorderedBlock(color: string, size: number = 30): React.CSSProperties {
-  const variations = generateColorVariations(color);
-  
-  return {
-    position: 'relative',
-    width: `${size}px`,
-    height: `${size}px`,
-    backgroundColor: variations.light,
-    border: `2px solid ${variations.border}`,
-    boxShadow: `inset 2px 2px 2px ${variations.highlight}, inset -2px -2px 2px ${variations.shadow}`,
-    backgroundImage: `radial-gradient(circle at center, white 30%, transparent 70%)`,
-    boxSizing: 'border-box',
-  } as React.CSSProperties;
-}
-
-// Generate a 3D-looking dark block
-export function createDarkBlock(color: string, size: number = 30): React.CSSProperties {
-  const variations = generateColorVariations(color);
-  
-  return {
-    width: `${size}px`,
-    height: `${size}px`,
-    backgroundColor: variations.dark,
-    border: `1px solid ${variations.border}`,
-    boxShadow: `inset 3px 3px 3px ${variations.highlight}, inset -3px -3px 3px ${variations.shadow}`,
-    boxSizing: 'border-box',
-  } as React.CSSProperties;
-}
-
-// Generate a 3D-looking light block
-export function createLightBlock(color: string, size: number = 30): React.CSSProperties {
-  const variations = generateColorVariations(color);
-  
-  return {
-    width: `${size}px`,
-    height: `${size}px`,
-    backgroundColor: variations.light,
-    border: `1px solid ${variations.border}`,
-    boxShadow: `inset 3px 3px 3px ${variations.highlight}, inset -3px -3px 3px ${variations.shadow}`,
-    boxSizing: 'border-box',
-  } as React.CSSProperties;
 }

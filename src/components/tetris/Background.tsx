@@ -1,6 +1,7 @@
 "use client";
 import React, { useMemo } from "react";
 import { randomTetromino } from "./helpers";
+import { getTetrominoBlockStyle } from "./tetrominoStyles";
 
 type TetrominoData = {
   key: string;
@@ -68,9 +69,8 @@ export default function Background({
                     style={{
                       width: CELL_SIZE,
                       height: CELL_SIZE,
-                      backgroundColor: item.tetromino.color,
-                      boxSizing: "border-box",
-                      border: "1px solid rgba(0,0,0,0.2)",
+                      ...getTetrominoBlockStyle(item.key, item.tetromino.color, CELL_SIZE),
+                      opacity: 0.1,
                     }}
                   />
                 ) : (

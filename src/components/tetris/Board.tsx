@@ -68,38 +68,7 @@ export default function Board({
     if (!cellInfo) return { backgroundColor: "transparent" };
     
     const { color, key } = cellInfo;
-    const variations = generateColorVariations(color);
-    const style = tetrominoStyleMap[key];
-    
-    // Apply different styles based on the tetromino type
-    switch (style) {
-      case BlockStyle.BORDERED: // I, O, T
-        return {
-          backgroundColor: variations.light,
-          border: `2px solid ${variations.border}`,
-          boxShadow: `inset 2px 2px 2px ${variations.highlight}, inset -2px -2px 2px ${variations.shadow}`,
-          position: 'relative',
-          // Add white center for bordered blocks
-          backgroundImage: `radial-gradient(circle at center, white 30%, transparent 70%)`,
-        };
-        
-      case BlockStyle.DARK: // J, S
-        return {
-          backgroundColor: variations.dark,
-          border: `1px solid ${variations.border}`,
-          boxShadow: `inset 3px 3px 3px ${variations.highlight}, inset -3px -3px 3px ${variations.shadow}`,
-        };
-        
-      case BlockStyle.LIGHT: // Z, L
-        return {
-          backgroundColor: variations.light,
-          border: `1px solid ${variations.border}`,
-          boxShadow: `inset 3px 3px 3px ${variations.highlight}, inset -3px -3px 3px ${variations.shadow}`,
-        };
-        
-      default:
-        return { backgroundColor: color };
-    }
+    return getTetrominoBlockStyle(key, color);
   }
   return (
     <Card className="w-fit">
@@ -151,35 +120,12 @@ export default function Board({
                   opacity: 0.3,
                 };
                 
-                // Apply the appropriate style based on tetromino type
-                switch (style) {
-                  case BlockStyle.BORDERED:
-                    ghostStyle = {
-                      ...ghostStyle,
-                      backgroundColor: variations.light,
-                      border: `2px solid ${variations.border}`,
-                    };
-                    break;
-                  case BlockStyle.DARK:
-                    ghostStyle = {
-                      ...ghostStyle,
-                      backgroundColor: variations.dark,
-                      border: `1px solid ${variations.border}`,
-                    };
-                    break;
-                  case BlockStyle.LIGHT:
-                    ghostStyle = {
-                      ...ghostStyle,
-                      backgroundColor: variations.light,
-                      border: `1px solid ${variations.border}`,
-                    };
-                    break;
-                  default:
-                    ghostStyle = {
-                      ...ghostStyle,
-                      backgroundColor: ghostCellInfo.color,
-                    };
-                }
+                // Apply the ghost style
+                ghostStyle = {
+                  ...ghostStyle,
+                  ...getTetrominoBlockStyle(ghostCellInfo.key, ghostCellInfo.color),
+                  opacity: 0.3,
+                };
                 
                 return (
                   <div

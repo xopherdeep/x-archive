@@ -58,38 +58,7 @@ export default function Stats({
   );
   console.log("Hold stats in Stats component:", holdStats);
   
-  // Function to get the appropriate block style based on tetromino type
-  const getTetrominoBlockStyle = (key: string, color: string, size: number = 30): React.CSSProperties => {
-    const variations = generateColorVariations(color);
-    const style = tetrominoStyleMap[key];
-    
-    switch (style) {
-      case BlockStyle.BORDERED: // I, O, T
-        return {
-          backgroundColor: variations.light,
-          border: `2px solid ${variations.border}`,
-          boxShadow: `inset 1px 1px 1px ${variations.highlight}, inset -1px -1px 1px ${variations.shadow}`,
-          backgroundImage: `radial-gradient(circle at center, white 30%, transparent 70%)`,
-        };
-        
-      case BlockStyle.DARK: // J, S
-        return {
-          backgroundColor: variations.dark,
-          border: `1px solid ${variations.border}`,
-          boxShadow: `inset 2px 2px 1px ${variations.highlight}, inset -2px -2px 1px ${variations.shadow}`,
-        };
-        
-      case BlockStyle.LIGHT: // Z, L
-        return {
-          backgroundColor: variations.light,
-          border: `1px solid ${variations.border}`,
-          boxShadow: `inset 2px 2px 1px ${variations.highlight}, inset -2px -2px 1px ${variations.shadow}`,
-        };
-        
-      default:
-        return { backgroundColor: color };
-    }
-  };
+  // We'll use the imported getTetrominoBlockStyle function instead of defining it here
   return (
     <div className="flex flex-col gap-4 w-auto">
       <GameCard title="Tetrominoes">
