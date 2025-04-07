@@ -29,10 +29,11 @@ type MusicTrack = {
 
 interface MusicPlayerProps {
   inGameHUD?: boolean;
+  paused?: boolean;
 }
 
 // Memoize the component to prevent unnecessary re-renders
-const MusicPlayer = memo(function MusicPlayer({ inGameHUD = false }: MusicPlayerProps) {
+const MusicPlayer = memo(function MusicPlayer({ inGameHUD = false, paused = false }: MusicPlayerProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.5);
@@ -95,10 +96,28 @@ const MusicPlayer = memo(function MusicPlayer({ inGameHUD = false }: MusicPlayer
         toast(`🎵 Now playing: ${currentTrack.name}`, {
           description: `Composed by ${currentTrack.composer}, arranged by ${currentTrack.arranger}`,
           duration: 3000,
+          position: "top-center",
+          style: {
+            background: "linear-gradient(45deg, #1e90ff, #00bfff)",
+            color: "#fff",
+            fontWeight: "bold",
+            borderRadius: "8px",
+          },
         });
       }
     }
   }, [currentTrackIndex, currentTrack]);
+
+  // Handle game pause state
+  useEffect(() => {
+    if (!audioRef.current) return;
+    
+    if (paused && isPlaying) {
+      audioRef.current.pause();
+    } else if (!paused && isPlaying) {
+      audioRef.current.play().catch(err => console.error(err));
+    }
+  }, [paused, isPlaying]);
 
   // Toggle music playback
   const toggleMusic = () => {
@@ -112,6 +131,13 @@ const MusicPlayer = memo(function MusicPlayer({ inGameHUD = false }: MusicPlayer
         toast(`🎵 Now playing: ${currentTrack.name}`, {
           description: `Composed by ${currentTrack.composer}, arranged by ${currentTrack.arranger}`,
           duration: 3000,
+          position: "top-center",
+          style: {
+            background: "linear-gradient(45deg, #1e90ff, #00bfff)",
+            color: "#fff",
+            fontWeight: "bold",
+            borderRadius: "8px",
+          },
         });
       }
       setIsPlaying(!isPlaying);

@@ -240,7 +240,7 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
       // Celebrate level up
       celebrateLevelUp(newLevel);
     }
-  }, [linesCleared, level]);
+  }, [linesCleared]);
   
   // Calculate board fullness and adjust music speed
   useEffect(() => {

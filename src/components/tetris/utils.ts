@@ -61,6 +61,18 @@ export function playSuccessSound(): void {
         existingAudio.volume = currentVolume;
         existingAudio.play().catch(err => console.error(err));
         
+        // Show toast with track info
+        toast(`🎵 Tetris! Perfect clear!`, {
+          duration: 2000,
+          position: "top-center",
+          style: {
+            background: "linear-gradient(45deg, #ff4500, #ffd700)",
+            color: "#fff",
+            fontWeight: "bold",
+            borderRadius: "8px",
+          },
+        });
+        
         // Listen for end of success sound to resume previous track
         const handleSuccessEnd = () => {
           existingAudio.src = currentSrc;
@@ -171,6 +183,13 @@ export function playVictoryMusic(): void {
         toast(`🎵 Now playing: ${victoryTrack.name}`, {
           description: `Composed by ${victoryTrack.composer}, arranged by ${victoryTrack.arranger}`,
           duration: 3000,
+          position: "top-center",
+          style: {
+            background: "linear-gradient(45deg, #ff4500, #ffd700)",
+            color: "#fff",
+            fontWeight: "bold",
+            borderRadius: "8px",
+          },
         });
         
         // After victory music, play high score music

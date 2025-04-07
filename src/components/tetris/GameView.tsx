@@ -140,6 +140,7 @@ export default function GameView(props: GameViewProps) {
   return (
     <div className="relative flex flex-col md:flex-row gap-8 items-center justify-center">
       <div className="flex flex-col gap-4">
+        <MusicPlayer inGameHUD={true} paused={paused} />
         <Stats
           dropStats={dropStats}
           holdStats={holdStats}
@@ -400,9 +401,7 @@ export default function GameView(props: GameViewProps) {
           </CardContent>
         </Card>
         
-        <div className="mt-4">
-          <MusicPlayer inGameHUD={true} />
-        </div>
+        
       </div>
     </div>
   );
