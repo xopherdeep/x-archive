@@ -63,33 +63,43 @@ export function getTetrominoBlockStyle(key: string, color: string, size: number 
   
   // Create a darker border color
   const darkerColor = color.replace(/^#/, '');
-  const r = parseInt(darkerColor.substr(0, 2), 16) * 0.6;
-  const g = parseInt(darkerColor.substr(2, 2), 16) * 0.6;
-  const b = parseInt(darkerColor.substr(4, 2), 16) * 0.6;
+  const r = parseInt(darkerColor.substr(0, 2), 16) * 0.5; // Darker border (0.6 -> 0.5)
+  const g = parseInt(darkerColor.substr(2, 2), 16) * 0.5;
+  const b = parseInt(darkerColor.substr(4, 2), 16) * 0.5;
   const borderColor = `#${Math.round(r).toString(16).padStart(2, '0')}${Math.round(g).toString(16).padStart(2, '0')}${Math.round(b).toString(16).padStart(2, '0')}`;
+  
+  // Create a lighter highlight color
+  const lighterColor = color.replace(/^#/, '');
+  const lr = Math.min(255, parseInt(lighterColor.substr(0, 2), 16) * 1.3);
+  const lg = Math.min(255, parseInt(lighterColor.substr(2, 2), 16) * 1.3);
+  const lb = Math.min(255, parseInt(lighterColor.substr(4, 2), 16) * 1.3);
+  const highlightColor = `#${Math.round(lr).toString(16).padStart(2, '0')}${Math.round(lg).toString(16).padStart(2, '0')}${Math.round(lb).toString(16).padStart(2, '0')}`;
   
   switch (style) {
     case BlockStyle.BORDERED: // I, O, T
       return {
         backgroundColor: color,
         border: `3px solid ${borderColor}`,
-        backgroundImage: `radial-gradient(circle at center, white 30%, transparent 70%)`,
+        backgroundImage: `radial-gradient(circle at center, white 25%, ${highlightColor} 50%, ${color} 75%)`,
+        boxShadow: `0 0 5px rgba(0,0,0,0.3), inset 0 0 8px rgba(255,255,255,0.5)`,
       };
       
     case BlockStyle.DARK: // J, S
       return {
         backgroundColor: color,
         border: `2px solid ${borderColor}`,
-        boxShadow: `inset 3px 3px 3px rgba(255,255,255,0.2), inset -3px -3px 4px rgba(0,0,0,0.5)`,
-        backgroundImage: `linear-gradient(135deg, transparent 0%, rgba(0,0,0,0.2) 100%)`,
+        boxShadow: `inset 4px 4px 5px rgba(255,255,255,0.15), inset -4px -4px 5px rgba(0,0,0,0.6), 0 0 3px rgba(0,0,0,0.3)`,
+        backgroundImage: `linear-gradient(135deg, transparent 0%, rgba(0,0,0,0.3) 100%), 
+                          repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(0,0,0,0.05) 5px, rgba(0,0,0,0.05) 10px)`,
       };
       
     case BlockStyle.LIGHT: // Z, L
       return {
         backgroundColor: color,
         border: `2px solid ${borderColor}`,
-        boxShadow: `inset 4px 4px 5px rgba(255,255,255,0.8), inset -1px -1px 2px rgba(0,0,0,0.05)`,
-        backgroundImage: `linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.1) 100%)`,
+        boxShadow: `inset 5px 5px 8px rgba(255,255,255,0.9), inset -2px -2px 3px rgba(0,0,0,0.05), 0 0 3px rgba(0,0,0,0.2)`,
+        backgroundImage: `linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.2) 50%, transparent 100%),
+                          repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(255,255,255,0.1) 8px, rgba(255,255,255,0.1) 16px)`,
       };
       
     default:
