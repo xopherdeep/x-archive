@@ -80,45 +80,53 @@ export default function Background({
     const items: TetrominoData[] = [];
     // Only calculate this on client-side
     if (typeof window !== 'undefined') {
-      // Try to place tetrominos without overlaps
+      // Use a more efficient algorithm to place tetrominos
+      // First, divide the screen into a grid of cells
+      const gridCellSize = 100; // Size of each grid cell
+      const gridCols = Math.ceil(dimensions.width / gridCellSize);
+      const gridRows = Math.ceil(dimensions.height / gridCellSize);
+      const grid = Array(gridRows).fill(0).map(() => Array(gridCols).fill(false));
+  
+      // Place tetrominos in random grid cells
+      let placedCount = 0;
       let attempts = 0;
-      const maxAttempts = NUM_TETROMINOS * 10; // Limit attempts to prevent infinite loops
-      
-      while (items.length < NUM_TETROMINOS && attempts < maxAttempts) {
+      const maxAttempts = NUM_TETROMINOS * 5;
+  
+      while (placedCount < NUM_TETROMINOS && attempts < maxAttempts) {
         attempts++;
-        
+    
+        // Pick a random grid cell
+        const gridRow = Math.floor(Math.random() * gridRows);
+        const gridCol = Math.floor(Math.random() * gridCols);
+    
+        // If cell is already occupied, try another
+        if (grid[gridRow][gridCol]) continue;
+    
+        // Mark cell as occupied
+        grid[gridRow][gridCol] = true;
+    
         const { key, tetromino } = randomTetromino(theme, level);
         const shapeWidth = tetromino.shape[0].length;
         const shapeHeight = tetromino.shape.length;
-        const maxX = dimensions.width - shapeWidth * CELL_SIZE;
-        const maxY = dimensions.height - shapeHeight * CELL_SIZE;
-        const x = Math.random() * maxX;
-        const y = Math.random() * maxY;
-        const rotation = Math.floor(Math.random() * 4) * 90; // Random rotation: 0, 90, 180, or 270 degrees
-        const opacity = 0.05 + Math.random() * 0.1; // Random opacity between 0.05 and 0.15
-        
-        const newTetromino = { key, tetromino, x, y, rotation, opacity };
-        
-        // Check if this tetromino overlaps with any existing ones
-        let overlaps = false;
-        for (const existingTetromino of items) {
-          if (checkOverlap(newTetromino, existingTetromino)) {
-            overlaps = true;
-            break;
-          }
-        }
-        
-        // Only add if it doesn't overlap
-        if (!overlaps) {
-          items.push(newTetromino);
-        }
+    
+        // Calculate position within the grid cell with some randomness
+        const cellX = gridCol * gridCellSize;
+        const cellY = gridRow * gridCellSize;
+        const maxX = Math.min(cellX + gridCellSize - shapeWidth * CELL_SIZE, dimensions.width - shapeWidth * CELL_SIZE);
+        const maxY = Math.min(cellY + gridCellSize - shapeHeight * CELL_SIZE, dimensions.height - shapeHeight * CELL_SIZE);
+        const x = Math.max(cellX, Math.random() * maxX);
+        const y = Math.max(cellY, Math.random() * maxY);
+    
+        const rotation = Math.floor(Math.random() * 4) * 90;
+        const opacity = 0.05 + Math.random() * 0.1;
+    
+        items.push({ key, tetromino, x, y, rotation, opacity });
+        placedCount++;
       }
-      
-      // If we couldn't place all tetrominos without overlap, fill the remaining
-      // with reduced opacity to make overlaps less noticeable
-      if (items.length < NUM_TETROMINOS) {
-        const remaining = NUM_TETROMINOS - items.length;
-        for (let i = 0; i < remaining; i++) {
+  
+      // If we need more tetrominos, add them with lower opacity
+      if (placedCount < NUM_TETROMINOS) {
+        for (let i = placedCount; i < NUM_TETROMINOS; i++) {
           const { key, tetromino } = randomTetromino(theme, level);
           const shapeWidth = tetromino.shape[0].length;
           const shapeHeight = tetromino.shape.length;
@@ -127,7 +135,6 @@ export default function Background({
           const x = Math.random() * maxX;
           const y = Math.random() * maxY;
           const rotation = Math.floor(Math.random() * 4) * 90;
-          // Lower opacity for potentially overlapping pieces
           const opacity = 0.03 + Math.random() * 0.05;
           items.push({ key, tetromino, x, y, rotation, opacity });
         }

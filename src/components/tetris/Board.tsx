@@ -68,13 +68,16 @@ export default function Board({
   }
   return (
     <Card className="w-fit">
-      <CardContent>
+      <CardContent className="p-0 sm:p-6">
         <div className="relative grid grid-cols-10"
           style={{
             width: COLS * 30 + "px",
             height: ROWS * 30 + "px",
             background: "url('/assets/retro-bg.png') repeat",
             backgroundSize: "auto",
+            maxWidth: "100vw",
+            maxHeight: "70vh",
+            overflow: "hidden",
           }}
         >
           <div

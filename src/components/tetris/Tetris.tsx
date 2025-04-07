@@ -218,25 +218,39 @@ export default function Tetris() {
   } = useTetris("light", bindings);
 
   const [mounted, setMounted] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
   const [topScore, setTopScore] = React.useState<number>(0);
 
   React.useEffect(() => {
-    toast("🎉 Welcome to Tetris! Have fun! 🚀", {
-      style: {
-        background: "linear-gradient(45deg, #ff6ec4, #7873f5)",
-        color: "#fff",
-        fontWeight: "bold",
-        borderRadius: "8px",
-      },
-      position: "top-center",
-    });
-  }, []);
-
-  React.useEffect(() => {
+    // Show welcome toast after a short delay
+    const toastTimeout = setTimeout(() => {
+      toast("🎉 Welcome to Tetris! Have fun! 🚀", {
+        style: {
+          background: "linear-gradient(45deg, #ff6ec4, #7873f5)",
+          color: "#fff",
+          fontWeight: "bold",
+          borderRadius: "8px",
+        },
+        position: "top-center",
+      });
+    }, 1000);
+    
+    // Load top score from localStorage
     const storedTop = localStorage.getItem("tetris-topscore");
     if (storedTop) {
       setTopScore(Number(storedTop));
     }
+    
+    // Simulate loading assets
+    const loadingTimeout = setTimeout(() => {
+      setLoading(false);
+      setMounted(true);
+    }, 1500);
+    
+    return () => {
+      clearTimeout(toastTimeout);
+      clearTimeout(loadingTimeout);
+    };
   }, []);
 
   React.useEffect(() => {
@@ -246,11 +260,29 @@ export default function Tetris() {
     }
   }, [gameOver, score, topScore]);
 
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
+  if (!mounted) {
+    return (
+      <div className="h-screen w-full flex flex-col items-center justify-center">
+        <div className="animate-pulse text-5xl font-extrabold text-red-500 drop-shadow-[0_2px_3px_rgba(0,0,0,0.5)] tracking-[0.25em] text-center mb-8"
+             style={{ fontFamily: "'Press Start 2P', cursive" }}>
+          TETRIS
+        </div>
+        {loading && (
+          <div className="flex flex-col items-center">
+            <div className="relative w-20 h-20 animate-spin">
+              <div className="absolute w-5 h-5 bg-red-500 top-0 left-0"></div>
+              <div className="absolute w-5 h-5 bg-blue-500 top-0 right-0"></div>
+              <div className="absolute w-5 h-5 bg-green-500 bottom-0 left-0"></div>
+              <div className="absolute w-5 h-5 bg-yellow-500 bottom-0 right-0"></div>
+            </div>
+            <p className="mt-4 text-lg">Loading game...</p>
+          </div>
+        )}
+      </div>
+    );
+  }
 
-  return mounted ? (
+  return (
     <>
       <MusicPlayer />
       <GameCard>

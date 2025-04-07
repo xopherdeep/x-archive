@@ -3,41 +3,75 @@
 import * as React from "react"
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
+import { Keyboard } from "lucide-react"
 
 function GameControlsDialog({ bindings, setBindings }: { bindings: { holdKey: string }, setBindings: React.Dispatch<React.SetStateAction<{ holdKey: string }>> }) {
   const [listening, setListening] = React.useState(false);
-  const handleKeyBinding = (event: React.KeyboardEvent<HTMLSpanElement>) => {
+  const keyRef = React.useRef<HTMLButtonElement>(null);
+  
+  const handleKeyBinding = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    // Prevent certain keys that might cause issues
+    if (['Escape', 'Tab'].includes(event.key)) return;
+    
     setBindings({ ...bindings, holdKey: event.key });
     setListening(false);
   };
 
+  React.useEffect(() => {
+    if (listening && keyRef.current) {
+      keyRef.current.focus();
+    }
+  }, [listening]);
+
   return (
     <Dialog>
-      <Button variant="ghost" size="sm">
-        <DialogTrigger asChild>
+      <DialogTrigger asChild>
+        <Button variant="ghost" size="sm" className="flex items-center gap-1">
+          <Keyboard className="h-4 w-4" />
           <span>Controls</span>
-        </DialogTrigger>
-      </Button>
+        </Button>
+      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Game Controls</DialogTitle>
         </DialogHeader>
         <DialogDescription>
-          <ul className="list-disc list-inside">
-            <li><strong>Arrow Left:</strong> Move left</li>
-            <li><strong>Arrow Right:</strong> Move right</li>
-            <li><strong>Arrow Down:</strong> Soft drop</li>
-            <li><strong>Arrow Up:</strong> Rotate piece</li>
-            <li><strong>Shift + Arrow Up:</strong> Rotate piece opposite</li>
-            <li><strong>Space:</strong> Quick drop</li>
-            <li><strong>P:</strong> Pause game</li>
-            <li>
-              <strong>{listening ? "Press key..." : (bindings?.holdKey || "Hold Key")}:</strong>{" "}
-              <span onClick={() => setListening(true)} onKeyDown={handleKeyBinding} tabIndex={0}>
-                Hold piece
-              </span>
-            </li>
-          </ul>
+          <div className="grid grid-cols-2 gap-2 my-4">
+            <div className="font-medium">Move left</div>
+            <div className="px-2 py-1 bg-muted rounded text-center">←</div>
+            
+            <div className="font-medium">Move right</div>
+            <div className="px-2 py-1 bg-muted rounded text-center">→</div>
+            
+            <div className="font-medium">Soft drop</div>
+            <div className="px-2 py-1 bg-muted rounded text-center">↓</div>
+            
+            <div className="font-medium">Rotate piece</div>
+            <div className="px-2 py-1 bg-muted rounded text-center">↑</div>
+            
+            <div className="font-medium">Rotate opposite</div>
+            <div className="px-2 py-1 bg-muted rounded text-center">Shift + ↑</div>
+            
+            <div className="font-medium">Quick drop</div>
+            <div className="px-2 py-1 bg-muted rounded text-center">Space</div>
+            
+            <div className="font-medium">Pause game</div>
+            <div className="px-2 py-1 bg-muted rounded text-center">P</div>
+            
+            <div className="font-medium">Hold piece</div>
+            <Button
+              ref={keyRef}
+              variant="outline"
+              size="sm"
+              className="w-full"
+              onClick={() => setListening(true)}
+              onKeyDown={handleKeyBinding}
+              aria-label="Press a key to set the hold piece control"
+            >
+              {listening ? "Press any key..." : bindings?.holdKey || "X"}
+            </Button>
+          </div>
         </DialogDescription>
         <DialogFooter>
           <DialogClose asChild>
