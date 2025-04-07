@@ -20,6 +20,12 @@ import StyleBoxes from "./StyleBoxes";
 import GameCard from "./GameCard";
 import { toast } from "sonner";
 import { randomTetromino } from "./helpers";
+import { 
+  tetrominoStyleMap, 
+  BlockStyle, 
+  generateColorVariations,
+  getLevelColorTheme 
+} from "./tetrominoStyles";
 
 type GameViewProps = {
   mergedBoard: (0 | string)[];
@@ -123,6 +129,38 @@ export default function GameView(props: GameViewProps) {
     return croppedRows.map((row) =>
       row.slice(firstNonZeroCol, lastNonZeroCol + 1)
     );
+  };
+
+  // Function to get the appropriate block style based on tetromino type
+  const getTetrominoBlockStyle = (key: string, color: string, size: number = 30): React.CSSProperties => {
+    const variations = generateColorVariations(color);
+    const style = tetrominoStyleMap[key];
+    
+    switch (style) {
+      case BlockStyle.BORDERED: // I, O, T
+        return {
+          backgroundColor: variations.light,
+          border: `2px solid ${variations.border}`,
+          boxShadow: `inset 1px 1px 1px ${variations.highlight}, inset -1px -1px 1px ${variations.shadow}`,
+        };
+        
+      case BlockStyle.DARK: // J, S
+        return {
+          backgroundColor: variations.dark,
+          border: `1px solid ${variations.border}`,
+          boxShadow: `inset 2px 2px 1px ${variations.highlight}, inset -2px -2px 1px ${variations.shadow}`,
+        };
+        
+      case BlockStyle.LIGHT: // Z, L
+        return {
+          backgroundColor: variations.light,
+          border: `1px solid ${variations.border}`,
+          boxShadow: `inset 2px 2px 1px ${variations.highlight}, inset -2px -2px 1px ${variations.shadow}`,
+        };
+        
+      default:
+        return { backgroundColor: color };
+    }
   };
 
   return (
@@ -322,11 +360,10 @@ export default function GameView(props: GameViewProps) {
                     style={{
                       width: "30px",
                       height: "30px",
-                      backgroundColor: cell
-                        ? next.tetromino.color
-                        : "transparent",
+                      ...(cell 
+                        ? getTetrominoBlockStyle(next.key, next.tetromino.color, 30) 
+                        : { backgroundColor: "transparent" }),
                       boxSizing: "border-box",
-                      border: "1px solid #999",
                     }}
                   />
                 ))

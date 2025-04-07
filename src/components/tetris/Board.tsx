@@ -1,11 +1,16 @@
 "use client";
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { generateSVGPattern } from "../tetris/helpers";
+import { 
+  tetrominoStyleMap, 
+  BlockStyle, 
+  generateColorVariations, 
+  getLevelColorTheme 
+} from "./tetrominoStyles";
 
 interface BoardProps {
   mergedBoard: (0 | string)[];
-  current: { tetromino: { shape: number[][]; color: string } };
+  current: { key: string; tetromino: { shape: number[][]; color: string } };
   quickDropping: boolean;
   ghostPosition: { x: number; y: number };
   gameOver: boolean;
@@ -24,44 +29,74 @@ export default function Board({
   ROWS,
   level,
 }: BoardProps) {
+  // Extract tetromino key and color information from the cell value
+  // Format: "color:key" (e.g., "#00ffff:I")
+  function getCellInfo(cell: 0 | string): { color: string; key: string } | null {
+    if (cell === 0) return null;
+    
+    // If the cell contains key information (new format)
+    if (typeof cell === 'string' && cell.includes(':')) {
+      const [color, key] = cell.split(':');
+      return { color, key };
+    }
+    
+    // Legacy format (just color)
+    return { color: cell, key: guessTetrominoKeyFromColor(cell) };
+  }
+  
+  // Guess the tetromino key based on its color (for backward compatibility)
+  function guessTetrominoKeyFromColor(color: string): string {
+    const colorMap: Record<string, string> = {
+      "#00ffff": "I", "#00cccc": "I", "#009999": "I", // Cyan variants
+      "#ffff00": "O", "#cccc00": "O", "#999900": "O", // Yellow variants
+      "#dda0dd": "T", "#ba8bb0": "T", "#a275a2": "T", // Purple variants
+      "#7fff00": "S", "#6fbf00": "S", "#5fb000": "S", // Green variants
+      "#ff4500": "Z", "#e03e00": "Z", "#c02e00": "Z", // Red variants
+      "#1e90ff": "J", "#199ae6": "J", "#157bb8": "J", // Blue variants
+      "#ff8c00": "L", "#e68a00": "L", "#cc7000": "L", // Orange variants
+    };
+    
+    return colorMap[color] || "I"; // Default to I if unknown
+  }
+  
   function getCellStyle(cell: 0 | string, level: number): React.CSSProperties {
     if (cell === 0) {
       return { backgroundColor: "transparent" };
     }
-    const patternSize = Math.max(3, 10 - level);
-    switch (cell) {
-      case "#00ffff":
-        return { backgroundImage: generateSVGPattern(cell, "#ffffff", 30) };
-      case "#ffff00":
-        return { backgroundImage: generateSVGPattern(cell, "#ffffff", 30) };
-      case "#dda0dd":
-        return { backgroundImage: generateSVGPattern(cell, "#ffffff", 30) };
-      case "#7fff00":
+    
+    const cellInfo = getCellInfo(cell);
+    if (!cellInfo) return { backgroundColor: "transparent" };
+    
+    const { color, key } = cellInfo;
+    const variations = generateColorVariations(color);
+    const style = tetrominoStyleMap[key];
+    
+    // Apply different styles based on the tetromino type
+    switch (style) {
+      case BlockStyle.BORDERED: // I, O, T
         return {
-          backgroundImage: `repeating-linear-gradient(135deg, ${cell}, ${cell} ${patternSize}px, rgba(0,0,0,0.1) ${patternSize}px, rgba(0,0,0,0.1) ${
-            patternSize * 2
-          }px)`,
+          backgroundColor: variations.light,
+          border: `2px solid ${variations.border}`,
+          boxShadow: `inset 2px 2px 2px ${variations.highlight}, inset -2px -2px 2px ${variations.shadow}`,
+          position: 'relative',
         };
-      case "#ff4500":
+        
+      case BlockStyle.DARK: // J, S
         return {
-          backgroundImage: `repeating-linear-gradient(45deg, ${cell}, ${cell} ${patternSize}px, rgba(0,0,0,0.2) ${patternSize}px, rgba(0,0,0,0.2) ${
-            patternSize * 2
-          }px)`,
+          backgroundColor: variations.dark,
+          border: `1px solid ${variations.border}`,
+          boxShadow: `inset 3px 3px 3px ${variations.highlight}, inset -3px -3px 3px ${variations.shadow}`,
         };
-      case "#1e90ff":
+        
+      case BlockStyle.LIGHT: // Z, L
         return {
-          backgroundImage: `repeating-linear-gradient(135deg, ${cell}, ${cell} ${patternSize}px, rgba(0,0,0,0.1) ${patternSize}px, rgba(0,0,0,0.1) ${
-            patternSize * 2
-          }px)`,
+          backgroundColor: variations.light,
+          border: `1px solid ${variations.border}`,
+          boxShadow: `inset 3px 3px 3px ${variations.highlight}, inset -3px -3px 3px ${variations.shadow}`,
         };
-      case "#ff8c00":
-        return {
-          backgroundImage: `repeating-linear-gradient(45deg, ${cell}, ${cell} ${patternSize}px, rgba(0,0,0,0.2) ${patternSize}px, rgba(0,0,0,0.2) ${
-            patternSize * 2
-          }px)`,
-        };
+        
       default:
-        return { backgroundColor: cell };
+        return { backgroundColor: color };
     }
   }
   return (
@@ -91,7 +126,6 @@ export default function Board({
                 height: "30px",
                 ...getCellStyle(cell, level),
                 boxSizing: "border-box",
-                border: "1px solid #999",
               }}
             />
           ))}
@@ -100,19 +134,56 @@ export default function Board({
               if (v) {
                 const ghostX = ghostPosition.x + px;
                 const ghostY = ghostPosition.y + py;
+                
+                // Get the style for the ghost piece
+                const ghostCellInfo = { color: current.tetromino.color, key: current.key };
+                const variations = generateColorVariations(ghostCellInfo.color);
+                const style = tetrominoStyleMap[ghostCellInfo.key];
+                
+                let ghostStyle: React.CSSProperties = {
+                  width: "30px",
+                  height: "30px",
+                  left: ghostX * 30 + "px",
+                  top: ghostY * 30 + "px",
+                  boxSizing: "border-box",
+                  opacity: 0.3,
+                };
+                
+                // Apply the appropriate style based on tetromino type
+                switch (style) {
+                  case BlockStyle.BORDERED:
+                    ghostStyle = {
+                      ...ghostStyle,
+                      backgroundColor: variations.light,
+                      border: `2px solid ${variations.border}`,
+                    };
+                    break;
+                  case BlockStyle.DARK:
+                    ghostStyle = {
+                      ...ghostStyle,
+                      backgroundColor: variations.dark,
+                      border: `1px solid ${variations.border}`,
+                    };
+                    break;
+                  case BlockStyle.LIGHT:
+                    ghostStyle = {
+                      ...ghostStyle,
+                      backgroundColor: variations.light,
+                      border: `1px solid ${variations.border}`,
+                    };
+                    break;
+                  default:
+                    ghostStyle = {
+                      ...ghostStyle,
+                      backgroundColor: ghostCellInfo.color,
+                    };
+                }
+                
                 return (
                   <div
                     key={`ghost-${py}-${px}`}
-                    className="absolute pointer-events-none opacity-50"
-                    style={{
-                      width: "30px",
-                      height: "30px",
-                      left: ghostX * 30 + "px",
-                      top: ghostY * 30 + "px",
-                      backgroundColor: current.tetromino.color,
-                      boxSizing: "border-box",
-                      border: "1px solid #999",
-                    }}
+                    className="absolute pointer-events-none"
+                    style={ghostStyle}
                   />
                 );
               }

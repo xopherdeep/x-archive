@@ -8,53 +8,7 @@ import GameCard from "./GameCard";
 import MusicPlayer from "./MusicPlayer";
 import Background from "./Background";
 
-const LIGHT_THEME = {
-  I: "cyan",
-  O: "yellow",
-  T: "purple",
-  S: "green",
-  Z: "red",
-  J: "blue",
-  L: "orange",
-};
-
-const NES_LOW_LEVEL = {
-  I: "#00ffff",
-  O: "#ffff00",
-  T: "#dda0dd",
-  S: "#7fff00",
-  Z: "#ff4500",
-  J: "#1e90ff",
-  L: "#ff8c00",
-};
-const NES_MID_LEVEL = {
-  I: "#00cccc",
-  O: "#cccc00",
-  T: "#ba8bb0",
-  S: "#6fbf00",
-  Z: "#e03e00",
-  J: "#199ae6",
-  L: "#e68a00",
-};
-const NES_HIGH_LEVEL = {
-  I: "#009999",
-  O: "#999900",
-  T: "#a275a2",
-  S: "#5fb000",
-  Z: "#c02e00",
-  J: "#157bb8",
-  L: "#cc7000",
-};
-
-const DARK_THEME = {
-  I: "#00ffff",
-  O: "#ffff00",
-  T: "#dda0dd",
-  S: "#7fff00",
-  Z: "#ff4500",
-  J: "#1e90ff",
-  L: "#ff8c00",
-};
+import { getLevelColorTheme } from "./tetrominoStyles";
 
 type Theme = "light" | "dark";
 
@@ -138,14 +92,10 @@ function randomTetromino(
   const keys = Object.keys(TETROMINOES);
   const randKey = keys[Math.floor(Math.random() * keys.length)];
   const tetromino = TETROMINOES[randKey];
-  let palette;
-  if (level < 5) {
-    palette = NES_LOW_LEVEL;
-  } else if (level < 10) {
-    palette = NES_MID_LEVEL;
-  } else {
-    palette = NES_HIGH_LEVEL;
-  }
+  
+  // Get the color theme based on the current level
+  const palette = getLevelColorTheme(level);
+  
   return {
     key: randKey,
     tetromino: {

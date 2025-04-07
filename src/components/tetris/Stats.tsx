@@ -21,6 +21,12 @@ import {
 } from "@/components/ui/tooltip";
 import { GameControlsDialog } from "@/components/tetris/GameControlsDialog";
 import GameCard from "./GameCard";
+import { 
+  tetrominoStyleMap, 
+  BlockStyle, 
+  generateColorVariations,
+  getLevelColorTheme 
+} from "./tetrominoStyles";
 
 interface StatsProps {
   dropStats: Record<string, number>;
@@ -51,6 +57,38 @@ export default function Stats({
     (a, b) => (holdStats[b] || 0) - (holdStats[a] || 0)
   );
   console.log("Hold stats in Stats component:", holdStats);
+  
+  // Function to get the appropriate block style based on tetromino type
+  const getTetrominoBlockStyle = (key: string, color: string, size: number = 30): React.CSSProperties => {
+    const variations = generateColorVariations(color);
+    const style = tetrominoStyleMap[key];
+    
+    switch (style) {
+      case BlockStyle.BORDERED: // I, O, T
+        return {
+          backgroundColor: variations.light,
+          border: `2px solid ${variations.border}`,
+          boxShadow: `inset 1px 1px 1px ${variations.highlight}, inset -1px -1px 1px ${variations.shadow}`,
+        };
+        
+      case BlockStyle.DARK: // J, S
+        return {
+          backgroundColor: variations.dark,
+          border: `1px solid ${variations.border}`,
+          boxShadow: `inset 2px 2px 1px ${variations.highlight}, inset -2px -2px 1px ${variations.shadow}`,
+        };
+        
+      case BlockStyle.LIGHT: // Z, L
+        return {
+          backgroundColor: variations.light,
+          border: `1px solid ${variations.border}`,
+          boxShadow: `inset 2px 2px 1px ${variations.highlight}, inset -2px -2px 1px ${variations.shadow}`,
+        };
+        
+      default:
+        return { backgroundColor: color };
+    }
+  };
   return (
     <div className="flex flex-col gap-4 w-auto">
       <GameCard title="Tetrominoes">
@@ -86,10 +124,7 @@ export default function Stats({
                                 style={{
                                   width: 20,
                                   height: 20,
-                                  backgroundColor: cell
-                                    ? tetromino.color
-                                    : "transparent",
-                                  border: "1px solid #ccc",
+                                  ...(cell ? getTetrominoBlockStyle(key, tetromino.color, 20) : { backgroundColor: "transparent" }),
                                 }}
                               />
                             ))}
@@ -153,11 +188,10 @@ export default function Stats({
                       style={{
                         width: "30px",
                         height: "30px",
-                        backgroundColor: cell
-                          ? hold.tetromino.color
-                          : "transparent",
+                        ...(cell 
+                          ? getTetrominoBlockStyle(hold.key, hold.tetromino.color, 30) 
+                          : { backgroundColor: "transparent" }),
                         boxSizing: "border-box",
-                        border: "1px solid #999",
                       }}
                     />
                   ))

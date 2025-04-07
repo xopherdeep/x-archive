@@ -88,7 +88,7 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
     setPosition((prev) => {
       const newPos = { x: prev.x, y: prev.y + 1 };
       if (checkCollision(board, current.tetromino, newPos)) {
-        const merged = mergeBoard(board, current.tetromino, prev);
+        const merged = mergeBoard(board, current.tetromino, prev, current.key);
         const { board: clearedBoard, cleared } = clearLines(merged);
         setBoard(clearedBoard);
         setLinesCleared((prev) => prev + cleared);
@@ -183,7 +183,7 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
       posCopy = { x: posCopy.x, y: posCopy.y + 1 };
     }
     setPosition(posCopy);
-    const merged = mergeBoard(board, current.tetromino, posCopy);
+    const merged = mergeBoard(board, current.tetromino, posCopy, current.key);
     const { board: clearedBoard, cleared } = clearLines(merged);
     setBoard(clearedBoard);
     setLinesCleared((prev) => prev + cleared);
@@ -230,7 +230,8 @@ export default function useTetris(initialTheme: "light" | "dark", bindings = { h
         const boardY = position.y + py;
         const boardX = position.x + px;
         if (v && boardY >= 0 && boardY < ROWS && boardX >= 0 && boardX < COLS) {
-          newBoard[boardY][boardX] = current.tetromino.color;
+          // Store both color and tetromino key in the cell
+          newBoard[boardY][boardX] = `${current.tetromino.color}:${current.key}`;
         }
       });
     });

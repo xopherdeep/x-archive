@@ -5,14 +5,18 @@ export function rotate(matrix: number[][]): number[][] {
 export function mergeBoard(
   board: (0 | string)[][],
   tetromino: { shape: number[][]; color: string },
-  pos: { x: number; y: number }
+  pos: { x: number; y: number },
+  tetrominoKey: string = ""
 ): (0 | string)[][] {
   const newBoard = board.map(row => row.slice());
   tetromino.shape.forEach((row, y) => {
     row.forEach((cell, x) => {
       if (cell) {
         if (newBoard[y + pos.y] && newBoard[y + pos.y][x + pos.x] !== undefined) {
-          newBoard[y + pos.y][x + pos.x] = tetromino.color;
+          // Store both color and tetromino key in the cell
+          newBoard[y + pos.y][x + pos.x] = tetrominoKey 
+            ? `${tetromino.color}:${tetrominoKey}` 
+            : tetromino.color;
         }
       }
     });
@@ -90,6 +94,8 @@ export function getPreviewShape(letter: string, shape: number[][]): number[][] {
   return cropped;
 }
 
+import { getLevelColorTheme } from "./tetrominoStyles";
+
 export function randomTetromino(theme: "light" | "dark", level: number = 1): { key: string; tetromino: { shape: number[][]; color: string } } {
   const TETROMINOES = {
     I: { shape: [[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]], color: "cyan" },
@@ -100,14 +106,19 @@ export function randomTetromino(theme: "light" | "dark", level: number = 1): { k
     J: { shape: [[1,0,0],[1,1,1],[0,0,0]], color: "blue" },
     L: { shape: [[0,0,1],[1,1,1],[0,0,0]], color: "orange" },
   };
+  
   const keys = Object.keys(TETROMINOES);
   const randKey = keys[Math.floor(Math.random()*keys.length)];
   const tetromino = TETROMINOES[randKey];
+  
+  // Get the color theme based on the current level
+  const palette = getLevelColorTheme(level);
+  
   return {
     key: randKey,
     tetromino: {
       ...tetromino,
-      color: tetromino.color,
+      color: palette[randKey] || tetromino.color,
     },
   };
 }
