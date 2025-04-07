@@ -331,9 +331,7 @@ export default function GameView(props: GameViewProps) {
             </div>
           </div>
           
-          <div className="mt-4">
-            <MusicPlayer inGameHUD={true} />
-          </div>
+          
         </GameCard>
       </div>
       <div className="flex flex-col items-start gap-4 w-40">
@@ -401,6 +399,10 @@ export default function GameView(props: GameViewProps) {
             </div>
           </CardContent>
         </Card>
+        
+        <div className="mt-4">
+          <MusicPlayer inGameHUD={true} />
+        </div>
       </div>
     </div>
   );
