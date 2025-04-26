@@ -189,15 +189,179 @@ Step 4: Find the final position (0-359°): ${(degreesPerDay * timeDays).toFixed(
   };
   
   const generateSizeQuestion = () => {
-    // TODO: Implement planet size comparison questions
-    setQuestion("Planet size comparison question will be available soon!");
-    setAnswer(0);
+    // Get two random planets to compare
+    const availablePlanets = [...planets];
+    const planet1Index = Math.floor(Math.random() * availablePlanets.length);
+    const planet1 = availablePlanets[planet1Index];
+    availablePlanets.splice(planet1Index, 1);
+    
+    const planet2Index = Math.floor(Math.random() * availablePlanets.length);
+    const planet2 = availablePlanets[planet2Index];
+    
+    setSelectedPlanets([planet1.name, planet2.name]);
+    
+    if (difficulty === 'easy') {
+      // Calculate the difference in diameters
+      const largerPlanet = planet1.diameter > planet2.diameter ? planet1 : planet2;
+      const smallerPlanet = planet1.diameter > planet2.diameter ? planet2 : planet1;
+      const diameterDifference = largerPlanet.diameter - smallerPlanet.diameter;
+      
+      setAnswer(diameterDifference);
+      
+      setQuestion(`How many kilometers larger is the diameter of ${largerPlanet.name} compared to ${smallerPlanet.name}?`);
+      
+      setExplanation(`To find the difference in diameter, subtract the smaller diameter from the larger one:
+${largerPlanet.name}'s diameter: ${largerPlanet.diameter.toLocaleString()} km
+${smallerPlanet.name}'s diameter: ${smallerPlanet.diameter.toLocaleString()} km
+
+${largerPlanet.diameter.toLocaleString()} km - ${smallerPlanet.diameter.toLocaleString()} km = ${diameterDifference.toLocaleString()} km`);
+    } 
+    else if (difficulty === 'medium') {
+      // Calculate how many times one planet's diameter fits into another
+      const largerPlanet = planet1.diameter > planet2.diameter ? planet1 : planet2;
+      const smallerPlanet = planet1.diameter > planet2.diameter ? planet2 : planet1;
+      
+      // Calculate the ratio of diameters (rounded to nearest whole number)
+      const diameterRatio = Math.round(largerPlanet.diameter / smallerPlanet.diameter);
+      
+      setAnswer(diameterRatio);
+      
+      setQuestion(`Approximately how many times larger is the diameter of ${largerPlanet.name} compared to ${smallerPlanet.name}? (Round to the nearest whole number)`);
+      
+      setExplanation(`To find how many times larger one planet is than another, divide their diameters:
+${largerPlanet.name}'s diameter: ${largerPlanet.diameter.toLocaleString()} km
+${smallerPlanet.name}'s diameter: ${smallerPlanet.diameter.toLocaleString()} km
+
+${largerPlanet.diameter.toLocaleString()} km ÷ ${smallerPlanet.diameter.toLocaleString()} km = ${(largerPlanet.diameter / smallerPlanet.diameter).toFixed(2)}
+
+Rounded to the nearest whole number: ${diameterRatio}`);
+    }
+    else {
+      // Hard: Volume comparison
+      const volume1 = (4/3) * Math.PI * Math.pow(planet1.diameter / 2, 3);
+      const volume2 = (4/3) * Math.PI * Math.pow(planet2.diameter / 2, 3);
+      
+      // Always make planet1 the larger one for this calculation
+      let largerPlanet, smallerPlanet, largerVolume, smallerVolume;
+      if (volume1 > volume2) {
+        largerPlanet = planet1;
+        smallerPlanet = planet2;
+        largerVolume = volume1;
+        smallerVolume = volume2;
+      } else {
+        largerPlanet = planet2;
+        smallerPlanet = planet1;
+        largerVolume = volume2;
+        smallerVolume = volume1;
+      }
+      
+      // Volume ratio (approximate number of smaller planets that fit in larger)
+      const volumeRatio = Math.round(largerVolume / smallerVolume);
+      setAnswer(volumeRatio);
+      
+      setQuestion(`Approximately how many ${smallerPlanet.name}s could fit inside ${largerPlanet.name} by volume? (Round to the nearest whole number)`);
+      
+      setExplanation(`To find how many of one planet can fit inside another, we need to compare their volumes.
+
+Step 1: Calculate the volume of each planet using the formula V = (4/3)πr³, where r is the radius (diameter ÷ 2).
+${largerPlanet.name}'s radius = ${(largerPlanet.diameter / 2).toLocaleString()} km
+${smallerPlanet.name}'s radius = ${(smallerPlanet.diameter / 2).toLocaleString()} km
+
+Step 2: Calculate each planet's volume:
+${largerPlanet.name}'s volume = (4/3)π × ${(largerPlanet.diameter / 2).toLocaleString()}³ = ${Math.round(largerVolume).toLocaleString()} km³
+${smallerPlanet.name}'s volume = (4/3)π × ${(smallerPlanet.diameter / 2).toLocaleString()}³ = ${Math.round(smallerVolume).toLocaleString()} km³
+
+Step 3: Divide the larger volume by the smaller volume:
+${Math.round(largerVolume).toLocaleString()} km³ ÷ ${Math.round(smallerVolume).toLocaleString()} km³ ≈ ${volumeRatio.toLocaleString()}
+
+Therefore, about ${volumeRatio.toLocaleString()} ${smallerPlanet.name}s could fit inside ${largerPlanet.name}.`);
+    }
   };
-  
+
   const generateMissionQuestion = () => {
-    // TODO: Implement mission planning questions
-    setQuestion("Mission planning question will be available soon!");
-    setAnswer(0);
+    // Select a random planet as the destination
+    const planet = planets[Math.floor(Math.random() * planets.length)];
+    const spacecraft = Object.keys(spacecraftSpeeds)[Math.floor(Math.random() * Object.keys(spacecraftSpeeds).length)];
+    const speedKmS = spacecraftSpeeds[spacecraft as keyof typeof spacecraftSpeeds];
+    
+    // Set Earth and the selected planet as the two planets for this question
+    setSelectedPlanets(["Earth", planet.name]);
+    
+    if (difficulty === 'easy') {
+      // Basic fuel consumption calculation
+      const distance = Math.abs(planet.distanceFromSun - 150); // Earth is 150 million km from Sun
+      const fuelPerMillion = Math.floor(Math.random() * 50) + 100; // 100-150 units of fuel per million km
+      const totalFuel = distance * fuelPerMillion;
+      
+      setAnswer(totalFuel);
+      
+      setQuestion(`A ${spacecraft} spacecraft uses ${fuelPerMillion} units of fuel for every million kilometers traveled. How much total fuel is needed to travel from Earth to ${planet.name}, which is ${distance} million kilometers away?`);
+      setExplanation(`To calculate the total fuel needed: fuel per million km × distance = ${fuelPerMillion} × ${distance} million km = ${totalFuel} units of fuel.`);
+    } 
+    else if (difficulty === 'medium') {
+      // Fuel consumption with variable rates
+      const distance = Math.abs(planet.distanceFromSun - 150); // Earth is 150 million km from Sun
+      const initialFuelRate = Math.floor(Math.random() * 30) + 120; // 120-150 units per million km initially
+      const midJourneyRate = Math.floor(Math.random() * 20) + 70; // 70-90 units per million km in middle
+      
+      // Calculate fuel for different parts of the journey
+      const firstHalf = Math.ceil(distance / 2);
+      const secondHalf = distance - firstHalf;
+      
+      const totalFuel = (firstHalf * initialFuelRate) + (secondHalf * midJourneyRate);
+      setAnswer(totalFuel);
+      
+      setQuestion(`A ${spacecraft} mission to ${planet.name} (${distance} million km from Earth) uses ${initialFuelRate} units of fuel per million kilometers for the first half of the journey, then ${midJourneyRate} units per million kilometers for the second half due to reduced payload. How much total fuel is needed?`);
+      setExplanation(`First half distance = ${firstHalf} million km
+Fuel for first half = ${firstHalf} million km × ${initialFuelRate} units/million km = ${firstHalf * initialFuelRate} units
+      
+Second half distance = ${secondHalf} million km
+Fuel for second half = ${secondHalf} million km × ${midJourneyRate} units/million km = ${secondHalf * midJourneyRate} units
+      
+Total fuel = ${firstHalf * initialFuelRate} + ${secondHalf * midJourneyRate} = ${totalFuel} units`);
+    }
+    else {
+      // Hard: Complex fuel, time and resource calculation with constraints
+      const distance = Math.abs(planet.distanceFromSun - 150); // Earth is 150 million km from Sun
+      const distanceKm = distance * 1000000;
+      const speedKmH = speedKmS * 3600;
+      
+      // Calculate travel time in days
+      const timeHours = Math.round(distanceKm / speedKmH);
+      const timeDays = Math.ceil(timeHours / 24);
+      
+      // Calculate resources needed per astronaut
+      const crew = Math.floor(Math.random() * 4) + 2; // 2-5 crew members
+      const waterPerDay = 3; // 3 liters per person per day
+      const oxygenPerDay = 0.84; // 0.84 kg per person per day
+      const foodPerDay = 1.8; // 1.8 kg per person per day
+      
+      // Calculate total required resources
+      const totalWater = Math.ceil(crew * waterPerDay * timeDays);
+      const totalOxygen = Math.ceil(crew * oxygenPerDay * timeDays);
+      const totalFood = Math.ceil(crew * foodPerDay * timeDays);
+      
+      // Calculate fuel needed based on payload (resources + spacecraft weight)
+      const spacecraftWeight = Math.floor(Math.random() * 5000) + 10000; // 10-15 tons
+      const resourceWeight = totalWater + totalOxygen + totalFood;
+      const fuelFactor = 0.7; // 0.7 units of fuel per kg per million km
+      
+      const totalFuel = Math.round((spacecraftWeight + resourceWeight) * fuelFactor * distance);
+      setAnswer(totalFuel);
+      
+      setQuestion(`A ${spacecraft} mission to ${planet.name} carries ${crew} astronauts and takes approximately ${timeDays} days. Each astronaut needs ${waterPerDay} liters of water, ${oxygenPerDay} kg of oxygen, and ${foodPerDay} kg of food per day. The empty spacecraft weighs ${spacecraftWeight.toLocaleString()} kg, and the mission uses ${fuelFactor} units of fuel per kg of payload per million kilometers traveled. How many total units of fuel are required?`);
+      setExplanation(`Step 1: Calculate total resources needed:
+Water: ${crew} crew × ${waterPerDay} liters/day × ${timeDays} days = ${totalWater} liters
+Oxygen: ${crew} crew × ${oxygenPerDay} kg/day × ${timeDays} days = ${totalOxygen} kg
+Food: ${crew} crew × ${foodPerDay} kg/day × ${timeDays} days = ${totalFood} kg
+Total resources weight = ${totalWater} + ${totalOxygen} + ${totalFood} = ${resourceWeight} kg
+
+Step 2: Calculate total weight:
+Total payload = Spacecraft (${spacecraftWeight.toLocaleString()} kg) + Resources (${resourceWeight} kg) = ${(spacecraftWeight + resourceWeight).toLocaleString()} kg
+
+Step 3: Calculate fuel:
+Fuel = Payload (${(spacecraftWeight + resourceWeight).toLocaleString()} kg) × Fuel factor (${fuelFactor}) × Distance (${distance} million km) = ${totalFuel.toLocaleString()} units`);
+    }
   };
   
   const checkAnswer = () => {
