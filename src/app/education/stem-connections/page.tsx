@@ -26,7 +26,39 @@ export default function StemConnectionsPage() {
 
       <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">Interactive STEM Activities</h2>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+          <div className="h-48 bg-gradient-to-r from-green-400 to-teal-500 flex items-center justify-center">
+            <span className="text-6xl">💰</span>
+          </div>
+          <div className="p-6">
+            <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-gray-100">Money Math</h3>
+            <p className="text-gray-600 dark:text-gray-300 mb-4">
+              Learn financial literacy through interactive math activities - see how math helps us manage money!
+            </p>
+            <div className="mb-4 space-y-2">
+              <div className="flex items-center">
+                <div className="w-4 h-4 rounded-full bg-green-500 mr-2"></div>
+                <span className="text-sm text-gray-600 dark:text-gray-400">Visualize compound interest and savings growth</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-4 h-4 rounded-full bg-green-500 mr-2"></div>
+                <span className="text-sm text-gray-600 dark:text-gray-400">Budget with percentages and the 50/30/20 rule</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-4 h-4 rounded-full bg-green-500 mr-2"></div>
+                <span className="text-sm text-gray-600 dark:text-gray-400">Practice counting money and making change</span>
+              </div>
+            </div>
+            <Link 
+              href="/education/stem-connections/money-math" 
+              className="inline-block bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md"
+            >
+              Explore Money Math
+            </Link>
+          </div>
+        </div>
+
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
           <div className="h-48 bg-gradient-to-r from-blue-400 to-purple-500 flex items-center justify-center">
             <span className="text-6xl">🚀</span>
@@ -58,7 +90,6 @@ export default function StemConnectionsPage() {
             </Link>
           </div>
         </div>
-
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
           <div className="h-48 bg-gradient-to-r from-amber-400 to-orange-500 flex items-center justify-center">
             <span className="text-6xl">🐆</span>
@@ -90,9 +121,7 @@ export default function StemConnectionsPage() {
             </Link>
           </div>
         </div>
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
           <div className="h-48 bg-gradient-to-r from-green-400 to-emerald-500 flex items-center justify-center">
             <span className="text-6xl">🌿</span>
@@ -124,7 +153,6 @@ export default function StemConnectionsPage() {
             </Link>
           </div>
         </div>
-
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
           <div className="h-48 bg-gradient-to-r from-cyan-400 to-teal-500 flex items-center justify-center">
             <span className="text-6xl">🔬</span>

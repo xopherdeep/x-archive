@@ -1,0 +1,140 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Models for Money Math activities
+
+model Activity {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String
+  emoji       String
+  difficulty  String   // beginner, intermediate, advanced
+  gradientFrom String  // tailwind color class
+  gradientTo   String  // tailwind color class
+  order       Int      @default(0)
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relationships
+  features    Feature[]
+  exercises   Exercise[]
+  userProgress UserProgress[]
+  achievements ActivityAchievement[]
+}
+
+model Feature {
+  id          String   @id @default(cuid())
+  description String
+  color       String   // tailwind color class for bullet point
+  activityId  String
+  activity    Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+}
+
+model Exercise {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  content     Json     // Stores JSON data for the exercise (questions, options, etc.)
+  difficulty  Int      @default(1) // 1-5 scale
+  order       Int      @default(0)
+  activityId  String
+  activity    Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  
+  // Relationships
+  userExerciseProgress UserExerciseProgress[]
+}
+
+// User related models
+
+model User {
+  id          String   @id @default(cuid())
+  name        String?
+  email       String?  @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relationships
+  progress    UserProgress[]
+  exerciseProgress UserExerciseProgress[]
+  achievements UserAchievement[]
+}
+
+model UserProgress {
+  id          String   @id @default(cuid())
+  userId      String
+  activityId  String
+  lastAccessedAt DateTime @default(now())
+  completionPercentage Int @default(0)
+  
+  // Relationships
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activity    Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, activityId])
+}
+
+model UserExerciseProgress {
+  id          String   @id @default(cuid())
+  userId      String
+  exerciseId  String
+  completed   Boolean  @default(false)
+  score       Int?
+  attempts    Int      @default(0)
+  lastAttemptAt DateTime?
+  
+  // Relationships
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exercise    Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, exerciseId])
+}
+
+// Achievement system
+
+model Achievement {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  icon        String   // emoji or icon class
+  requirements Json    // criteria for earning this achievement
+  
+  // Relationships
+  userAchievements UserAchievement[]
+  activityAchievements ActivityAchievement[]
+}
+
+model UserAchievement {
+  id            String   @id @default(cuid())
+  userId        String
+  achievementId String
+  earnedAt      DateTime @default(now())
+  
+  // Relationships
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievement Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, achievementId])
+}
+
+model ActivityAchievement {
+  id            String   @id @default(cuid())
+  activityId    String
+  achievementId String
+  
+  // Relationships
+  activity    Activity    @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  achievement Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+  
+  @@unique([activityId, achievementId])
+}
